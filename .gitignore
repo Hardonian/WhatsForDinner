@@ -100,3 +100,8 @@ temp/
 
 # Archive directory (historical/completed documentation and migrations)
 archive/
+__pycache__/
+.env
+build/
+.pytest_cache/
+*.pyc
