@@ -2,6 +2,10 @@
 
 # 🍽️ What's for Dinner?
 
+<!-- BEGIN: REPO HERO -->
+![WhatsForDinner — hero generated locally on the GPU stack](assets/repo-hero.png)
+<!-- END: REPO HERO -->
+
 **Turn fridge chaos into gourmet dinner in 30 seconds.**
 
 The next-generation AI food operating system that pairs computer vision pantry tracking,
