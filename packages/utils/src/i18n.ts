@@ -2,8 +2,8 @@
  * Internationalization helper
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+const fs = typeof window === 'undefined' ? require('fs') : null;
+const path = typeof window === 'undefined' ? require('path') : null;
 
 export interface MessageKey {
   key: string;

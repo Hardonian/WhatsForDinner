@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+const readFileSync = typeof window === 'undefined' ? require('fs').readFileSync : null;
+const join = typeof window === 'undefined' ? require('path').join : null;
 
 // Simple swagger.json endpoint
 // In production, generate this from Zod schemas using zod-to-openapi

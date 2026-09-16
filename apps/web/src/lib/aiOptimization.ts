@@ -1,6 +1,6 @@
 import { supabase } from './supabaseClient';
 import { StripeService } from './stripe';
-import crypto from 'crypto';
+const crypto = typeof window === 'undefined' ? require('crypto') : null;
 
 interface CacheEntry {
   id: string;

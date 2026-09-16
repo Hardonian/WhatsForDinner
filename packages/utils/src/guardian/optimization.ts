@@ -5,8 +5,8 @@
 
 import { Guardian } from './core';
 import type { GuardianEvent, TrustReport } from './types';
-import * as fs from 'fs';
-import * as path from 'path';
+const fs = typeof window === 'undefined' ? require('fs') : null;
+const path = typeof window === 'undefined' ? require('path') : null;
 import { createComponentLogger } from '../logger';
 
 /**

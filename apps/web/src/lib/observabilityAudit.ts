@@ -10,7 +10,7 @@ import { secretsIntelligence } from './secretsIntelligence';
 import { predictiveOptimization } from './predictiveOptimization';
 import { cognitiveContinuity } from './cognitiveContinuity';
 import fs from 'fs/promises';
-import path from 'path';
+const path = typeof window === 'undefined' ? require('path') : null;
 
 export interface AuditEvent {
   id: string;

@@ -3,8 +3,8 @@
  * Background agent that analyzes logs hourly and generates trust reports
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+const fs = typeof window === 'undefined' ? require('fs') : null;
+const path = typeof window === 'undefined' ? require('path') : null;
 import type { GuardianEvent, TrustReport } from './types';
 import { createComponentLogger } from '../logger';
 

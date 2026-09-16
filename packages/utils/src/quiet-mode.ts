@@ -2,8 +2,8 @@
  * Quiet mode configuration
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+const fs = typeof window === 'undefined' ? require('fs') : null;
+const path = typeof window === 'undefined' ? require('path') : null;
 
 const QUIET_MODE_CONFIG = path.join(process.cwd(), 'ops', 'quiet-mode.json');
 

@@ -6,7 +6,7 @@
 import { logger } from './logger';
 import { autonomousSystem } from './autonomousSystem';
 import fs from 'fs/promises';
-import path from 'path';
+const path = typeof window === 'undefined' ? require('path') : null;
 
 export interface KnowledgeEntry {
   id: string;

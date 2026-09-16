@@ -6,7 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import crypto from 'crypto';
+const crypto = typeof window === 'undefined' ? require('crypto') : null;
 import { db } from '@/server/db';
 import { mfaEnforcedSessions } from '@/server/db/schema';
 import { eq, and, gt } from 'drizzle-orm';

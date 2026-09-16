@@ -2,7 +2,7 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const logger = createComponentLogger('secretsmanager');
 
-import crypto from 'crypto';
+const crypto = typeof window === 'undefined' ? require('crypto') : null;
 import { createClient } from '@supabase/supabase-js';
 
 interface SecretConfig {
