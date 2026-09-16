@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
-import { hapticTap } from "./Haptics";
+import { hapticTap } from "@/components/gamification/Haptics";
 
 export default function FriendsList() {
   const [friends, setFriends] = useState<any[]>([]);
