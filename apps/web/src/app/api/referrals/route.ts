@@ -25,12 +25,12 @@ export async function GET(request: NextRequest) {
 
     if (codeError || !referralCode) {
       // Create new referral code
-      const newCode = `REF${userId.slice(0, 8).toUpperCase()}`;
+      const generatedCode = `REF${userId.slice(0, 8).toUpperCase()}`;
       const { data: newCode, error: createError } = await supabase
         .from('referral_codes')
         .insert({
           user_id: userId,
-          code: newCode,
+          code: generatedCode,
           created_at: new Date().toISOString(),
         })
         .select()
