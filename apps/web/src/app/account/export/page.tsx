@@ -2,13 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Metadata } from "next";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "Export My Data - What's for Dinner?",
-  description: "Export your personal data in a machine-readable format.",
-};
 
 export default function ExportDataPage() {
   const [exporting, setExporting] = useState(false);

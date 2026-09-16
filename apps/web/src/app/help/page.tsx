@@ -1,13 +1,7 @@
 // [STAKE+TRUST:BEGIN:help_page]
 "use client";
 
-import { Metadata } from "next";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "Help Center - What's for Dinner?",
-  description: "Get help with using What's for Dinner? and find answers to common questions.",
-};
 
 export default function HelpPage() {
   return (

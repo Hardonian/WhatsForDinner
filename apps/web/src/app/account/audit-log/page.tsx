@@ -2,13 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Metadata } from "next";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "My Audit Log - What's for Dinner?",
-  description: "View your personal audit log of actions and activities.",
-};
 
 interface AuditLogEntry {
   id: number;

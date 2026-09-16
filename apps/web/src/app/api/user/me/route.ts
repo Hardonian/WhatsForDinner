@@ -3,6 +3,7 @@ import { getAuthContext } from '@whats-for-dinner/server/auth';
 import { usersRepo, featureFlagsRepo } from '@whats-for-dinner/server/db';
 import { addSecurityHeaders, setCORSHeaders } from '@whats-for-dinner/server/security/helmet';
 import { z } from 'zod';
+import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 const updatePreferencesSchema = z.object({
   diet: z.array(z.string()).optional(),
@@ -12,7 +13,7 @@ const updatePreferencesSchema = z.object({
 });
 
 // GET /api/user/me
-export async function GET(request: NextRequest) {
+async function getHandler(request: NextRequest) {
   try {
     const ctx = await getAuthContext(request);
     if (!ctx?.user) {
