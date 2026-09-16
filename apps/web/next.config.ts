@@ -32,6 +32,23 @@ const nextConfig: NextConfig = {
   optimizeFonts: true,
   
   webpack: (config, { isServer, dev }) => {
+    if (!isServer) {
+      config.resolve = config.resolve || {};
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        os: false,
+        crypto: false,
+        stream: false,
+        http: false,
+        https: false,
+        zlib: false,
+        net: false,
+        tls: false,
+        child_process: false,
+      };
+    }
     if (!isServer && !dev) {
       config.optimization = {
         ...config.optimization,
