@@ -1,5 +1,3 @@
-import { NextRequest, NextResponse } from "next/server";
-import { computeSignalsForUser } from "@/lib/agent/feature-extract";
 import { makeRecommendations, persistRecommendations } from "@/lib/agent/recommender";
 
 export const runtime = "edge";
@@ -14,3 +12,5 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ signals, recommendations: recs }, { status: 200 });
 }
+
+export const dynamic = "force-dynamic";

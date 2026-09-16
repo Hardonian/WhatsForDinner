@@ -27,3 +27,5 @@ export async function POST(req: NextRequest){
     headers: { "content-type": "application/json" } 
   });
 }
+
+export const dynamic = "force-dynamic";

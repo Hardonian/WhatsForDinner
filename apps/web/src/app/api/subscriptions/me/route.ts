@@ -1,9 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { createComponentLogger } from '@whats-for-dinner/utils';
-import { handleApiError } from '@whats-for-dinner/utils';
-import { monitorQuery } from '@/lib/performance/query-optimizer';
-import Stripe from 'stripe';
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 const _logger = createComponentLogger('subscriptions-me-api');
@@ -77,3 +71,5 @@ async function handler(request: NextRequest) {
 }
 
 export const GET = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

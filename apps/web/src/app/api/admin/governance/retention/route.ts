@@ -1,17 +1,6 @@
-/**
- * Admin Data Governance - Retention Policies API
- * 
- * GET /api/admin/governance/retention - List policies & preview
- * POST /api/admin/governance/retention/run - Run retention policies
- */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
-import {
-  runRetentionPolicies,
-  getRetentionPreview,
-} from '@whats-for-dinner/server/jobs/retentionRunner';
-import { db } from '@whats-for-dinner/server/db';
+
+export const dynamic = "force-dynamic";
 import { retentionPolicies } from '@whats-for-dinner/server/db/schema';
 
 export async function GET(request: NextRequest) {
@@ -65,3 +54,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+export const dynamic = "force-dynamic";

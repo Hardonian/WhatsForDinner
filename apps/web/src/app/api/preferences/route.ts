@@ -1,6 +1,3 @@
-import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
-import { headers } from 'next/headers';
 import { z } from 'zod';
 
 const PreferencesSchema = z.object({
@@ -116,3 +113,5 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

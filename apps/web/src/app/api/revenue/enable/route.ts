@@ -1,10 +1,3 @@
-/**
- * Revenue Enable API
- * Enables all monetization channels
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { handleError } from '@/lib/errors';
 
 async function handler(req: NextRequest) {
@@ -85,3 +78,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = handler;
+
+export const dynamic = "force-dynamic";

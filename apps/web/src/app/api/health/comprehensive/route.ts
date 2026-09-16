@@ -1,11 +1,3 @@
-/**
- * Comprehensive Health Check Endpoint
- * 
- * Checks all system components and returns detailed health status
- */
-
-import { cache } from '@/lib/cache';
-import { getPerformanceSummary } from '@/lib/performance-monitor';
 import { NextResponse } from 'next/server';
 
 interface HealthCheck {
@@ -84,3 +76,5 @@ export async function GET() {
     },
   });
 }
+
+export const dynamic = "force-dynamic";

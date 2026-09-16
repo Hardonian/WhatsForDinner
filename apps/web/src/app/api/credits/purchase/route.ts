@@ -1,11 +1,3 @@
-/**
- * Credits Purchase API
- * Handles pay-per-use credit purchases
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { withTelemetry } from '@/lib/telemetry/api-middleware';
-import Stripe from 'stripe';
 import { z } from 'zod';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -81,3 +73,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

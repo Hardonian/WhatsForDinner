@@ -1,10 +1,3 @@
-/**
- * Stripe Webhook Handler for Monetization
- * Handles affiliate payouts, API subscriptions, marketplace payouts
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -113,3 +106,5 @@ async function handleMarketplacePayout(
     .eq('transaction_id', transactionId)
     .eq('status', 'pending');
 }
+
+export const dynamic = "force-dynamic";

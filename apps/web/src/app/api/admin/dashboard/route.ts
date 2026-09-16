@@ -1,9 +1,3 @@
-/**
- * Admin Dashboard API
- * 
- * GET /api/admin/dashboard - Key metrics overview
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -62,3 +56,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+export const dynamic = "force-dynamic";

@@ -1,8 +1,3 @@
-/**
- * Data Insights Catalog
- * Pre-built insights ready to sell - zero effort
- */
-
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -52,3 +47,5 @@ export async function GET() {
     note: 'All data is anonymized and GDPR/CCPA compliant',
   });
 }
+
+export const dynamic = "force-dynamic";

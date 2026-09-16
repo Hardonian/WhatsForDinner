@@ -1,4 +1,3 @@
-import { performanceOptimizer } from '@/lib/performanceOptimizer';
 import { NextRequest } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -71,3 +70,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

@@ -1,7 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getIngredientNutrition, getRecipeNutrition, isNutritionVerified } from '@/lib/services/nutrition-service';
-import { getTenantContext } from '@/lib/auth-middleware';
-import { z } from 'zod';
 import { withCSRFProtection } from '@/lib/csrf-middleware';
 
 const IngredientNutritionSchema = z.object({
@@ -77,3 +73,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = (req: NextRequest) => withCSRFProtection(handler, req);
+
+export const dynamic = "force-dynamic";

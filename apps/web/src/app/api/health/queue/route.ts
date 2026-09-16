@@ -1,8 +1,3 @@
-/**
- * Phase 1 Guardrail: Health Endpoint - Queue
- * Checks the health of the queue worker and Redis connection
- */
-
 import { NextResponse } from 'next/server';
 
 export async function GET() {
@@ -66,3 +61,5 @@ export async function GET() {
     }, { status: 503 });
   }
 }
+
+export const dynamic = "force-dynamic";

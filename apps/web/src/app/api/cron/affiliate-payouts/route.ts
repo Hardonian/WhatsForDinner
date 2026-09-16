@@ -1,11 +1,3 @@
-/**
- * Automated Affiliate Payout Cron Job
- * Runs monthly to process affiliate payouts
- * Configure in Vercel Cron or similar
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -94,3 +86,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

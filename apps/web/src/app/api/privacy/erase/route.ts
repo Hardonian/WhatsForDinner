@@ -1,12 +1,3 @@
-/**
- * Privacy Erasure Endpoint (Right to be Forgotten)
- * Schedules account and data deletion
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { getAuthContext } from '@whats-for-dinner/server/auth';
-import { logger } from '@whats-for-dinner/server/observability';
-import { addSecurityHeaders } from '@whats-for-dinner/server/security/helmet';
 import { queue } from '@whats-for-dinner/server/queue';
 
 /**
@@ -73,3 +64,5 @@ async function sendDeletionConfirmation(email: string): Promise<void> {
   //   html: 'Your account will be deleted in 30 days...',
   // });
 }
+
+export const dynamic = "force-dynamic";

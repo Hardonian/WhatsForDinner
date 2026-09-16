@@ -1,5 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/auth-middleware';
 import { z } from 'zod';
 
 const CreateAPIKeySchema = z.object({
@@ -103,3 +101,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

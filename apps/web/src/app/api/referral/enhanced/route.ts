@@ -1,11 +1,3 @@
-/**
- * Enhanced Referral Program API
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { enhancedReferral } from '@/lib/monetization/referral-enhanced';
 import { handleApiError } from '@whats-for-dinner/utils/api-error-handler';
 
 export async function GET(request: NextRequest) {
@@ -52,3 +44,5 @@ export async function POST(request: NextRequest) {
     return handleApiError(error, 'Failed to process referral');
   }
 }
+
+export const dynamic = "force-dynamic";

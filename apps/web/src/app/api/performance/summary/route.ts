@@ -1,11 +1,3 @@
-/**
- * Performance Summary API
- * Returns performance metrics for monitoring
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { performanceMonitor } from '@/lib/performance/monitor';
-import { cache } from '@/lib/performance/cache';
 import { successResponse } from '@/lib/api/response';
 
 export async function GET(request: NextRequest) {
@@ -34,3 +26,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

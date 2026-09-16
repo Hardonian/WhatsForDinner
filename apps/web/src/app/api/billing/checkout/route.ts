@@ -1,7 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { StripeService } from '@/lib/stripe';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
 import { analytics } from '@/lib/analytics';
 
 export async function POST(request: NextRequest) {
@@ -64,3 +60,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

@@ -1,8 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { withCSRFProtection } from '@/lib/csrf-middleware';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('pantry-bulk-api');
@@ -149,3 +144,5 @@ export const GET = async () => {
     description: 'Bulk insert pantry items for authenticated users or guest onboarding sessions',
   });
 };
+
+export const dynamic = "force-dynamic";

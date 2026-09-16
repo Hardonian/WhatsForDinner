@@ -1,9 +1,3 @@
-/**
- * Phase 1 Guardrail: Health Endpoint - Database
- * Checks the health of the database connection
- */
-
-import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -67,3 +61,5 @@ export async function GET() {
     }, { status: 503 });
   }
 }
+
+export const dynamic = "force-dynamic";

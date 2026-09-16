@@ -1,10 +1,3 @@
-/**
- * Automatic Data Anonymization
- * Zero-effort GDPR/CCPA compliant anonymization
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import crypto from 'crypto';
 
 export async function POST(request: NextRequest) {
@@ -74,3 +67,5 @@ function anonymizeIP(ip: string): string {
   }
   return ip;
 }
+
+export const dynamic = "force-dynamic";

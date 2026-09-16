@@ -1,22 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { z } from 'zod';
-import { requireAuth } from '@/lib/auth-middleware';
-import { requireMFA } from '@/lib/privacy/mfa-middleware';
-import crypto from 'crypto';
-
-const appAllowlistSchema = z.object({
-  app_id: z.string(),
-  app_name: z.string(),
-  enabled: z.boolean(),
-  scope: z.enum(['metadata_only', 'metadata_plus_usage', 'none']),
-});
-
-function hashValue(value: unknown): string {
-  return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
-}
-
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 async function logPrivacyAction(
@@ -97,3 +78,5 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({ success: true, data: app });
 }
+
+export const dynamic = "force-dynamic";

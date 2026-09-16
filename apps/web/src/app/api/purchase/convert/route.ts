@@ -1,10 +1,3 @@
-/**
- * Purchase Conversion Handler
- * Automatically calls affiliate conversion on purchase
- * Pre-wired to work with existing purchase flow
- */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
@@ -48,3 +41,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

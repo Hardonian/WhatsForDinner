@@ -1,6 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getTenantContext } from '@/lib/auth-middleware';
-import { AICommerceHub } from '@/lib/aiCommerceHub';
 import { z } from 'zod';
 
 const CommerceHubRequestSchema = z.object({
@@ -146,3 +143,5 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

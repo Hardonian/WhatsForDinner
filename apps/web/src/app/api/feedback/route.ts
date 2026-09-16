@@ -1,8 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { z } from 'zod';
-import { handleApiError, getCorrelationId } from '@whats-for-dinner/utils';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('feedback-api');
@@ -117,3 +112,5 @@ export async function GET(request: NextRequest) {
     });
   }
 }
+
+export const dynamic = "force-dynamic";

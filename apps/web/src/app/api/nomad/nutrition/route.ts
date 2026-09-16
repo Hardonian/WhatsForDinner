@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getNutritionData } from '@/lib/nomad/external-apis';
 
 // GET /api/nomad/nutrition - Get nutrition data for food item
@@ -31,3 +30,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

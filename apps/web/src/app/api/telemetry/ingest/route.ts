@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from "next/server";
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 export const runtime="edge";
@@ -12,3 +11,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

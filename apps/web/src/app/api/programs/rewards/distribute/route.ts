@@ -1,10 +1,3 @@
-/**
- * Automated Reward Distribution
- * Processes pending rewards and distributes them
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
@@ -188,3 +181,5 @@ async function processPartnerRevenueShares(supabase: any) {
       .eq('id', partner.id);
   }
 }
+
+export const dynamic = "force-dynamic";

@@ -2,3 +2,5 @@ import { GET as mealplanGET, POST as mealplanPOST } from '@whats-for-dinner/serv
 
 export const GET = mealplanGET;
 export const POST = mealplanPOST;
+
+export const dynamic = "force-dynamic";

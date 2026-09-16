@@ -1,9 +1,3 @@
-/**
- * Gamification Badges API
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { withTelemetry } from '@/lib/telemetry/api-middleware';
 import { gamificationSystem } from '@/lib/gamification/system';
 
 async function handler(req: NextRequest) {
@@ -24,3 +18,5 @@ async function handler(req: NextRequest) {
 }
 
 export const GET = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

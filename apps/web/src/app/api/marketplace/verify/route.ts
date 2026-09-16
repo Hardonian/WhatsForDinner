@@ -1,11 +1,3 @@
-/**
- * Verify Marketplace Purchase
- * Verifies Stripe checkout session and unlocks content
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { withTelemetry } from '@/lib/telemetry/api-middleware';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -102,3 +94,5 @@ async function handler(req: NextRequest) {
 }
 
 export const GET = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

@@ -1,9 +1,3 @@
-/**
- * Gamification Streak API
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { getStreak, updateStreak } from '@/lib/gamification/streaks';
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 async function handler(req: NextRequest) {
@@ -32,3 +26,5 @@ async function handler(req: NextRequest) {
 }
 
 export const GET = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

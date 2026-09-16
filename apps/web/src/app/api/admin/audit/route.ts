@@ -1,11 +1,3 @@
-/**
- * Admin Audit Logs API
- * 
- * GET /api/admin/audit - List audit logs with filters
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
 import { getAuditLogs } from '@whats-for-dinner/server/audit';
 
 export async function GET(request: NextRequest) {
@@ -42,3 +34,5 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+export const dynamic = "force-dynamic";

@@ -1,11 +1,3 @@
-/**
- * Send Email API Route
- * 
- * Handles sending marketing and transactional emails
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { sendEmail, EMAIL_CONFIG } from '@/lib/marketing/resend-config';
 import { trackConversion } from '@/lib/marketing/conversion-tracking';
 
 export async function POST(request: NextRequest) {
@@ -74,3 +66,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

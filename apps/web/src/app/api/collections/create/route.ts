@@ -1,10 +1,3 @@
-/**
- * Create Recipe Collection API
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { withTelemetry } from '@/lib/telemetry/api-middleware';
 import { z } from 'zod';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -65,3 +58,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
 // GET /api/nomad/mealplan - Get meal plans
@@ -129,3 +128,5 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

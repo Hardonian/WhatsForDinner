@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import { generateCSRFToken } from '@/lib/csrf';
 
 export async function GET() {
@@ -12,3 +11,5 @@ export async function GET() {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

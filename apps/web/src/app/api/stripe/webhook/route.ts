@@ -1,6 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { stripe, StripeService } from '@/lib/stripe';
-import { createClient } from '@supabase/supabase-js';
 import { headers } from 'next/headers';
 
 // Webhook routes need service role access (no user auth)
@@ -257,3 +254,5 @@ async function handleInvoicePaymentFailed(invoice: Stripe.Invoice): Promise<void
     .eq('id', tenantId);
 
   }
+
+export const dynamic = "force-dynamic";

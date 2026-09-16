@@ -1,10 +1,3 @@
-/**
- * Pre-fill Onboarding API
- * Pre-fills pantry and optionally generates first meal plan
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 async function handler(request: NextRequest) {
@@ -109,3 +102,5 @@ async function handler(request: NextRequest) {
 }
 
 export const POST = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

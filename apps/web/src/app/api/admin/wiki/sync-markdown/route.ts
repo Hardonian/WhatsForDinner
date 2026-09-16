@@ -1,8 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { wikiAutoUpdate } from '@/lib/wiki/auto-update';
-import fs from 'fs';
 import path from 'path';
 
 export async function POST(request: NextRequest) {
@@ -107,3 +102,5 @@ function extractCategoryFromPath(filePath: string): string {
   }
   return 'general';
 }
+
+export const dynamic = "force-dynamic";

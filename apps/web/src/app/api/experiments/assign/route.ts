@@ -1,6 +1,3 @@
-import { NextResponse } from 'next/server';
-import { assignVariant, shouldShowExperiment } from '@/lib/experiments';
-import { headers } from 'next/headers';
 import { supabase } from '@/lib/supabaseClient';
 
 /**
@@ -54,3 +51,5 @@ export async function GET(req: Request) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

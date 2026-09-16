@@ -1,6 +1,3 @@
-import { monitoringSystem } from '@/lib/monitoring';
-import { observabilitySystem } from '@/lib/observability';
-import { performanceOptimizer } from '@/lib/performanceOptimizer';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -210,3 +207,5 @@ function generateMarkdownReport(report: any): string {
 
   return markdown;
 }
+
+export const dynamic = "force-dynamic";

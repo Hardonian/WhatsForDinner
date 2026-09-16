@@ -1,10 +1,3 @@
-/**
- * Track Event API Route
- * 
- * Server-side event tracking endpoint
- */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { trackConversion } from '@/lib/marketing/conversion-tracking';
 
 export async function POST(request: NextRequest) {
@@ -63,3 +56,5 @@ function getEventType(event: string): string {
   }
   return 'other';
 }
+
+export const dynamic = "force-dynamic";

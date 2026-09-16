@@ -1,10 +1,3 @@
-/**
- * Automated Data Aggregation Cron Job
- * Aggregates and anonymizes data for insights packages
- * Runs daily
- */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET(request: NextRequest) {
@@ -50,3 +43,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

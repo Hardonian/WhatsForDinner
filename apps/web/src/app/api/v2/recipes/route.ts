@@ -1,12 +1,3 @@
-/**
- * API v2 Recipes Endpoint
- * 
- * Demonstrates API versioning strategy
- */
-
-import { createVersionedHandler, withVersionHeaders } from '@/lib/api-versioning';
-import { validateRequest, createRecipeSchema, paginationSchema } from '@/lib/validation';
-import { withRateLimit, apiRateLimiter } from '@/lib/rate-limit';
 import { withPerformanceMonitoring } from '@/lib/performance-monitor';
 
 // v1 implementation (legacy)
@@ -80,3 +71,5 @@ export const POST = withVersionHeaders(
     apiRateLimiter
   )
 );
+
+export const dynamic = "force-dynamic";

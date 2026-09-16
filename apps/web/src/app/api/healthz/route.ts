@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 function addSecurityHeaders(res: NextResponse): NextResponse {
@@ -188,3 +187,5 @@ export async function GET() {
   res = addSecurityHeaders(res);
   return res;
 }
+
+export const dynamic = "force-dynamic";

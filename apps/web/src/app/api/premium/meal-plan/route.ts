@@ -1,8 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { generateWeeklyMealPlan, MealPlanPreferences } from '@/lib/services/meal-plan-generator';
-import { getTenantContext } from '@/lib/auth-middleware';
-import { generateRecipesWithFallback } from '@/lib/openaiService';
-import { z } from 'zod';
 import { withCSRFProtection } from '@/lib/csrf-middleware';
 
 const GenerateMealPlanSchema = z.object({
@@ -59,3 +54,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = (req: NextRequest) => withCSRFProtection(handler, req);
+
+export const dynamic = "force-dynamic";

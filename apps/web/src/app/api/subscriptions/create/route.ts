@@ -1,8 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { logger } from '@/lib/logger';
-import Stripe from 'stripe';
-import { withCSRFProtection } from '@/lib/csrf-middleware';
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -92,3 +87,5 @@ async function handler(request: NextRequest) {
 }
 
 export const POST = (req: NextRequest) => withCSRFProtection(withTelemetry(handler), req);
+
+export const dynamic = "force-dynamic";

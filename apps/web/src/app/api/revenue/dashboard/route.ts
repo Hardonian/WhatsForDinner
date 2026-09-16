@@ -1,20 +1,3 @@
-/**
- * Revenue Dashboard API
- * Provides comprehensive revenue metrics and recommendations
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { revenueOptimizer } from '@/lib/revenue/optimization';
-import { roiAnalyzer } from '@/lib/revenue/roi-analysis';
-import { engagementScorer } from '@/lib/revenue/engagement-scoring';
-import { adOptimizer } from '@/lib/revenue/advertising';
-import { passiveIncomeManager } from '@/lib/revenue/passive-income';
-import { subscriptionOptimizer } from '@/lib/revenue/subscription-optimizer';
-import { handleError, getErrorStatusCode, getUserFriendlyMessage } from '@/lib/errors';
-import { withTelemetry } from '@/lib/telemetry/api-middleware';
-import { withRateLimit } from '@/lib/performance/rate-limiter';
-import { optimizedQuery } from '@/lib/db/optimization';
-import { performanceMonitor } from '@/lib/performance/monitor';
 import { successResponse } from '@/lib/api/response';
 
 async function handler(_req: NextRequest) {
@@ -258,3 +241,5 @@ async function handler(_req: NextRequest) {
 }
 
 export const GET = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

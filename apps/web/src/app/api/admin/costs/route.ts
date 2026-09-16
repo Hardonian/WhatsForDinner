@@ -1,15 +1,3 @@
-/**
- * Admin Cost Dashboard API
- * 
- * Provides cost data for the admin dashboard:
- * - Infrastructure costs (Supabase, Vercel, etc.)
- * - Stripe fees
- * - Email service costs
- * - Advertising costs
- * - Trends and forecasts
- */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -229,3 +217,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

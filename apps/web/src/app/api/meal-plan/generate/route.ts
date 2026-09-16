@@ -1,9 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { generateWeeklyMealPlan } from '@/lib/services/meal-plan-generator';
-import { generateRecipesWithFallback } from '@/lib/openaiService';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { withCSRFProtection } from '@/lib/csrf-middleware';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('meal-plan-generate-api');
@@ -180,3 +174,5 @@ async function handler(request: NextRequest) {
 }
 
 export const POST = (req: NextRequest) => withCSRFProtection(handler, req);
+
+export const dynamic = "force-dynamic";

@@ -1,10 +1,3 @@
-/**
- * KPI Dashboard API Route
- * 
- * Provides KPI data for dashboard
- */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { getKPIDashboard, getKPIsNeedingAttention } from '@/lib/monitoring/kpi-tracker';
 
 export async function GET(request: NextRequest) {
@@ -28,3 +21,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

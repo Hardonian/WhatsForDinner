@@ -1,19 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { z } from 'zod';
-import { requireAuth } from '@/lib/auth-middleware';
-import { requireMFA } from '@/lib/privacy/mfa-middleware';
-import crypto from 'crypto';
-
-const deleteRequestSchema = z.object({
-  confirm: z.literal(true),
-});
-
-function hashValue(value: unknown): string {
-  return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
-}
-
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 async function logPrivacyAction(
@@ -77,3 +61,5 @@ export async function POST(request: NextRequest) {
     message: 'Data deletion scheduled. Hard delete will occur after 7 days.',
   });
 }
+
+export const dynamic = "force-dynamic";

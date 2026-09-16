@@ -1,10 +1,3 @@
-/**
- * YC Metrics API
- * 
- * GET /api/metrics/yc - Returns key metrics for YC application
- */
-
-import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -95,3 +88,5 @@ export async function GET() {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

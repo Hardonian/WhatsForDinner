@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getTenantContext } from '@/lib/auth-middleware';
 
 export async function GET(req: NextRequest) {
@@ -156,3 +155,5 @@ function parsePeriod(period: string): number {
   };
   return periodMap[period] || 30;
 }
+
+export const dynamic = "force-dynamic";

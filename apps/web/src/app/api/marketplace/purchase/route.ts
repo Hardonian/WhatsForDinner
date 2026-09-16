@@ -1,12 +1,3 @@
-/**
- * Marketplace Purchase API
- * Handles one-time purchases of recipe packs and credits
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { withTelemetry } from '@/lib/telemetry/api-middleware';
-import { z } from 'zod';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -134,3 +125,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

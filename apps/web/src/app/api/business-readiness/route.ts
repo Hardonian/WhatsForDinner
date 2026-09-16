@@ -1,11 +1,3 @@
-/**
- * Business Readiness API
- * Endpoint for accessing business readiness reports and metrics
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { businessReadinessOrchestrator } from '@/lib/businessReadinessOrchestrator';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
@@ -78,3 +70,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

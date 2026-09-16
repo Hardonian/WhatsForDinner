@@ -1,12 +1,3 @@
-/**
- * Recipe Customization API
- * Uses AI to customize recipes based on user preferences
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import { withTelemetry } from '@/lib/telemetry/api-middleware';
-import { z } from 'zod';
 import { handleError, getErrorStatusCode, getUserFriendlyMessage } from '@/lib/errors';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -119,3 +110,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

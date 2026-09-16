@@ -1,13 +1,3 @@
-/**
- * Liveness Probe Endpoint
- * 
- * Simple check to verify the service is running.
- * Used by Kubernetes/Docker health checks.
- * 
- * GET /api/health/live
- */
-
-import { NextResponse } from 'next/server';
 import { createLivenessHandler } from '@whats-for-dinner/utils';
 
 const livenessHandler = createLivenessHandler();
@@ -25,3 +15,5 @@ export async function GET() {
     }
   );
 }
+
+export const dynamic = "force-dynamic";

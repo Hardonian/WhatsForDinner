@@ -1,13 +1,3 @@
-/**
- * Readiness Probe Endpoint
- * 
- * Checks if the service is ready to accept traffic.
- * Verifies dependencies (database, external APIs) are available.
- * 
- * GET /api/health/ready
- */
-
-import { NextResponse } from 'next/server';
 import { createReadinessHandler } from '@whats-for-dinner/utils';
 
 export async function GET() {
@@ -38,3 +28,5 @@ export async function GET() {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

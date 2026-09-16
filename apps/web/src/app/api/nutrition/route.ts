@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { getIngredientNutrition, getRecipeNutrition } from '@/lib/services/nutrition-service';
 
 export async function POST(request: NextRequest) {
@@ -28,3 +27,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

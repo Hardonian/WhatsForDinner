@@ -1,8 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { handleApiError, getCorrelationId } from '@whats-for-dinner/utils';
-import { createComponentLogger } from '@whats-for-dinner/utils';
 import { ExpirationService } from '@/lib/expiration-service';
 
 const _logger = createComponentLogger('expiration-alerts-api');
@@ -53,3 +48,5 @@ export async function GET(request: NextRequest) {
     });
   }
 }
+
+export const dynamic = "force-dynamic";

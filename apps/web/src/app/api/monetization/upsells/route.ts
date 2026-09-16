@@ -1,12 +1,3 @@
-/**
- * Smart Upsell Opportunities API
- * Get personalized upsell opportunities
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { valueEngine } from '@/lib/monetization/value-engine';
 import { handleApiError } from '@whats-for-dinner/utils/api-error-handler';
 
 export async function GET(request: NextRequest) {
@@ -38,3 +29,5 @@ export async function GET(request: NextRequest) {
     return handleApiError(error, 'Failed to get upsell opportunities');
   }
 }
+
+export const dynamic = "force-dynamic";

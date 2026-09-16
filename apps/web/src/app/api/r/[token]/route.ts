@@ -1,14 +1,3 @@
-/**
- * Partner Link Redirect Handler (API Route)
- * 
- * Handles /r/:token redirects via API route for better DB access
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@whats-for-dinner/server';
-import { clicks, partners } from '@whats-for-dinner/server/db/schema';
-import { eq } from 'drizzle-orm';
-import { verifySignedUrl } from '@whats-for-dinner/server/partners/links';
 import crypto from 'crypto';
 
 export async function GET(
@@ -116,3 +105,5 @@ export async function GET(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+export const dynamic = "force-dynamic";

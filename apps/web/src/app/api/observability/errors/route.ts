@@ -1,4 +1,3 @@
-import { observabilitySystem } from '@/lib/observability';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -99,3 +98,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

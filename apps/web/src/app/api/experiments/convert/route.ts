@@ -1,7 +1,3 @@
-import { NextResponse } from 'next/server';
-import { trackConversion } from '@/lib/experiments';
-import { headers } from 'next/headers';
-import { supabase } from '@/lib/supabaseClient';
 import { z } from 'zod';
 
 const ConversionSchema = z.object({
@@ -53,3 +49,5 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

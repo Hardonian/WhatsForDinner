@@ -1,4 +1,3 @@
-import { monitoringSystem } from '@/lib/monitoring';
 import { observabilitySystem } from '@/lib/observability';
 
 export async function GET() {
@@ -64,3 +63,5 @@ export async function GET() {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

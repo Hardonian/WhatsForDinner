@@ -1,6 +1,3 @@
-// [STAKE+TRUST:BEGIN:audit_api]
-import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { requireAuth } from "@/lib/auth-middleware";
 
 export const runtime = "nodejs"; // Changed from edge to support auth middleware
@@ -43,3 +40,5 @@ export async function GET(request: NextRequest) {
   }
 }
 // [STAKE+TRUST:END:audit_api]
+
+export const dynamic = "force-dynamic";

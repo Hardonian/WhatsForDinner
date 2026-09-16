@@ -1,11 +1,3 @@
-import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
-import { headers } from 'next/headers';
-import { z } from 'zod';
-import { withCSRFProtection } from '@/lib/csrf-middleware';
-import { NextRequest } from 'next/server';
-import { handleApiError } from '@whats-for-dinner/utils';
-import { createComponentLogger } from '@whats-for-dinner/utils';
 import { monitorQuery } from '@/lib/performance/query-optimizer';
 
 const _logger = createComponentLogger('pantry-seed-api');
@@ -160,3 +152,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = (req: NextRequest) => withCSRFProtection(handler, req);
+
+export const dynamic = "force-dynamic";

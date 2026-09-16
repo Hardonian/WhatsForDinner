@@ -1,10 +1,3 @@
-/**
- * Activation Review API
- * Provides activation metrics and recommendations for weekly reviews
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { handleError } from '@/lib/errors';
 
 async function handler(req: NextRequest) {
@@ -152,3 +145,5 @@ async function handler(req: NextRequest) {
 }
 
 export const GET = handler;
+
+export const dynamic = "force-dynamic";

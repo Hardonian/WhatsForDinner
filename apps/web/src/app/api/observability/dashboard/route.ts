@@ -1,5 +1,3 @@
-import { monitoringSystem } from '@/lib/monitoring';
-import { observabilitySystem } from '@/lib/observability';
 import { performanceOptimizer } from '@/lib/performanceOptimizer';
 
 export async function GET() {
@@ -94,3 +92,5 @@ export async function GET() {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

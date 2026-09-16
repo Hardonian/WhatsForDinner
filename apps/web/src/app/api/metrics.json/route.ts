@@ -1,9 +1,3 @@
-/**
- * Performance Intelligence Layer: JSON Dashboard Endpoint
- * Returns metrics in JSON format for external consumption
- */
-
-import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';
@@ -51,3 +45,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

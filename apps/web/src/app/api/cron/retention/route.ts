@@ -1,9 +1,3 @@
-/**
- * Retention Automation Cron Job
- * Runs daily and weekly retention automation
- */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { retentionAutomation } from '@/lib/retention/automation';
 
 export async function GET(request: NextRequest) {
@@ -34,3 +28,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

@@ -1,8 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getAuthContext } from '@whats-for-dinner/server/auth';
-import { usersRepo, featureFlagsRepo } from '@whats-for-dinner/server/db';
-import { addSecurityHeaders, setCORSHeaders } from '@whats-for-dinner/server/security/helmet';
-import { z } from 'zod';
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 const updatePreferencesSchema = z.object({
@@ -104,3 +99,5 @@ async function patchHandler(request: NextRequest) {
 }
 
 export const PATCH = withTelemetry(patchHandler);
+
+export const dynamic = "force-dynamic";

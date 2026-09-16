@@ -1,10 +1,3 @@
-/**
- * Recipe Image Generation API
- * Generates AI images for recipes
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { withTelemetry } from '@/lib/telemetry/api-middleware';
 import { z } from 'zod';
 
 const imageSchema = z.object({
@@ -47,3 +40,5 @@ async function handler(req: NextRequest) {
 }
 
 export const POST = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

@@ -1,13 +1,3 @@
-/**
- * Payments Webhook Sandbox Receiver
- * 
- * Local webhook receiver for testing Stripe payment flows.
- * Asserts Stripe signatures and stores evidence snapshots.
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
 import crypto from 'crypto';
 
 const EVIDENCE_DIR = join(process.cwd(), 'reports', 'connectivity', 'evidence', 'webhooks');
@@ -103,3 +93,5 @@ export async function GET() {
     description: 'Payments webhook sandbox receiver (Stripe)',
   });
 }
+
+export const dynamic = "force-dynamic";

@@ -1,9 +1,3 @@
-/**
- * Daily Suggestion API
- * Returns a personalized daily recipe suggestion
- */
-
-import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET(req: NextRequest) {
@@ -49,3 +43,5 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

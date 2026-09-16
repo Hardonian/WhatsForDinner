@@ -1,10 +1,3 @@
-/**
- * Performance Intelligence Layer: JSON Dashboard Endpoint
- * Returns aggregated metrics from metrics_log table
- */
-
-import { createClient } from '@supabase/supabase-js';
-import { NextRequest, NextResponse } from 'next/server';
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 export const runtime = 'edge';
@@ -188,3 +181,5 @@ async function handler(request: NextRequest) {
 }
 
 export const GET = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

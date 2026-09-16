@@ -1,7 +1,3 @@
-import { NextResponse } from 'next/server';
-import { hasFeature, PlanType } from '@/lib/featureGates';
-import { headers } from 'next/headers';
-import { supabase } from '@/lib/supabaseClient';
 import { z } from 'zod';
 
 const CheckSchema = z.object({
@@ -74,3 +70,5 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

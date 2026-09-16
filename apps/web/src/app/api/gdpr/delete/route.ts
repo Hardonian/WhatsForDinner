@@ -1,5 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
 
 const supabase = createClient(
@@ -47,3 +45,5 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

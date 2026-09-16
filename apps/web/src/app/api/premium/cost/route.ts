@@ -1,6 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getIngredientPrice, getRecipeCost, getCostPerServing, compareRecipeCosts, calculateSavingsVsEatingOut } from '@/lib/services/cost-calculator';
-import { getTenantContext } from '@/lib/auth-middleware';
 import { z } from 'zod';
 
 const IngredientCostSchema = z.object({
@@ -78,3 +75,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

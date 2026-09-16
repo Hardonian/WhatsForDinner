@@ -1,11 +1,3 @@
-/**
- * Usage-Based Premium Features API
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { usagePremium } from '@/lib/monetization/usage-premium';
 import { handleApiError } from '@whats-for-dinner/utils/api-error-handler';
 
 export async function GET(request: NextRequest) {
@@ -94,3 +86,5 @@ export async function POST(request: NextRequest) {
     return handleApiError(error, 'Failed to process premium feature request');
   }
 }
+
+export const dynamic = "force-dynamic";

@@ -1,10 +1,3 @@
-/**
- * Grocery Product Search API
- * Search products across all stores
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { groceryManager } from '@/lib/grocery/grocery-manager';
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET(req: NextRequest) {
@@ -71,3 +64,5 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

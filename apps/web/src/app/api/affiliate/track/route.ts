@@ -1,10 +1,3 @@
-/**
- * Affiliate Click Tracking API
- * Automatically tracks clicks via middleware - zero effort
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
 async function handler(request: NextRequest) {
@@ -67,3 +60,5 @@ async function handler(request: NextRequest) {
 }
 
 export const POST = withTelemetry(handler);
+
+export const dynamic = "force-dynamic";

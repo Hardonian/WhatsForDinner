@@ -1,14 +1,10 @@
-/**
- * Admin Incidents API
- * 
- * GET /api/admin/incidents - List incidents
- * POST /api/admin/incidents - Create incident
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
+
+export const dynamic = "force-dynamic";
 import {
+import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
+
+export const dynamic = "force-dynamic";
   createIncident,
   listIncidents,
   getIncident,
@@ -73,3 +69,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+export const dynamic = "force-dynamic";

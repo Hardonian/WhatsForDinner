@@ -1,5 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('grocery-cart-export-api');
@@ -135,3 +133,5 @@ export async function GET() {
     supportedRetailers: ['instacart', 'amazon_fresh', 'walmart', 'kroger'],
   });
 }
+
+export const dynamic = "force-dynamic";

@@ -1,6 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getExpiringItems, getUseSoonItems, suggestRecipesForExpiringItems, calculateWasteReduction, estimateExpirationDate, getPantryEfficiencyScore } from '@/lib/services/pantry-intelligence';
-import { getTenantContext } from '@/lib/auth-middleware';
 import { z } from 'zod';
 
 const PantryItemsSchema = z.array(z.object({
@@ -100,3 +97,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export const dynamic = "force-dynamic";

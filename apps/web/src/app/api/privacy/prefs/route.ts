@@ -1,7 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { requireAuth } from '@/lib/auth-middleware';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 async function logPrivacyAction(
@@ -71,3 +67,5 @@ export async function GET(request: NextRequest) {
     },
   });
 }
+
+export const dynamic = "force-dynamic";

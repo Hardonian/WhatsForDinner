@@ -1,64 +1,6 @@
-/**
- * Privacy API Routes
- * Zero-trust, user-only access with MFA enforcement
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { z } from 'zod';
 import { requireAuth } from '@/lib/auth-middleware';
-import {
-  requireMFA,
-  verifyMFAAndCreateSession,
-  createElevatedSession,
-} from '@/lib/privacy/mfa-middleware';
-import crypto from 'crypto';
 
-// ============================================================================
-// Validation Schemas
-// ============================================================================
-
-const consentSchema = z.object({
-  monitoring_enabled: z.boolean(),
-  data_retention_days: z.number().int().min(1).max(365),
-  mfa_required: z.boolean(),
-});
-
-const appAllowlistSchema = z.object({
-  app_id: z.string(),
-  app_name: z.string(),
-  enabled: z.boolean(),
-  scope: z.enum(['metadata_only', 'metadata_plus_usage', 'none']),
-});
-
-const signalToggleSchema = z.object({
-  signal_key: z.string(),
-  enabled: z.boolean(),
-  sampling_rate: z.number().min(0).max(1),
-});
-
-const exportRequestSchema = z.object({
-  format: z.enum(['json', 'csv']),
-});
-
-const deleteRequestSchema = z.object({
-  confirm: z.literal(true),
-});
-
-const mfaVerifySchema = z.object({
-  totp_code: z.string().length(6),
-  action_type: z.string(),
-});
-
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
-function hashValue(value: unknown): string {
-  return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
-}
-
+export const dynamic = "force-dynamic";
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 async function logPrivacyAction(
@@ -500,3 +442,5 @@ export async function GET_PREFS(request: NextRequest) {
     },
   });
 }
+
+export const dynamic = "force-dynamic";

@@ -1,4 +1,3 @@
-import { GET_ELASTICITY } from '@whats-for-dinner/server/routes/pricing';
 import type { NextRequest } from 'next/server';
 
 export async function GET(
@@ -7,3 +6,5 @@ export async function GET(
 ) {
   return GET_ELASTICITY(request, params);
 }
+
+export const dynamic = "force-dynamic";

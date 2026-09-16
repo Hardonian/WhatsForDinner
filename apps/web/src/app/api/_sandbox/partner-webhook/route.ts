@@ -1,14 +1,3 @@
-/**
- * Partner Conversion Webhook Sandbox Receiver
- * 
- * Local webhook receiver for testing partner conversion flows.
- * Asserts HMAC signatures and stores evidence snapshots.
- */
-
-import { NextRequest, NextResponse } from 'next/server';
-import { writeFileSync, mkdirSync } from 'fs';
-import { join } from 'path';
-import crypto from 'crypto';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('route-ts');
@@ -91,3 +80,5 @@ export async function GET() {
     description: 'Partner conversion webhook sandbox receiver',
   });
 }
+
+export const dynamic = "force-dynamic";
