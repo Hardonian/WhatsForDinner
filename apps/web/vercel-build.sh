@@ -11,4 +11,4 @@ export UPSTASH_REDIS_REST_TOKEN="${UPSTASH_REDIS_REST_TOKEN:-placeholder}"
 export SENDGRID_API_KEY="${SENDGRID_API_KEY:-SG.placeholder}"
 export NEXTAUTH_SECRET="${NEXTAUTH_SECRET:-placeholder}"
 export CRM_PROVIDER="${CRM_PROVIDER:-noop}"
-exec next build --webpack
+exec next build
