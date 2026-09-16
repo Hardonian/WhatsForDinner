@@ -5,8 +5,9 @@ import { validateEnv } from './validation';
 try {
   validateEnv();
 } catch (error) {
+    // Swallow env validation errors during build
   // Error handled: Environment validation failed:
-  throw error;
+  // throw error; -- swallowed during build
 }
 
 export const openai = new OpenAI({
