@@ -22,9 +22,9 @@
   "exports": {
     ".": "./src/index.ts",
     "./*": "./src/*.ts",
+    "./guardian": "./src/guardian/index.ts",
+    "./guardian/*": "./src/guardian/*.ts",
     "./api": "./src/api/index.ts",
-    "./api/*": "./src/api/*.ts",
-    "./guardian": "./src/api/guardian/index.ts",
-    "./guardian/*": "./src/api/guardian/*.ts"
+    "./api/*": "./src/api/*.ts"
   }
 }
