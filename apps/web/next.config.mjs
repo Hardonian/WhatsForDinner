@@ -83,7 +83,7 @@ const nextConfig = {
             },
             lib: {
               test: /[\\/]node_modules[\\/]/,
-              name(module: any) {
+              name(module) {
                 const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)?.[1];
                 return `lib-${packageName?.replace('@', '')}`;
               },
