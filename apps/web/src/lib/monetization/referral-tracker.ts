@@ -7,7 +7,7 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 import { enhancedReferral } from './referral-enhanced';
 
-const logger = createComponentLogger('referral-tracker');
+const _logger = createComponentLogger('referral-tracker');
 
 export class ReferralTracker {
   /**
@@ -35,13 +35,13 @@ export class ReferralTracker {
       });
 
       if (!response.ok) {
-        logger.warn('Failed to track referral signup', { userId, referralCode });
+        _logger.warn('Failed to track referral signup', { userId, referralCode });
         return false;
       }
 
       return true;
     } catch (error) {
-      logger.error('Error tracking referral signup', {
+      _logger.error('Error tracking referral signup', {
         userId,
         referralCode,
         error: error instanceof Error ? error.message : String(error),
@@ -64,7 +64,7 @@ export class ReferralTracker {
         }),
       });
     } catch (error) {
-      logger.error('Error tracking referral conversion', {
+      _logger.error('Error tracking referral conversion', {
         userId,
         planValue,
         error: error instanceof Error ? error.message : String(error),

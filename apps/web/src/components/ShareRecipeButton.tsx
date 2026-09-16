@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('sharerecipebutton');
+const _logger = createComponentLogger('sharerecipebutton');
 
 
 
@@ -68,7 +68,7 @@ export function ShareRecipeButton({ recipe, onShare }: ShareRecipeButtonProps) {
 
       onShare?.();
     } catch (error) {
-      logger.error('Share error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Share error:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 

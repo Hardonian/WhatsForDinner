@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('grocery-manager');
+const _logger = createComponentLogger('grocery-manager');
 
 /**
  * Grocery Manager
@@ -45,10 +45,10 @@ export class GroceryManager {
       try {
         const isValid = await adapter.validateConnection();
         if (!isValid) {
-          logger.warn('Store ${id} connection validation failed');
+          _logger.warn('Store ${id} connection validation failed');
         }
       } catch (error) {
-        logger.error('Error validating store ${id}:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Error validating store ${id}:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
   }
@@ -73,7 +73,7 @@ export class GroceryManager {
           const result = await adapter.searchProducts(params);
           results.set(storeId, result);
         } catch (error) {
-          logger.error('Error searching ${storeId}:', { error: error instanceof Error ? error.message : String(error) });
+          _logger.error('Error searching ${storeId}:', { error: error instanceof Error ? error.message : String(error) });
         }
       });
 

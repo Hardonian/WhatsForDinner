@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('optimization');
+const _logger = createComponentLogger('optimization');
 
 /**
  * Performance optimization utilities
@@ -85,7 +85,7 @@ export function measurePerformance(name: string): () => void {
       performance.mark(`${name}-end`);
       performance.measure(name, `${name}-start`, `${name}-end`);
       const measure = performance.getEntriesByName(name)[0];
-      logger.info('[Performance] ${name}: ${measure.duration.toFixed(2)}ms');
+      _logger.info('[Performance] ${name}: ${measure.duration.toFixed(2)}ms');
     };
   }
   return () => {};

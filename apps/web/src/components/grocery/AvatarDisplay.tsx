@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('avatardisplay');
+const _logger = createComponentLogger('avatardisplay');
 
 
 
@@ -45,7 +45,7 @@ export function AvatarDisplay({ userId, showCustomize = false, size = 'md' }: Av
       setPoints(userPoints.points);
       setLevel(userPoints.level);
     } catch (error) {
-      logger.error('Failed to load avatar:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to load avatar:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 

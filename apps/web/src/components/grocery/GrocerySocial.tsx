@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('grocerysocial');
+const _logger = createComponentLogger('grocerysocial');
 
 
 
@@ -51,7 +51,7 @@ export function GrocerySocial({ listId, userId, userName }: GrocerySocialProps) 
       setComments(comms);
       setActivity(acts);
     } catch (error) {
-      logger.error('Failed to load social data:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to load social data:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -64,7 +64,7 @@ export function GrocerySocial({ listId, userId, userName }: GrocerySocialProps) 
       setShareEmail('');
       loadSocialData();
     } catch (error) {
-      logger.error('Failed to share list:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to share list:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -76,7 +76,7 @@ export function GrocerySocial({ listId, userId, userName }: GrocerySocialProps) 
       setComments([...comments, comment]);
       setNewComment('');
     } catch (error) {
-      logger.error('Failed to add comment:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to add comment:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 

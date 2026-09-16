@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('enhancedrecipesharing');
+const _logger = createComponentLogger('enhancedrecipesharing');
 
 
 
@@ -116,7 +116,7 @@ export function EnhancedRecipeSharing({ recipe, onShare }: EnhancedRecipeSharing
         onShare?.('native');
       } catch (error) {
         // User cancelled or error
-        logger.info('Share cancelled');
+        _logger.info('Share cancelled');
       }
     } else {
       setShowShareMenu(true);

@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('error-boundaries');
+const _logger = createComponentLogger('error-boundaries');
 
 /**
  * Error Boundaries
@@ -23,7 +23,7 @@ import { AppError, InternalError, isAppError } from './errors';
  * ```ts
  * const safeFetch = withErrorBoundary(
  *   async (url: string) => fetch(url).then(r => r.json()),
- *   (error) => logger.error('Fetch failed:', { error: error instanceof Error ? error.message : String(error) }),
+ *   (error) => _logger.error('Fetch failed:', { error: error instanceof Error ? error.message : String(error) }),
  *   null // fallback value
  * );
  * ```
@@ -103,7 +103,7 @@ export function withErrorBoundarySync<T extends (...args: unknown[]) => any>(
  * ```ts
  * fireAndForget(async () => {
  *   await trackAnalytics(event);
- * }, (error) => logger.error('Analytics failed', error));
+ * }, (error) => _logger.error('Analytics failed', error));
  * ```
  */
 export function fireAndForget(
@@ -114,7 +114,7 @@ export function fireAndForget(
     if (errorHandler) {
       errorHandler(error);
     } else {
-      logger.error('Fire-and-forget error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Fire-and-forget error:', { error: error instanceof Error ? error.message : String(error) });
     }
   });
 }

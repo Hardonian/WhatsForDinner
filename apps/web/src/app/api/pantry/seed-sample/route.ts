@@ -8,7 +8,7 @@ import { handleApiError } from '@whats-for-dinner/utils';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 import { monitorQuery } from '@/lib/performance/query-optimizer';
 
-const logger = createComponentLogger('pantry-seed-api');
+const _logger = createComponentLogger('pantry-seed-api');
 
 // Canadian pantry staples - optimized for solo users
 const SAMPLE_INGREDIENTS = [
@@ -149,7 +149,7 @@ async function handler(req: NextRequest) {
       next_step: 'generate_meal_plan',
     });
   } catch (error) {
-    logger.error('Error seeding sample data', {
+    _logger.error('Error seeding sample data', {
       error: error instanceof Error ? error.message : String(error),
     });
     return handleApiError(error, {

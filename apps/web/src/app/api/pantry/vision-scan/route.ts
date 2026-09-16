@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('vision-scan');
+const _logger = createComponentLogger('vision-scan');
 
 export const dynamic = 'force-dynamic';
 
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}));
     const validated = ScanRequestSchema.parse(body);
 
-    logger.info('Running vision recognition scan', { mode: validated.mode });
+    _logger.info('Running vision recognition scan', { mode: validated.mode });
 
     // In a live production environment with configured multimodal models (e.g. OpenAI GPT-4o Vision or Gemini Vision),
     // the image base64 is processed directly. When in development or test mode, the structured culinary
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Vision scan processing failed';
-    logger.error('Vision scan error', { error: message });
+    _logger.error('Vision scan error', { error: message });
     return NextResponse.json({ success: false, error: message }, { status: 400 });
   }
 }

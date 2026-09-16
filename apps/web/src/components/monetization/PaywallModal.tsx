@@ -5,7 +5,7 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 import Link from 'next/link';
 import { X } from 'lucide-react';
 
-const logger = createComponentLogger('PaywallModal');
+const _logger = createComponentLogger('PaywallModal');
 
 interface PaywallModalProps {
   strategy: {

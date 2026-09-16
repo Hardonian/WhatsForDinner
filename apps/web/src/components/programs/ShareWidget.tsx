@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('sharewidget');
+const _logger = createComponentLogger('sharewidget');
 
 
 
@@ -103,7 +103,7 @@ export function ShareWidget({ url, title, description, programType, programId }:
         metadata: { action: 'copy' },
       });
     } catch (error) {
-      logger.error('Failed to copy:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to copy:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 

@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -45,7 +45,7 @@ export default function SupportPage() {
         alert('Failed to create ticket. Please try again.');
       }
     } catch (error) {
-      logger.error('Ticket creation error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Ticket creation error:', { error: error instanceof Error ? error.message : String(error) });
       alert('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);

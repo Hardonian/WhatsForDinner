@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('observability');
+const _logger = createComponentLogger('observability');
 
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { logger } from './logger';
@@ -94,7 +94,7 @@ class ObservabilitySystem {
 
       this.activeTraces.set(traceId, trace);
 
-      await logger.debug(
+      await _logger.debug(
         `Trace started: ${name}`,
         {
           traceId,
@@ -142,7 +142,7 @@ class ObservabilitySystem {
         trace.spans.push(span);
       }
 
-      await logger.debug(
+      await _logger.debug(
         `Span started: ${name}`,
         {
           spanId,
@@ -169,7 +169,7 @@ class ObservabilitySystem {
     try {
       const span = this.activeSpans.get(spanId);
       if (!span) {
-        if (process.env.NODE_ENV === 'development') { logger.warn('Span ${spanId} not found'); }
+        if (process.env.NODE_ENV === 'development') { _logger.warn('Span ${spanId} not found'); }
         return;
       }
 
@@ -190,7 +190,7 @@ class ObservabilitySystem {
         trace.status = status;
       }
 
-      await logger.debug(
+      await _logger.debug(
         `Span finished: ${span.name}`,
         {
           spanId,
@@ -220,7 +220,7 @@ class ObservabilitySystem {
     try {
       const trace = this.activeTraces.get(traceId);
       if (!trace) {
-        if (process.env.NODE_ENV === 'development') { logger.warn('Trace ${traceId} not found'); }
+        if (process.env.NODE_ENV === 'development') { _logger.warn('Trace ${traceId} not found'); }
         return;
       }
 
@@ -232,7 +232,7 @@ class ObservabilitySystem {
       trace.duration = duration;
       trace.status = status;
 
-      await logger.debug(
+      await _logger.debug(
         `Trace finished: ${trace.name}`,
         {
           traceId,
@@ -263,7 +263,7 @@ class ObservabilitySystem {
     try {
       const span = this.activeSpans.get(spanId);
       if (!span) {
-        if (process.env.NODE_ENV === 'development') { logger.warn('Span ${spanId} not found'); }
+        if (process.env.NODE_ENV === 'development') { _logger.warn('Span ${spanId} not found'); }
         return;
       }
 
@@ -280,7 +280,7 @@ class ObservabilitySystem {
 
       span.logs.push(logEntry);
 
-      await logger.debug(
+      await _logger.debug(
         `Span log added: ${message}`,
         {
           spanId,
@@ -300,13 +300,13 @@ class ObservabilitySystem {
     try {
       const span = this.activeSpans.get(spanId);
       if (!span) {
-        if (process.env.NODE_ENV === 'development') { logger.warn('Span ${spanId} not found'); }
+        if (process.env.NODE_ENV === 'development') { _logger.warn('Span ${spanId} not found'); }
         return;
       }
 
       span.tags[key] = value;
 
-      await logger.debug(
+      await _logger.debug(
         `Span tag added: ${key} = ${value}`,
         {
           spanId,
@@ -452,7 +452,7 @@ class ObservabilitySystem {
         context,
       });
     } catch (err) {
-      logger.error('Failed to track error:', { err });
+      _logger.error('Failed to track error:', { err });
     }
   }
 
@@ -741,30 +741,30 @@ export const observabilitySystem = {
     baseObservabilitySystem.startTrace.bind(baseObservabilitySystem),
     (error) => {
       // Log but don't throw - observability failures shouldn't break user flows
-      logger.error('Observability trace start failed:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Observability trace start failed:', { error: error instanceof Error ? error.message : String(error) });
     },
     '' // fallback: return empty string on error
   ),
   finishTrace: withErrorBoundary(
     baseObservabilitySystem.finishTrace.bind(baseObservabilitySystem),
-    (error) => logger.error('Observability trace finish failed:', { error: error instanceof Error ? error.message : String(error) })
+    (error) => _logger.error('Observability trace finish failed:', { error: error instanceof Error ? error.message : String(error) })
   ),
   startSpan: withErrorBoundary(
     baseObservabilitySystem.startSpan.bind(baseObservabilitySystem),
-    (error) => logger.error('Observability span start failed:', { error: error instanceof Error ? error.message : String(error) }),
+    (error) => _logger.error('Observability span start failed:', { error: error instanceof Error ? error.message : String(error) }),
     '' // fallback
   ),
   finishSpan: withErrorBoundary(
     baseObservabilitySystem.finishSpan.bind(baseObservabilitySystem),
-    (error) => logger.error('Observability span finish failed:', { error: error instanceof Error ? error.message : String(error) })
+    (error) => _logger.error('Observability span finish failed:', { error: error instanceof Error ? error.message : String(error) })
   ),
   log: fireAndForget(
     (level, message, metadata) => baseObservabilitySystem.log(level, message, metadata),
-    (error) => logger.error('Observability log failed:', { error: error instanceof Error ? error.message : String(error) })
+    (error) => _logger.error('Observability log failed:', { error: error instanceof Error ? error.message : String(error) })
   ),
   trackMetric: fireAndForget(
     (name, value, tags) => baseObservabilitySystem.trackMetric(name, value, tags),
-    (error) => logger.error('Observability metric tracking failed:', { error: error instanceof Error ? error.message : String(error) })
+    (error) => _logger.error('Observability metric tracking failed:', { error: error instanceof Error ? error.message : String(error) })
   ),
 };
 
@@ -798,7 +798,7 @@ export const withTrace = withErrorBoundary(
       throw error;
     }
   },
-  (error) => logger.error('Observability withTrace failed:', { error: error instanceof Error ? error.message : String(error) })
+  (error) => _logger.error('Observability withTrace failed:', { error: error instanceof Error ? error.message : String(error) })
 );
 
 export const withSpan = withErrorBoundary(
@@ -821,7 +821,7 @@ export const withSpan = withErrorBoundary(
       throw error;
     }
   },
-  (error) => logger.error('Observability withSpan failed:', { error: error instanceof Error ? error.message : String(error) })
+  (error) => _logger.error('Observability withSpan failed:', { error: error instanceof Error ? error.message : String(error) })
 );
 
 // Wrap trackError with error boundary (observability should never break user flows)
@@ -829,5 +829,5 @@ export const trackError = fireAndForget(
   async (error: Error, context: any = {}) => {
     await baseObservabilitySystem.trackError(error, context);
   },
-  (error) => logger.error('Observability trackError failed:', { error: error instanceof Error ? error.message : String(error) })
+  (error) => _logger.error('Observability trackError failed:', { error: error instanceof Error ? error.message : String(error) })
 );

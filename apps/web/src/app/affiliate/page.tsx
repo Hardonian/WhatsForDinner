@@ -1,7 +1,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -149,7 +149,7 @@ export default function AffiliateProgramPage() {
       .single();
 
     if (error) {
-      logger.error('Failed to create affiliate application:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to create affiliate application:', { error: error instanceof Error ? error.message : String(error) });
       return;
     }
 

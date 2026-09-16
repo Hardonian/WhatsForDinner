@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { createCipheriv, randomBytes } from 'crypto';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('google-fit-callback');
+const _logger = createComponentLogger('google-fit-callback');
 
 /**
  * Encrypt token using AES-256-GCM
@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
       });
 
     if (syncError) {
-      logger.error('Error saving Google Fit sync:', { syncError });
+      _logger.error('Error saving Google Fit sync:', { syncError });
       return NextResponse.redirect(
         new URL('/nomad/settings?error=sync_failed', request.url)
       );

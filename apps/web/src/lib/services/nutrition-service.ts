@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('nutrition-service');
+const _logger = createComponentLogger('nutrition-service');
 
 /**
  * Nutrition Service - USDA FoodData Central API Integration
@@ -48,7 +48,7 @@ const CACHE_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days
  */
 export async function searchUSDAFoods(query: string, limit = 10): Promise<any[]> {
   if (!USDA_API_KEY) {
-    if (process.env.NODE_ENV === 'development') { logger.warn('USDA API key not configured'); }
+    if (process.env.NODE_ENV === 'development') { _logger.warn('USDA API key not configured'); }
     return [];
   }
 

@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { GET } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-billing-invoice-api');
+const _logger = createComponentLogger('test-billing-invoice-api');
 
 describe('Billing Invoice API Route', () => {
   beforeEach(() => {

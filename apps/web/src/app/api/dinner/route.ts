@@ -14,7 +14,7 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 import { handleApiError } from '@whats-for-dinner/utils';
 import { monitorQuery } from '@/lib/performance/query-optimizer';
 
-const logger = createComponentLogger('dinner-api');
+const _logger = createComponentLogger('dinner-api');
 
 async function handler(req: NextRequest) {
   try {

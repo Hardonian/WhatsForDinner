@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { GET } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-upsells-opportunities');
+const _logger = createComponentLogger('test-upsells-opportunities');
 
 describe('upsells-opportunities API Route', () => {
   beforeEach(() => {

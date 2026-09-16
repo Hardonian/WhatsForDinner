@@ -13,7 +13,7 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('expiration-alerts');
+const _logger = createComponentLogger('expiration-alerts');
 
 interface ExpirationAlert {
   itemId: string;
@@ -51,7 +51,7 @@ export function ExpirationAlerts() {
       setAlerts(data.alerts || []);
       setRecipeSuggestions(data.recipeSuggestions || []);
     } catch (error) {
-      logger.error('Error fetching expiration alerts', {
+      _logger.error('Error fetching expiration alerts', {
         error: error instanceof Error ? error.message : String(error),
       });
     } finally {

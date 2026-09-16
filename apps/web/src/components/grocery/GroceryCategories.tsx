@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('grocerycategories');
+const _logger = createComponentLogger('grocerycategories');
 
 
 
@@ -41,7 +41,7 @@ export function GroceryCategories({
       const cats = await groceryManager.getCategories();
       setCategories(cats);
     } catch (error) {
-      logger.error('Failed to load categories:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to load categories:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setLoading(false);
     }

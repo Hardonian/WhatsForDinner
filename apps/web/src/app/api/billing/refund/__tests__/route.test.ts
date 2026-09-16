@@ -5,7 +5,7 @@ import { GET } from '../route';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-billing-refund');
+const _logger = createComponentLogger('test-billing-refund');
 
 describe('billing-refund API Route', () => {
   beforeEach(() => {

@@ -1,7 +1,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -101,7 +101,7 @@ export default function AnalyticsDashboard() {
         setData(dashboardData);
       } catch (err: any) {
         setError(err.message || 'Failed to load analytics');
-        logger.error('Error fetching analytics:', { err });
+        _logger.error('Error fetching analytics:', { err });
       } finally {
         setLoading(false);
       }

@@ -1,7 +1,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -111,7 +111,7 @@ export default function SimpleOnboardingPage() {
         router.push('/dashboard');
       }
     } catch (error) {
-      logger.error('Onboarding error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Onboarding error:', { error: error instanceof Error ? error.message : String(error) });
       // Continue anyway
       router.push('/dashboard');
     } finally {

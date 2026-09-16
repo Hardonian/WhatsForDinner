@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { handleApiError, getCorrelationId } from '@whats-for-dinner/utils';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('feedback-api');
+const _logger = createComponentLogger('feedback-api');
 
 const FeedbackSchema = z.object({
   rating: z.number().min(1).max(5),
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      logger.error('Error saving feedback', {
+      _logger.error('Error saving feedback', {
         error: error.message,
         userId: user.id,
         correlationId: getCorrelationId(request),

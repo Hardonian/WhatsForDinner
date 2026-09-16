@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('growthanalytics');
+const _logger = createComponentLogger('growthanalytics');
 
 import { supabase } from './supabaseClient';
 import { Database } from './supabaseClient';
@@ -323,7 +323,7 @@ export class GrowthAnalytics {
         .insert(referralData);
 
       if (insertError) {
-        logger.error('Error storing referral:', { insertError });
+        _logger.error('Error storing referral:', { insertError });
         throw insertError;
       }
 
@@ -428,7 +428,7 @@ export class GrowthAnalytics {
         .lte('timestamp', periodEnd);
 
       if (funnelError) {
-        logger.error('Error fetching funnel events:', { funnelError });
+        _logger.error('Error fetching funnel events:', { funnelError });
         return;
       }
 

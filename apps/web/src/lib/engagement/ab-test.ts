@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('ab-test');
+const _logger = createComponentLogger('ab-test');
 
 /**
  * A/B Testing Utilities
@@ -30,7 +30,7 @@ class ABTestManager {
   getVariant(testName: string, userId?: string, sessionId?: string): string {
     const test = this.tests.get(testName);
     if (!test) {
-      logger.warn('A/B test "${testName}" not found');
+      _logger.warn('A/B test "${testName}" not found');
       return test?.variants[0] || 'control';
     }
 

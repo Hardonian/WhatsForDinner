@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('ab-testing');
+const _logger = createComponentLogger('ab-testing');
 
 /**
  * A/B Testing Utilities
@@ -67,7 +67,7 @@ export async function trackConversion(
       }),
     });
   } catch (error) {
-    logger.error('Failed to track A/B test conversion:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Failed to track A/B test conversion:', { error: error instanceof Error ? error.message : String(error) });
   }
 }
 

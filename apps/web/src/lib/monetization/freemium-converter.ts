@@ -13,7 +13,7 @@ import { supabase } from '../supabaseClient';
 import { analytics } from '../analytics';
 import { valueEngine } from './value-engine';
 
-const logger = createComponentLogger('freemium-converter');
+const _logger = createComponentLogger('freemium-converter');
 
 export interface ConversionTrigger {
   id: string;
@@ -79,7 +79,7 @@ export class FreemiumConverter {
         reason: `Trigger: ${activeTrigger.type}, Strategy: ${strategy.name}`,
       };
     } catch (error) {
-      logger.error('Error determining paywall display', {
+      _logger.error('Error determining paywall display', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -325,7 +325,7 @@ export class FreemiumConverter {
         recommendations,
       };
     } catch (error) {
-      logger.error('Error getting conversion insights', {
+      _logger.error('Error getting conversion insights', {
         error: error instanceof Error ? error.message : String(error),
       });
       return {

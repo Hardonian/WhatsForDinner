@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -107,7 +107,7 @@ export default function GroceryPage() {
                 quizId="dietary-preferences"
                 userId={userId}
                 onComplete={(result) => {
-                  logger.info('Quiz completed:', { result });
+                  _logger.info('Quiz completed:', { result });
                 }}
               />
             </div>

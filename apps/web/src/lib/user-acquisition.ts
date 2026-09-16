@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('user-acquisition');
+const _logger = createComponentLogger('user-acquisition');
 
 /**
  * User Acquisition Improvements
@@ -61,7 +61,7 @@ export async function trackAcquisition(
     return true;
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      logger.error('Error tracking acquisition:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error tracking acquisition:', { error: error instanceof Error ? error.message : String(error) });
     }
     return false;
   }
@@ -105,7 +105,7 @@ export async function getAcquisitionChannels(): Promise<AcquisitionChannel[]> {
     return channels.sort((a, b) => b.monthlyUsers - a.monthlyUsers);
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      logger.error('Error fetching acquisition channels:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error fetching acquisition channels:', { error: error instanceof Error ? error.message : String(error) });
     }
     return [];
   }
@@ -146,7 +146,7 @@ export async function getConversionFunnel(): Promise<ConversionFunnel[]> {
     return funnel;
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      logger.error('Error calculating conversion funnel:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error calculating conversion funnel:', { error: error instanceof Error ? error.message : String(error) });
     }
     return [];
   }
@@ -171,7 +171,7 @@ export async function createReferralCode(userId: string): Promise<string | null>
     return code;
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      logger.error('Error creating referral code:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error creating referral code:', { error: error instanceof Error ? error.message : String(error) });
     }
     return null;
   }
@@ -223,7 +223,7 @@ export async function processReferral(
     return true;
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      logger.error('Error processing referral:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error processing referral:', { error: error instanceof Error ? error.message : String(error) });
     }
     return false;
   }
@@ -356,7 +356,7 @@ async function applyReferralRewards(referrerId: string, refereeId: string): Prom
     ]);
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
-      logger.error('Error applying referral rewards:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error applying referral rewards:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 }
@@ -376,7 +376,7 @@ async function trackConversionEvent(
   } catch (error) {
     // Analytics tracking should not block user flow
     if (process.env.NODE_ENV === 'development') {
-      logger.error('Error tracking conversion event:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error tracking conversion event:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 }

@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -37,7 +37,7 @@ export default function TrustDashboard() {
         setLoading(false);
       })
       .catch(err => {
-        logger.error('Failed to load trust report:', { err });
+        _logger.error('Failed to load trust report:', { err });
         setLoading(false);
       });
   }, [user, period]);

@@ -13,7 +13,7 @@ import { supabase } from '../supabaseClient';
 import { analytics } from '../analytics';
 import { valueEngine } from './value-engine';
 
-const logger = createComponentLogger('dynamic-pricing');
+const _logger = createComponentLogger('dynamic-pricing');
 
 export interface PricingTier {
   id: string;
@@ -156,7 +156,7 @@ export class DynamicPricingEngine {
         estimatedLTV,
       };
     } catch (error) {
-      logger.error('Error generating pricing offer', {
+      _logger.error('Error generating pricing offer', {
         userId,
         targetTier,
         error: error instanceof Error ? error.message : String(error),
@@ -277,7 +277,7 @@ export class DynamicPricingEngine {
         rationale,
       };
     } catch (error) {
-      logger.error('Error getting optimal pricing', {
+      _logger.error('Error getting optimal pricing', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });

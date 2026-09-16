@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('socialautomator');
+const _logger = createComponentLogger('socialautomator');
 
 import { supabase } from './supabaseClient';
 import { openai } from './openaiClient';
@@ -350,7 +350,7 @@ Format as JSON.`;
         .single();
 
       if (fetchError) {
-        logger.error('Error fetching current metrics:', { fetchError });
+        _logger.error('Error fetching current metrics:', { fetchError });
         return;
       }
 
@@ -379,7 +379,7 @@ Format as JSON.`;
         .eq('id', postId);
 
       if (updateError) {
-        logger.error('Error updating post metrics:', { updateError });
+        _logger.error('Error updating post metrics:', { updateError });
         throw updateError;
       }
     } catch (error) {

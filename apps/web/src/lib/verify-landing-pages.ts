@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('verify-landing-pages');
+const _logger = createComponentLogger('verify-landing-pages');
 
 // Landing page verification script
 // Run this to verify all landing pages are accessible

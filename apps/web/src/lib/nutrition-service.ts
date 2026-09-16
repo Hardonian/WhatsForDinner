@@ -7,7 +7,7 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 import { createClient } from '@/lib/supabase/server';
 
-const logger = createComponentLogger('nutrition-service');
+const _logger = createComponentLogger('nutrition-service');
 
 export interface NutritionLog {
   id?: string;
@@ -67,7 +67,7 @@ export class NutritionService {
 
       if (error) throw error;
 
-      logger.info('Nutrition logged', {
+      _logger.info('Nutrition logged', {
         logId: data.id,
         userId: entry.userId,
         date: entry.date,
@@ -86,7 +86,7 @@ export class NutritionService {
         fiberG: data.fiber_g ? Number(data.fiber_g) : undefined,
       };
     } catch (error) {
-      logger.error('Error logging nutrition', {
+      _logger.error('Error logging nutrition', {
         error: error instanceof Error ? error.message : String(error),
         userId: entry.userId,
       });
@@ -157,7 +157,7 @@ export class NutritionService {
 
       return Array.from(summaries.values());
     } catch (error) {
-      logger.error('Error fetching nutrition summary', {
+      _logger.error('Error fetching nutrition summary', {
         error: error instanceof Error ? error.message : String(error),
         userId,
       });
@@ -196,7 +196,7 @@ export class NutritionService {
         fiber: macros?.fiber || 0,
       };
     } catch (error) {
-      logger.error('Error calculating recipe nutrition', {
+      _logger.error('Error calculating recipe nutrition', {
         error: error instanceof Error ? error.message : String(error),
         recipeId,
       });

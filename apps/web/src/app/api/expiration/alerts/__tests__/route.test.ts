@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { GET } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-expiration-alerts');
+const _logger = createComponentLogger('test-expiration-alerts');
 
 describe('expiration-alerts API Route', () => {
   beforeEach(() => {

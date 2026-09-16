@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 import Link from 'next/link';
 
-const logger = createComponentLogger('UsagePremiumFeatures');
+const _logger = createComponentLogger('UsagePremiumFeatures');
 
 interface PremiumFeature {
   id: string;
@@ -56,7 +56,7 @@ export default function UsagePremiumFeatures({ userId, tenantId }: UsagePremiumF
       setCredits(creditsData);
       setRecommendations(recommendationsData.recommendations || []);
     } catch (error) {
-      logger.error('Failed to load premium features', { error });
+      _logger.error('Failed to load premium features', { error });
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,7 @@ export default function UsagePremiumFeatures({ userId, tenantId }: UsagePremiumF
         window.location.href = data.checkoutUrl;
       }
     } catch (error) {
-      logger.error('Failed to purchase credits', { error });
+      _logger.error('Failed to purchase credits', { error });
     }
   }
 

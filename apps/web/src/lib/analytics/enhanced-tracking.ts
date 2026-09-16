@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('enhanced-tracking');
+const _logger = createComponentLogger('enhanced-tracking');
 
 /**
  * Enhanced Analytics Tracking
@@ -60,7 +60,7 @@ class EnhancedAnalytics {
         body: JSON.stringify(analyticsEvent),
       });
     } catch (error) {
-      logger.error('Analytics tracking error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Analytics tracking error:', { error: error instanceof Error ? error.message : String(error) });
       // Fail silently - don't block user experience
     }
   }

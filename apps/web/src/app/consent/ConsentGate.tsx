@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('consentgate');
+const _logger = createComponentLogger('consentgate');
 
 
 
@@ -74,7 +74,7 @@ export function ConsentGate({ onConsentComplete, store }: ConsentGateProps) {
         await consentStore.requestConsent();
       }
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') { logger.warn('CMP initialization failed:', { error }); }
+      if (process.env.NODE_ENV === 'development') { _logger.warn('CMP initialization failed:', { error }); }
       await consentStore.requestConsent();
     }
   };

@@ -6,7 +6,7 @@ import { monitorQuery } from '@/lib/performance/query-optimizer';
 import Stripe from 'stripe';
 import { withTelemetry } from '@/lib/telemetry/api-middleware';
 
-const logger = createComponentLogger('subscriptions-me-api');
+const _logger = createComponentLogger('subscriptions-me-api');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2024-12-18.acacia',
@@ -66,7 +66,7 @@ async function handler(request: NextRequest) {
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
     });
   } catch (error) {
-    logger.error('Failed to get subscription', {
+    _logger.error('Failed to get subscription', {
       error: error instanceof Error ? error.message : String(error),
     });
     return handleApiError(error, {

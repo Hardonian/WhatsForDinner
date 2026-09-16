@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('activationdashboard');
+const _logger = createComponentLogger('activationdashboard');
 
 
 
@@ -42,7 +42,7 @@ export function ActivationDashboard() {
         setLoading(false);
       })
       .catch(err => {
-        logger.error('Failed to load activation metrics:', { err });
+        _logger.error('Failed to load activation metrics:', { err });
         setLoading(false);
       });
   }, [days]);

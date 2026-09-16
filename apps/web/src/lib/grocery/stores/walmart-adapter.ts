@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('walmart-adapter');
+const _logger = createComponentLogger('walmart-adapter');
 
 /**
  * Walmart Canada Grocery Store Adapter
@@ -87,7 +87,7 @@ export class WalmartAdapter extends BaseGroceryAdapter {
         pageSize: params.limit || 20,
       };
     } catch (error) {
-      logger.error('Walmart API error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Walmart API error:', { error: error instanceof Error ? error.message : String(error) });
       // Fallback to affiliate link generation
       return this.searchViaAffiliate(params);
     }

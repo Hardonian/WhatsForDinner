@@ -5,7 +5,7 @@ import { GET } from '../route';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-api-access-keys');
+const _logger = createComponentLogger('test-api-access-keys');
 
 describe('api-access-keys API Route', () => {
   beforeEach(() => {

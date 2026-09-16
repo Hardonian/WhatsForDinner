@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('monitoringalerts');
+const _logger = createComponentLogger('monitoringalerts');
 
 /**
  * Monitoring Alerts Configuration
@@ -278,7 +278,7 @@ async function sendEmailAlert(
 ): Promise<void> {
   // Email sending would be implemented using nodemailer or similar
   // This is a placeholder implementation
-  logger.info(`[Email Alert: ${alert.metric}]`, {
+  _logger.info(`[Email Alert: ${alert.metric}]`, {
     subject: `[${alert.severity}] Alert: ${alert.metric}`,
     body: `${message}\n\nMetadata: ${JSON.stringify(metadata, null, 2)}`,
   });

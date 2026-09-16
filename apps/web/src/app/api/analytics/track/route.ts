@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('analytics-track-api');
+const _logger = createComponentLogger('analytics-track-api');
 
 const TrackEventSchema = z.object({
   event: z.string().min(1).max(100),
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     };
 
     // System Logging & Telemetry
-    logger.info(`[Telemetry] ${event}`, enrichedEvent);
+    _logger.info(`[Telemetry] ${event}`, enrichedEvent);
 
     // If PostHog or external analytics service is configured via environment
     const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
         });
       } catch (err) {
         // PostHog delivery failed silently, internal telemetry is preserved
-        logger.debug('PostHog capture forward failed', { error: err instanceof Error ? err.message : String(err) });
+        _logger.debug('PostHog capture forward failed', { error: err instanceof Error ? err.message : String(err) });
       }
     }
 
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    logger.error('Analytics tracking error', { error: message });
+    _logger.error('Analytics tracking error', { error: message });
     return NextResponse.json(
       { error: 'Failed to process tracking event' },
       { status: 500 }

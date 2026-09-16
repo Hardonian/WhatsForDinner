@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('marketingautomation');
+const _logger = createComponentLogger('marketingautomation');
 
 import { Resend } from 'resend';
 import { supabase } from './supabaseClient';
@@ -71,7 +71,7 @@ export class MarketingAutomation {
     try {
       const template = await this.getEmailTemplate('welcome');
       if (!template) {
-        logger.error('Welcome email template not found');
+        _logger.error('Welcome email template not found');
         return;
       }
 
@@ -99,7 +99,7 @@ export class MarketingAutomation {
       // Track email sent event (fire-and-forget for non-critical operation)
       fireAndForget(
         () => this.trackEmailEvent('welcome', validated.userEmail, 'sent'),
-        (error) => logger.error('Failed to track email event:', { error: error instanceof Error ? error.message : String(error) })
+        (error) => _logger.error('Failed to track email event:', { error: error instanceof Error ? error.message : String(error) })
       );
     } catch (error) {
       // Error handled: Failed to send welcome email:
@@ -125,7 +125,7 @@ export class MarketingAutomation {
     try {
       const template = await this.getEmailTemplate('first_recipe');
       if (!template) {
-        logger.error('First recipe email template not found');
+        _logger.error('First recipe email template not found');
         return;
       }
 
@@ -171,7 +171,7 @@ export class MarketingAutomation {
     try {
       const template = await this.getEmailTemplate('milestone');
       if (!template) {
-        logger.error('Milestone email template not found');
+        _logger.error('Milestone email template not found');
         return;
       }
 
@@ -218,7 +218,7 @@ export class MarketingAutomation {
     try {
       const template = await this.getEmailTemplate('churn_risk');
       if (!template) {
-        logger.error('Churn risk email template not found');
+        _logger.error('Churn risk email template not found');
         return;
       }
 
@@ -264,7 +264,7 @@ export class MarketingAutomation {
     try {
       const template = await this.getEmailTemplate('winback');
       if (!template) {
-        logger.error('Winback email template not found');
+        _logger.error('Winback email template not found');
         return;
       }
 
@@ -393,7 +393,7 @@ export class MarketingAutomation {
         .eq('created_at', new Date().toISOString().split('T')[0]); // Today's signups
 
       if (newUsersError) {
-        logger.error('Error fetching new users:', { newUsersError });
+        _logger.error('Error fetching new users:', { newUsersError });
         return;
       }
 
@@ -411,7 +411,7 @@ export class MarketingAutomation {
         .eq('created_at', new Date().toISOString().split('T')[0]);
 
       if (firstRecipeError) {
-        logger.error('Error fetching first recipe users:', { firstRecipeError });
+        _logger.error('Error fetching first recipe users:', { firstRecipeError });
         return;
       }
 
@@ -434,7 +434,7 @@ export class MarketingAutomation {
         .eq('count', 10); // 10th recipe milestone
 
       if (milestoneError) {
-        logger.error('Error fetching milestone users:', { milestoneError });
+        _logger.error('Error fetching milestone users:', { milestoneError });
         return;
       }
 
@@ -504,12 +504,12 @@ export class MarketingAutomation {
         .single();
 
       if (campaignError) {
-        logger.error('Error fetching campaign:', { campaignError });
+        _logger.error('Error fetching campaign:', { campaignError });
         return;
       }
 
       if (campaign.status !== 'scheduled') {
-        logger.error('Campaign is not in scheduled status');
+        _logger.error('Campaign is not in scheduled status');
         return;
       }
 
@@ -520,14 +520,14 @@ export class MarketingAutomation {
         .in('tenant_id', campaign.target_audience.tenant_ids);
 
       if (usersError) {
-        logger.error('Error fetching target users:', { usersError });
+        _logger.error('Error fetching target users:', { usersError });
         return;
       }
 
       // Get email template
       const template = await this.getEmailTemplate(campaign.template_id);
       if (!template) {
-        logger.error('Email template not found');
+        _logger.error('Email template not found');
         return;
       }
 

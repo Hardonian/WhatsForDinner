@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('secretsmanager');
+const _logger = createComponentLogger('secretsmanager');
 
 const crypto = typeof window === 'undefined' ? require('crypto') : null;
 import { createClient } from '@supabase/supabase-js';
@@ -137,7 +137,7 @@ class SecretsManager {
 
       // Log secret storage (without the actual value)
           } catch (error) {
-      logger.error('Error storing secret ${key}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error storing secret ${key}:', { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   }
@@ -155,19 +155,19 @@ class SecretsManager {
         .single();
 
       if (error || !data) {
-        if (process.env.NODE_ENV === 'development') { logger.warn('Secret ${key} not found for environment ${environment}'); }
+        if (process.env.NODE_ENV === 'development') { _logger.warn('Secret ${key} not found for environment ${environment}'); }
         return null;
       }
 
       // Check if secret needs rotation
       if (new Date(data.nextRotation) <= new Date()) {
-        if (process.env.NODE_ENV === 'development') { logger.warn('Secret ${key} is due for rotation'); }
+        if (process.env.NODE_ENV === 'development') { _logger.warn('Secret ${key} is due for rotation'); }
         await this.rotateSecret(key, environment);
       }
 
       return this.decrypt(data.value);
     } catch (error) {
-      logger.error('Error retrieving secret ${key}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error retrieving secret ${key}:', { error: error instanceof Error ? error.message : String(error) });
       return null;
     }
   }
@@ -207,7 +207,7 @@ class SecretsManager {
       // Store rotation event
       await this.logRotationEvent(key, environment, hash);
     } catch (error) {
-      logger.error('Error rotating secret ${key}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error rotating secret ${key}:', { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   }
@@ -323,7 +323,7 @@ class SecretsManager {
         if (policy && policy.autoRotate) {
                     await this.rotateSecret(secret.key, secret.environment);
         } else {
-          if (process.env.NODE_ENV === 'development') { logger.warn('Secret ${secret.key} is due for rotation but auto-rotation is disabled'); }
+          if (process.env.NODE_ENV === 'development') { _logger.warn('Secret ${secret.key} is due for rotation but auto-rotation is disabled'); }
         }
       }
     } catch (error) {

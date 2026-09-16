@@ -8,7 +8,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -101,7 +101,7 @@ export default function HomePage() {
         created_at: new Date().toISOString()
       });
     } catch (error) {
-      logger.error('Email capture error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Email capture error:', { error: error instanceof Error ? error.message : String(error) });
     }
 
     setEmail('');

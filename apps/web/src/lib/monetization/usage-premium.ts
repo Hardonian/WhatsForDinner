@@ -9,7 +9,7 @@ import { supabase } from '../supabaseClient';
 import { StripeService } from '../stripe';
 import { analytics } from '../analytics';
 
-const logger = createComponentLogger('usage-premium');
+const _logger = createComponentLogger('usage-premium');
 
 export interface UsagePremiumFeature {
   id: string;
@@ -126,7 +126,7 @@ export class UsagePremiumManager {
         credits: totalCredits,
       };
     } catch (error) {
-      logger.error('Error getting user credits', {
+      _logger.error('Error getting user credits', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -194,7 +194,7 @@ export class UsagePremiumManager {
         credits: creditsToAdd,
       };
     } catch (error) {
-      logger.error('Error purchasing credits', {
+      _logger.error('Error purchasing credits', {
         userId,
         featureId,
         error: error instanceof Error ? error.message : String(error),
@@ -247,7 +247,7 @@ export class UsagePremiumManager {
         creditsRemaining: currentCredits.credits - creditsRequired,
       };
     } catch (error) {
-      logger.error('Error using credits', {
+      _logger.error('Error using credits', {
         userId,
         featureId,
         error: error instanceof Error ? error.message : String(error),
@@ -330,7 +330,7 @@ export class UsagePremiumManager {
 
       return recommendations;
     } catch (error) {
-      logger.error('Error recommending features', {
+      _logger.error('Error recommending features', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });

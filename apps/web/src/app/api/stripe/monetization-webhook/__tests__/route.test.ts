@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-stripe-monetization-webhook');
+const _logger = createComponentLogger('test-stripe-monetization-webhook');
 
 describe('stripe-monetization-webhook API Route', () => {
   beforeEach(() => {

@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { withCSRFProtection } from '@/lib/csrf-middleware';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('pantry-bulk-api');
+const _logger = createComponentLogger('pantry-bulk-api');
 
 const PantryItemEntry = z.union([
   z.string().min(1).max(100),
@@ -85,7 +85,7 @@ async function handler(req: NextRequest) {
         .select();
 
       if (insertError) {
-        logger.warn('Failed to upsert pantry items to Supabase', { error: insertError.message });
+        _logger.warn('Failed to upsert pantry items to Supabase', { error: insertError.message });
         // Fallback to returning success in session mode so client UX is uninterrupted
         return NextResponse.json({
           success: true,
@@ -96,7 +96,7 @@ async function handler(req: NextRequest) {
         });
       }
 
-      logger.info('Pantry bulk items saved for user', { userId: user.id, count: inserted?.length });
+      _logger.info('Pantry bulk items saved for user', { userId: user.id, count: inserted?.length });
       return NextResponse.json({
         success: true,
         count: inserted?.length || items.length,
@@ -107,7 +107,7 @@ async function handler(req: NextRequest) {
     }
 
     // Guest / Onboarding mode: Validate and return structured items
-    logger.info('Pantry bulk items received in guest mode', { count: items.length, source });
+    _logger.info('Pantry bulk items received in guest mode', { count: items.length, source });
     const formattedItems = items.map((ingredient, idx) => ({
       id: `guest-item-${idx + 1}`,
       ingredient: ingredient.toLowerCase().trim(),
@@ -133,7 +133,7 @@ async function handler(req: NextRequest) {
     return response;
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    logger.error('Bulk pantry endpoint error', { error: message });
+    _logger.error('Bulk pantry endpoint error', { error: message });
     return NextResponse.json(
       { error: 'Internal server error processing pantry items' },
       { status: 500 }

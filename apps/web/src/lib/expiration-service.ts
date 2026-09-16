@@ -8,7 +8,7 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 
-const logger = createComponentLogger('expiration-service');
+const _logger = createComponentLogger('expiration-service');
 
 export interface PantryItem {
   id: string;
@@ -44,7 +44,7 @@ export class ExpirationService {
         .order('expiration_date', { ascending: true });
       
       if (error) {
-        logger.error('Error fetching expiring items', { error: error.message, userId });
+        _logger.error('Error fetching expiring items', { error: error.message, userId });
         return [];
       }
       
@@ -67,7 +67,7 @@ export class ExpirationService {
         };
       });
     } catch (error) {
-      logger.error('Error in getExpiringItems', {
+      _logger.error('Error in getExpiringItems', {
         error: error instanceof Error ? error.message : String(error),
         userId,
       });
@@ -105,7 +105,7 @@ export class ExpirationService {
         .limit(10);
       
       if (error) {
-        logger.error('Error fetching recipes for expiring items', { error: error.message });
+        _logger.error('Error fetching recipes for expiring items', { error: error.message });
         return [];
       }
       
@@ -129,7 +129,7 @@ export class ExpirationService {
             .map(item => item.name),
         }));
     } catch (error) {
-      logger.error('Error in getRecipeSuggestionsForExpiring', {
+      _logger.error('Error in getRecipeSuggestionsForExpiring', {
         error: error instanceof Error ? error.message : String(error),
       });
       return [];
@@ -166,11 +166,11 @@ export class ExpirationService {
           });
           
           // TODO: Send push notification
-          logger.info('Expiration alerts created', { userId, alertCount: alerts.length });
+          _logger.info('Expiration alerts created', { userId, alertCount: alerts.length });
         }
       }
     } catch (error) {
-      logger.error('Error sending expiration alerts', {
+      _logger.error('Error sending expiration alerts', {
         error: error instanceof Error ? error.message : String(error),
       });
     }

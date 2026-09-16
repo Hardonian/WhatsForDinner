@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('alertingsystem');
+const _logger = createComponentLogger('alertingsystem');
 
 /**
  * Alerting System
@@ -159,7 +159,7 @@ class AlertingSystem {
     rule.lastTriggered = new Date();
 
     // Log alert
-    await logger.error(
+    await _logger.error(
       `Alert triggered: ${rule.name}`,
       {
         ruleId: rule.id,
@@ -193,13 +193,13 @@ class AlertingSystem {
     // Email notifications
     if (this.alertChannels.email && this.alertChannels.email.length > 0) {
       // Implement email sending
-      logger.info(`Sending email alert to ${this.alertChannels.email.join(', ')}`);
+      _logger.info(`Sending email alert to ${this.alertChannels.email.join(', ')}`);
     }
 
     // Slack notifications
     if (this.alertChannels.slack) {
       // Implement Slack webhook
-      logger.info(`Sending Slack alert to ${this.alertChannels.slack}`);
+      _logger.info(`Sending Slack alert to ${this.alertChannels.slack}`);
     }
 
     // Webhook notifications
@@ -211,7 +211,7 @@ class AlertingSystem {
           body: JSON.stringify(alert),
         });
       } catch (error) {
-        logger.error('Failed to send webhook alert:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Failed to send webhook alert:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
   }

@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -134,7 +134,7 @@ export default function BillingSettingsPage() {
       await loadData();
       alert('Subscription will be cancelled at the end of your billing period.');
     } catch (error) {
-      logger.error('Failed to cancel subscription:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to cancel subscription:', { error: error instanceof Error ? error.message : String(error) });
       alert('Failed to cancel subscription. Please try again.');
     }
   };
@@ -163,7 +163,7 @@ export default function BillingSettingsPage() {
         alert(data.error || 'Failed to request refund. Please try again.');
       }
     } catch (error) {
-      logger.error('Refund request error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Refund request error:', { error: error instanceof Error ? error.message : String(error) });
       alert('An error occurred. Please contact support.');
     }
   };
@@ -178,7 +178,7 @@ export default function BillingSettingsPage() {
       a.download = `invoice-${invoiceId}.pdf`;
       a.click();
     } catch (error) {
-      logger.error('Failed to download invoice:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to download invoice:', { error: error instanceof Error ? error.message : String(error) });
       alert('Failed to download invoice. Please try again.');
     }
   };

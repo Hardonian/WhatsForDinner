@@ -6,7 +6,7 @@
 
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('query-optimizer');
+const _logger = createComponentLogger('query-optimizer');
 
 /**
  * Batch database queries to prevent N+1 problems
@@ -37,7 +37,7 @@ export async function batchQuery<T, R>(
       const batchResults = await queryFn(batch);
       results.push(...batchResults);
     } catch (error) {
-      logger.error('Batch query failed', {
+      _logger.error('Batch query failed', {
         batchIndex: i,
         batchSize: batch.length,
         error: error instanceof Error ? error.message : String(error),
@@ -90,11 +90,11 @@ export async function cachedQuery<T>(
   const cached = cache.get(key);
   
   if (cached && cached.expires > Date.now()) {
-    logger.debug('Cache hit', { key });
+    _logger.debug('Cache hit', { key });
     return cached.data;
   }
   
-  logger.debug('Cache miss', { key });
+  _logger.debug('Cache miss', { key });
   const data = await queryFn();
   
   cache.set(key, {
@@ -155,12 +155,12 @@ export async function monitorQuery<T>(
     const duration = Date.now() - start;
     
     if (duration > 1000) {
-      logger.warn('Slow query detected', {
+      _logger.warn('Slow query detected', {
         queryName,
         duration,
       });
     } else {
-      logger.debug('Query completed', {
+      _logger.debug('Query completed', {
         queryName,
         duration,
       });
@@ -169,7 +169,7 @@ export async function monitorQuery<T>(
     return { result, duration };
   } catch (error) {
     const duration = Date.now() - start;
-    logger.error('Query failed', {
+    _logger.error('Query failed', {
       queryName,
       duration,
       error: error instanceof Error ? error.message : String(error),

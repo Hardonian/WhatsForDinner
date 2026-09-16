@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -65,7 +65,7 @@ export default function SpinWheelPage() {
         setShowCelebration(true);
       }
     } catch (error) {
-      logger.error('Failed to generate recipe:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to generate recipe:', { error: error instanceof Error ? error.message : String(error) });
     }
 
     setSpinning(false);

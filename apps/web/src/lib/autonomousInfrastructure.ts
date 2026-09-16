@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('autonomousinfrastructure');
+const _logger = createComponentLogger('autonomousinfrastructure');
 
 /**
  * Autonomous Infrastructure System
@@ -319,7 +319,7 @@ export class AutonomousInfrastructure {
           }
         }
       } catch (error) {
-        logger.error('Error attempting self-healing for issue ${issue.id}:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Error attempting self-healing for issue ${issue.id}:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
 
@@ -571,7 +571,7 @@ export class AutonomousInfrastructure {
   private async logSelfHealingAction(action: SelfHealingAction): Promise<void> {
     try {
       await supabase.from('self_healing_actions').insert(action);
-      await logger.info(
+      await _logger.info(
         `Self-healing action: ${action.action_type}`,
         action,
         'infrastructure',
@@ -594,7 +594,7 @@ export class AutonomousInfrastructure {
         critical_issues: health.issues.filter(i => i.severity === 'critical').length,
       });
 
-      logger.error('?? CRITICAL INFRASTRUCTURE ALERT:', { health });
+      _logger.error('?? CRITICAL INFRASTRUCTURE ALERT:', { health });
     } catch (error) {
       // Error handled: Error sending alert:
     }

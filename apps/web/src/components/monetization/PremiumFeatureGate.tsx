@@ -5,7 +5,7 @@ import { usePaywall } from '@/hooks/usePaywall';
 import PaywallModal from './PaywallModal';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('PremiumFeatureGate');
+const _logger = createComponentLogger('PremiumFeatureGate');
 
 interface PremiumFeatureGateProps {
   featureId: string;

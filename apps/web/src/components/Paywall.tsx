@@ -1,7 +1,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('paywall');
+const _logger = createComponentLogger('paywall');
 
 
 
@@ -30,7 +30,7 @@ export default function Paywall({ onPurchase, onDismiss }: PaywallProps) {
       const prods = await monetization.getProducts();
       setProducts(prods);
     } catch (err) {
-      logger.error('Failed to load products:', { err });
+      _logger.error('Failed to load products:', { err });
       setError('Failed to load subscription options');
     } finally {
       setLoading(false);

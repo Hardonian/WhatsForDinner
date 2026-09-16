@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('checkoutbutton');
+const _logger = createComponentLogger('checkoutbutton');
 
 
 
@@ -36,7 +36,7 @@ export function CheckoutButton({ productId, productName, price, onSuccess }: Che
       const { checkoutUrl } = await response.json();
       window.location.href = checkoutUrl;
     } catch (error) {
-      logger.error('Checkout error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Checkout error:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setIsLoading(false);
     }

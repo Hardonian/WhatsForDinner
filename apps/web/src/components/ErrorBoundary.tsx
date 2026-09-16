@@ -14,7 +14,7 @@ import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
 // Sentry removed — optional dependency
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('error-boundary');
+const _logger = createComponentLogger('error-boundary');
 
 interface Props {
   children: ReactNode;
@@ -47,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error using unified logger
-    logger.error('ErrorBoundary caught an error', {
+    _logger.error('ErrorBoundary caught an error', {
       error: error.message,
       stack: error.stack,
       componentStack: errorInfo.componentStack,
@@ -67,7 +67,7 @@ export class ErrorBoundary extends Component<Props, State> {
       });
     } catch (sentryError) {
       // Fallback if Sentry is not initialized
-      logger.error('Failed to log to Sentry', {
+      _logger.error('Failed to log to Sentry', {
         error: sentryError instanceof Error ? sentryError.message : String(sentryError),
       });
     }
@@ -156,7 +156,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 {isDevelopment && (
                   <Button
                     onClick={() => {
-                      logger.error('Full error details:', { error: this.state.error, errorInfo: this.state.errorInfo });
+                      _logger.error('Full error details:', { error: this.state.error, errorInfo: this.state.errorInfo });
                     }}
                     variant="outline"
                   >

@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('error-boundary');
+const _logger = createComponentLogger('error-boundary');
 
 
 
@@ -41,7 +41,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-      logger.error('ErrorBoundary caught an error:', { error, errorInfo });
+      _logger.error('ErrorBoundary caught an error:', { error, errorInfo });
     }
   }
 

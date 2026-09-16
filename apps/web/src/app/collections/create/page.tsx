@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -55,7 +55,7 @@ export default function CreateCollectionPage() {
       const { collectionId } = await response.json();
       window.location.href = `/collections/${collectionId}`;
     } catch (error) {
-      logger.error('Create collection error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Create collection error:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setIsCreating(false);
     }

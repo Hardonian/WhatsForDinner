@@ -5,7 +5,7 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingUp, Users, DollarSign, Target } from 'lucide-react';
 
-const logger = createComponentLogger('RevenueDashboard');
+const _logger = createComponentLogger('RevenueDashboard');
 
 interface RevenueMetrics {
   totalRevenue: number;
@@ -44,7 +44,7 @@ export default function RevenueDashboard() {
       };
       setMetrics(mockMetrics);
     } catch (error) {
-      logger.error('Failed to load revenue metrics', { error });
+      _logger.error('Failed to load revenue metrics', { error });
     } finally {
       setLoading(false);
     }

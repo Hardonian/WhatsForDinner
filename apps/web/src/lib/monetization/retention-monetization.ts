@@ -13,7 +13,7 @@ import { supabase } from '../supabaseClient';
 import { analytics } from '../analytics';
 import { valueEngine } from './value-engine';
 
-const logger = createComponentLogger('retention-monetization');
+const _logger = createComponentLogger('retention-monetization');
 
 export interface RetentionOffer {
   id: string;
@@ -112,7 +112,7 @@ export class RetentionMonetization {
         engagementTrend,
       };
     } catch (error) {
-      logger.error('Error identifying churn risk', {
+      _logger.error('Error identifying churn risk', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -195,7 +195,7 @@ export class RetentionMonetization {
         conversionProbability,
       };
     } catch (error) {
-      logger.error('Error generating retention offer', {
+      _logger.error('Error generating retention offer', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -323,7 +323,7 @@ export class RetentionMonetization {
         conversionProbability: 0.80, // High conversion for loyalty rewards
       };
     } catch (error) {
-      logger.error('Error generating loyalty rewards', {
+      _logger.error('Error generating loyalty rewards', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });

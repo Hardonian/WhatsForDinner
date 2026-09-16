@@ -7,7 +7,7 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 import { analytics } from '../analytics';
 
-const logger = createComponentLogger('monetization-analytics');
+const _logger = createComponentLogger('monetization-analytics');
 
 export class MonetizationAnalytics {
   /**
@@ -22,7 +22,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track upsell shown', { error });
+      _logger.error('Failed to track upsell shown', { error });
     }
   }
 
@@ -44,7 +44,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track upsell conversion', { error });
+      _logger.error('Failed to track upsell conversion', { error });
     }
   }
 
@@ -66,7 +66,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track paywall impression', { error });
+      _logger.error('Failed to track paywall impression', { error });
     }
   }
 
@@ -90,7 +90,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track paywall conversion', { error });
+      _logger.error('Failed to track paywall conversion', { error });
     }
   }
 
@@ -110,7 +110,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track premium feature usage', { error });
+      _logger.error('Failed to track premium feature usage', { error });
     }
   }
 
@@ -130,7 +130,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track referral signup', { error });
+      _logger.error('Failed to track referral signup', { error });
     }
   }
 
@@ -150,7 +150,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track referral conversion', { error });
+      _logger.error('Failed to track referral conversion', { error });
     }
   }
 
@@ -172,7 +172,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track retention offer', { error });
+      _logger.error('Failed to track retention offer', { error });
     }
   }
 
@@ -194,7 +194,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track retention conversion', { error });
+      _logger.error('Failed to track retention conversion', { error });
     }
   }
 
@@ -218,7 +218,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track pricing offer', { error });
+      _logger.error('Failed to track pricing offer', { error });
     }
   }
 
@@ -240,7 +240,7 @@ export class MonetizationAnalytics {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Failed to track pricing conversion', { error });
+      _logger.error('Failed to track pricing conversion', { error });
     }
   }
 }

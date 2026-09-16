@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('aicopywriter');
+const _logger = createComponentLogger('aicopywriter');
 
 import { supabase } from './supabaseClient';
 import { openai } from './openaiClient';
@@ -253,7 +253,7 @@ Variant 3: [post content]`;
         .single();
 
       if (fetchError) {
-        logger.error('Error fetching current metrics:', { fetchError });
+        _logger.error('Error fetching current metrics:', { fetchError });
         return;
       }
 
@@ -286,7 +286,7 @@ Variant 3: [post content]`;
         .eq('id', variantId);
 
       if (updateError) {
-        logger.error('Error updating copy metrics:', { updateError });
+        _logger.error('Error updating copy metrics:', { updateError });
         throw updateError;
       }
     } catch (error) {

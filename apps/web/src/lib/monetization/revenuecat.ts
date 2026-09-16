@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('revenuecat');
+const _logger = createComponentLogger('revenuecat');
 
 /**
  * RevenueCat Integration
@@ -53,9 +53,9 @@ class RevenueCatManager {
       if (Capacitor.isNativePlatform()) {
         // Native RevenueCat SDK initialization
         // await Purchases.configure({ apiKey: this.apiKey, appUserID: userId });
-        logger.info('RevenueCat configured for native platform');
+        _logger.info('RevenueCat configured for native platform');
       } else {
-        logger.info('RevenueCat not available on web platform');
+        _logger.info('RevenueCat not available on web platform');
       }
 
       if (userId) {

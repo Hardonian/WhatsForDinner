@@ -7,7 +7,7 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 import { createClient } from '@/lib/supabase/server';
 
-const logger = createComponentLogger('meal-planning-service');
+const _logger = createComponentLogger('meal-planning-service');
 
 export interface MealPlanDay {
   date: string;
@@ -70,7 +70,7 @@ export class MealPlanningService {
         result = data;
       }
 
-      logger.info('Meal plan saved', {
+      _logger.info('Meal plan saved', {
         planId: result.id,
         userId: plan.userId,
       });
@@ -84,7 +84,7 @@ export class MealPlanningService {
         shoppingListId: result.shopping_list_id,
       };
     } catch (error) {
-      logger.error('Error saving meal plan', {
+      _logger.error('Error saving meal plan', {
         error: error instanceof Error ? error.message : String(error),
         userId: plan.userId,
       });
@@ -132,7 +132,7 @@ export class MealPlanningService {
         shoppingListId: data.shopping_list_id,
       };
     } catch (error) {
-      logger.error('Error fetching meal plan', {
+      _logger.error('Error fetching meal plan', {
         error: error instanceof Error ? error.message : String(error),
         userId,
       });
@@ -197,7 +197,7 @@ export class MealPlanningService {
         .update({ shopping_list_id: shoppingList.id })
         .eq('id', mealPlanId);
 
-      logger.info('Shopping list generated', {
+      _logger.info('Shopping list generated', {
         shoppingListId: shoppingList.id,
         mealPlanId,
         itemCount: ingredients.size,
@@ -205,7 +205,7 @@ export class MealPlanningService {
 
       return shoppingList.id;
     } catch (error) {
-      logger.error('Error generating shopping list', {
+      _logger.error('Error generating shopping list', {
         error: error instanceof Error ? error.message : String(error),
         mealPlanId,
       });

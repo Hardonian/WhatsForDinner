@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('redaction');
+const _logger = createComponentLogger('redaction');
 
 /**
  * Local-First Privacy Redaction
@@ -190,7 +190,7 @@ export function processTelemetryEvent(
   // Validate and redact
   const validation = validateTelemetryEvent(event);
   if (!validation.valid || !validation.redacted) {
-    if (process.env.NODE_ENV === 'development') { logger.warn('Telemetry event validation failed:', { error: validation.error }); }
+    if (process.env.NODE_ENV === 'development') { _logger.warn('Telemetry event validation failed:', { error: validation.error }); }
     return null;
   }
 

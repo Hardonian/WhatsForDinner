@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('selflearningsystem');
+const _logger = createComponentLogger('selflearningsystem');
 
 /**
  * Self-Learning System
@@ -554,7 +554,7 @@ export class SelfLearningSystem {
             break;
         }
       } catch (error) {
-        logger.error('Error taking action for insight ${insight.id}:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Error taking action for insight ${insight.id}:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
 

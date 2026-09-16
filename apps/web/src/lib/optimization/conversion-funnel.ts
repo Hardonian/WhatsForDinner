@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('conversion-funnel');
+const _logger = createComponentLogger('conversion-funnel');
 
 /**
  * Conversion Funnel Tracking
@@ -51,7 +51,7 @@ export async function trackFunnelStage(
       });
     }
   } catch (error) {
-    logger.error('Failed to track funnel stage:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Failed to track funnel stage:', { error: error instanceof Error ? error.message : String(error) });
   }
 }
 
@@ -69,7 +69,7 @@ export async function getFunnelMetrics(
     const data = await response.json();
     return data.metrics;
   } catch (error) {
-    logger.error('Failed to get funnel metrics:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Failed to get funnel metrics:', { error: error instanceof Error ? error.message : String(error) });
     return {} as Record<FunnelStage, number>;
   }
 }

@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { handleApiError, getCorrelationId } from '@whats-for-dinner/utils';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('performance-api');
+const _logger = createComponentLogger('performance-api');
 
 /**
  * Performance Metrics API
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       .limit(1000);
 
     if (metricsError) {
-      logger.warn('Error fetching performance metrics', {
+      _logger.warn('Error fetching performance metrics', {
         error: metricsError.message,
         correlationId: getCorrelationId(request),
       });

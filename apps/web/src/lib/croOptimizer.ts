@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('crooptimizer');
+const _logger = createComponentLogger('crooptimizer');
 
 /**
  * CRO (Conversion Rate Optimization) System
@@ -75,7 +75,7 @@ export class CROOptimizer {
         .single();
 
       if (fetchError || !cta) {
-        logger.error('Error fetching CTA:', { fetchError });
+        _logger.error('Error fetching CTA:', { fetchError });
         return;
       }
 
@@ -287,7 +287,7 @@ export class CROOptimizer {
         .order('performance->conversion_rate', { ascending: false });
 
       if (ctaError) {
-        logger.error('Error fetching CTAs:', { ctaError });
+        _logger.error('Error fetching CTAs:', { ctaError });
       }
 
       const allCTAs = (ctas || []) as CTAPlacement[];

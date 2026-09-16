@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('gamification');
+const _logger = createComponentLogger('gamification');
 
 /**
  * Grocery Gamification System
@@ -64,7 +64,7 @@ export class GroceryGamification {
       //   action,
       // });
     } catch (error) {
-      logger.warn('Failed to award points:', { error });
+      _logger.warn('Failed to award points:', { error });
     }
 
     return this.getUserPoints(userId);

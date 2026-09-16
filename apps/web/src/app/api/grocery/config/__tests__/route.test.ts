@@ -5,7 +5,7 @@ import { GET } from '../route';
 import { PUT } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-grocery-config');
+const _logger = createComponentLogger('test-grocery-config');
 
 describe('grocery-config API Route', () => {
   beforeEach(() => {

@@ -12,7 +12,7 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 import { supabase } from '../supabaseClient';
 import { analytics } from '../analytics';
 
-const logger = createComponentLogger('value-engine');
+const _logger = createComponentLogger('value-engine');
 
 export interface CustomerValueProfile {
   userId: string;
@@ -137,7 +137,7 @@ export class CustomerValueEngine {
         monetizationPotential,
       };
     } catch (error) {
-      logger.error('Error analyzing customer value', {
+      _logger.error('Error analyzing customer value', {
         userId,
         tenantId,
         error: error instanceof Error ? error.message : String(error),

@@ -5,7 +5,7 @@ import { handleApiError, getCorrelationId } from '@whats-for-dinner/utils';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 import { ExpirationService } from '@/lib/expiration-service';
 
-const logger = createComponentLogger('expiration-alerts-api');
+const _logger = createComponentLogger('expiration-alerts-api');
 
 /**
  * GET /api/expiration/alerts

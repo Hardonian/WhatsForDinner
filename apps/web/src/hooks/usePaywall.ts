@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('usePaywall');
+const _logger = createComponentLogger('usePaywall');
 
 interface PaywallResult {
   show: boolean;
@@ -40,7 +40,7 @@ export function usePaywall(page: string, featureAttempted?: string) {
         const data = await response.json();
         setPaywallResult(data);
       } catch (error) {
-        logger.error('Failed to check paywall', { error });
+        _logger.error('Failed to check paywall', { error });
         setPaywallResult({ show: false, strategy: null, reason: 'Error occurred' });
       } finally {
         setLoading(false);

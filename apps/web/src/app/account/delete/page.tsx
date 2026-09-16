@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -47,7 +47,7 @@ export default function DeleteAccountPage() {
       a.click();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      logger.error('Export error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Export error:', { error: error instanceof Error ? error.message : String(error) });
       alert('Failed to export data. Please try again.');
     } finally {
       setIsExporting(false);
@@ -76,7 +76,7 @@ export default function DeleteAccountPage() {
       // Redirect to home
       window.location.href = '/';
     } catch (error) {
-      logger.error('Account deletion error:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Account deletion error:', { error: error instanceof Error ? error.message : String(error) });
       alert('Failed to delete account. Please contact support.');
     } finally {
       setIsDeleting(false);

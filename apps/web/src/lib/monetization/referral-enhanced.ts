@@ -8,7 +8,7 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 import { supabase } from '../supabaseClient';
 import { analytics } from '../analytics';
 
-const logger = createComponentLogger('referral-enhanced');
+const _logger = createComponentLogger('referral-enhanced');
 
 export interface ReferralReward {
   type: 'credits' | 'subscription_days' | 'discount' | 'cash';
@@ -117,7 +117,7 @@ export class EnhancedReferralProgram {
         stats,
       };
     } catch (error) {
-      logger.error('Error getting referral code', {
+      _logger.error('Error getting referral code', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -201,7 +201,7 @@ export class EnhancedReferralProgram {
 
       return { success: true, rewards };
     } catch (error) {
-      logger.error('Error processing referral signup', {
+      _logger.error('Error processing referral signup', {
         referralCode,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -256,7 +256,7 @@ export class EnhancedReferralProgram {
         conversion_value: planValue,
       });
     } catch (error) {
-      logger.error('Error processing referral conversion', {
+      _logger.error('Error processing referral conversion', {
         refereeUserId,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -325,7 +325,7 @@ export class EnhancedReferralProgram {
         referralLink: `${process.env.NEXT_PUBLIC_APP_URL}/signup?ref=${referralCode}`,
       };
     } catch (error) {
-      logger.error('Error getting referral stats', {
+      _logger.error('Error getting referral stats', {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -386,7 +386,7 @@ export class EnhancedReferralProgram {
         awarded_at: new Date().toISOString(),
       });
     } catch (error) {
-      logger.error('Error awarding reward', {
+      _logger.error('Error awarding reward', {
         userId,
         rewardType: reward.type,
         error: error instanceof Error ? error.message : String(error),

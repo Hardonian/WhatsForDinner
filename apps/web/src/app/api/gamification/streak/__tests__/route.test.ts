@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { GET } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-gamification-streak');
+const _logger = createComponentLogger('test-gamification-streak');
 
 describe('gamification-streak API Route', () => {
   beforeEach(() => {

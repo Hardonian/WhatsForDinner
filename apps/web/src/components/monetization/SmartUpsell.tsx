@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 import Link from 'next/link';
 
-const logger = createComponentLogger('SmartUpsell');
+const _logger = createComponentLogger('SmartUpsell');
 
 interface UpsellOpportunity {
   id: string;
@@ -49,7 +49,7 @@ export default function SmartUpsell({ userId, tenantId, onDismiss }: SmartUpsell
         setSelectedOpportunity(data.opportunities[0]);
       }
     } catch (error) {
-      logger.error('Failed to load upsell opportunities', { error });
+      _logger.error('Failed to load upsell opportunities', { error });
     } finally {
       setLoading(false);
     }
@@ -67,7 +67,7 @@ export default function SmartUpsell({ userId, tenantId, onDismiss }: SmartUpsell
       }
       window.location.href = `/pricing?${params.toString()}`;
     } catch (error) {
-      logger.error('Failed to process upgrade', { error });
+      _logger.error('Failed to process upgrade', { error });
     }
   }
 

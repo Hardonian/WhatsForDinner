@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('onboardingflow');
+const _logger = createComponentLogger('onboardingflow');
 
 
 
@@ -55,7 +55,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         onComplete();
       }
     } catch (error) {
-      logger.error('Failed to save onboarding data:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to save onboarding data:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 

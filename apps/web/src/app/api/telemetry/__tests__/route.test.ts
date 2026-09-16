@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-telemetry');
+const _logger = createComponentLogger('test-telemetry');
 
 describe('telemetry API Route', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('external-apis');
+const _logger = createComponentLogger('external-apis');
 
 /**
  * External API Integrations for Nomad
@@ -73,7 +73,7 @@ export async function getNutritionFromEdamam(
   const appKey = process.env.NEXT_PUBLIC_EDAMAM_API_KEY;
 
   if (!appId || !appKey) {
-    if (process.env.NODE_ENV === 'development') { logger.warn('Edamam API credentials not configured'); }
+    if (process.env.NODE_ENV === 'development') { _logger.warn('Edamam API credentials not configured'); }
     return null;
   }
 
@@ -112,7 +112,7 @@ export async function getNutritionFromNutritionix(
   const apiKey = process.env.NEXT_PUBLIC_NUTRITIONIX_API_KEY;
 
   if (!appId || !apiKey) {
-    if (process.env.NODE_ENV === 'development') { logger.warn('Nutritionix API credentials not configured'); }
+    if (process.env.NODE_ENV === 'development') { _logger.warn('Nutritionix API credentials not configured'); }
     return null;
   }
 
@@ -272,7 +272,7 @@ export async function syncGoogleFitData(
 export async function syncAppleHealthData(): Promise<null> {
   // Apple HealthKit requires native iOS app
   // Would be implemented in React Native/Expo app
-  if (process.env.NODE_ENV === 'development') { logger.warn('Apple Health sync requires native app'); }
+  if (process.env.NODE_ENV === 'development') { _logger.warn('Apple Health sync requires native app'); }
   return null;
 }
 

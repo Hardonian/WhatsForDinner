@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('programstats');
+const _logger = createComponentLogger('programstats');
 
 
 
@@ -47,7 +47,7 @@ export function ProgramStats({ programType, programId, period = 30 }: ProgramSta
         const data = await response.json();
         setStats(data);
       } catch (error) {
-        logger.error('Failed to load stats:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Failed to load stats:', { error: error instanceof Error ? error.message : String(error) });
       } finally {
         setLoading(false);
       }

@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { handleApiError, getCorrelationId } from '@whats-for-dinner/utils';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('analytics-dashboard-api');
+const _logger = createComponentLogger('analytics-dashboard-api');
 
 // This endpoint provides analytics data for the user dashboard
 export async function GET(request: NextRequest) {
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
       .limit(1000);
 
     if (eventsError) {
-      logger.warn('Error fetching analytics events', {
+      _logger.warn('Error fetching analytics events', {
         error: eventsError.message,
         userId,
         correlationId: getCorrelationId(request),
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       .limit(1000);
 
     if (recipeError) {
-      logger.warn('Error fetching recipe metrics', {
+      _logger.warn('Error fetching recipe metrics', {
         error: recipeError.message,
         userId,
         correlationId: getCorrelationId(request),

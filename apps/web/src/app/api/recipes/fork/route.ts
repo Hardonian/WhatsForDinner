@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('recipe-fork');
+const _logger = createComponentLogger('recipe-fork');
 
 export const dynamic = 'force-dynamic';
 
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     const forkId = `fork-${Math.random().toString(36).substring(2, 9)}`;
     const commitHash = Math.random().toString(16).substring(2, 10);
 
-    logger.info('Recipe forked successfully', {
+    _logger.info('Recipe forked successfully', {
       forkId,
       commitHash,
       baseRecipeId: validated.baseRecipeId,
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Failed to fork recipe';
-    logger.error('Error forking recipe', { error: message });
+    _logger.error('Error forking recipe', { error: message });
     return NextResponse.json({ success: false, error: message }, { status: 400 });
   }
 }

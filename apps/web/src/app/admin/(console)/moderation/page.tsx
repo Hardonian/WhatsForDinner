@@ -7,7 +7,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -46,7 +46,7 @@ export default function ModerationPage() {
         setLoading(false);
       })
       .catch((err) => {
-        logger.error('err');
+        _logger.error('err');
         setLoading(false);
       });
   }, []);

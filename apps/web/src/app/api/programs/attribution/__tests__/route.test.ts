@@ -5,7 +5,7 @@ import { GET } from '../route';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-programs-attribution');
+const _logger = createComponentLogger('test-programs-attribution');
 
 describe('programs-attribution API Route', () => {
   beforeEach(() => {

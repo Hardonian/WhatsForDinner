@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('usetenant');
+const _logger = createComponentLogger('usetenant');
 
 ;
 import { useUser } from '@supabase/auth-helpers-react';
@@ -91,12 +91,12 @@ export function useTenant() {
       );
 
       if (usageError) {
-        logger.error('Error fetching usage data:', { usageError });
+        _logger.error('Error fetching usage data:', { usageError });
       } else if (usageData && usageData.length > 0) {
         setUsage(usageData[0]);
       }
     } catch (err) {
-      logger.error('Error fetching tenant data:', { err });
+      _logger.error('Error fetching tenant data:', { err });
       setError(
         err instanceof Error ? err.message : 'Failed to fetch tenant data'
       );
@@ -122,7 +122,7 @@ export function useTenant() {
       // Refresh tenant data
       await fetchTenantData();
     } catch (err) {
-      logger.error('Error creating tenant:', { err });
+      _logger.error('Error creating tenant:', { err });
       setError(err instanceof Error ? err.message : 'Failed to create tenant');
     }
   };
@@ -142,7 +142,7 @@ export function useTenant() {
 
       return data || false;
     } catch (err) {
-      logger.error('Error checking quota:', { err });
+      _logger.error('Error checking quota:', { err });
       return false;
     }
   };
@@ -166,7 +166,7 @@ export function useTenant() {
         metadata_param: metadata,
       });
     } catch (err) {
-      logger.error('Error logging usage:', { err });
+      _logger.error('Error logging usage:', { err });
     }
   };
 
@@ -191,7 +191,7 @@ export function useTenant() {
 
       return data;
     } catch (err) {
-      logger.error('Error inviting user:', { err });
+      _logger.error('Error inviting user:', { err });
       throw err;
     }
   };
@@ -212,7 +212,7 @@ export function useTenant() {
         setUsage(data[0]);
       }
     } catch (err) {
-      logger.error('Error refreshing usage:', { err });
+      _logger.error('Error refreshing usage:', { err });
     }
   };
 

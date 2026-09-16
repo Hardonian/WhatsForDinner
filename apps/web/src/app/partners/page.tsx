@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -173,7 +173,7 @@ export default function PartnerProgramPage() {
         });
 
       if (error) {
-        logger.error('Failed to submit partner inquiry:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Failed to submit partner inquiry:', { error: error instanceof Error ? error.message : String(error) });
         alert('Failed to submit. Please try again.');
       } else {
         alert('Thank you! We\'ll contact you within 24-48 hours to discuss partnership opportunities.');
@@ -188,7 +188,7 @@ export default function PartnerProgramPage() {
         });
       }
     } catch (error) {
-      logger.error('Error submitting form:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error submitting form:', { error: error instanceof Error ? error.message : String(error) });
       alert('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);

@@ -17,7 +17,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { analytics } from '@/lib/analytics';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('beta-feedback');
+const _logger = createComponentLogger('beta-feedback');
 
 interface FeedbackForm {
   rating: number;
@@ -85,7 +85,7 @@ export default function BetaFeedbackPage() {
         setSubmitted(false);
       }, 2000);
     } catch (error) {
-      logger.error('Failed to submit feedback', {
+      _logger.error('Failed to submit feedback', {
         error: error instanceof Error ? error.message : String(error),
       });
       alert('Failed to submit feedback. Please try again.');

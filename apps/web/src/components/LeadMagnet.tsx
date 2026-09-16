@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('leadmagnet');
+const _logger = createComponentLogger('leadmagnet');
 
 
 
@@ -65,7 +65,7 @@ export function LeadMagnet({
         window.location.href = '/downloads/meal-planning-guide.pdf';
       }, 1000);
     } catch (error) {
-      logger.error('Failed to capture lead:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to capture lead:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setIsSubmitting(false);
     }

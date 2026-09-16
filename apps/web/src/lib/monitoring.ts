@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('monitoring');
+const _logger = createComponentLogger('monitoring');
 
 import { createClient } from '@supabase/supabase-js';
 import { logger } from './logger';
@@ -176,7 +176,7 @@ class MonitoringSystem {
       await this.checkAlerts(name, value, tags);
 
       // Log metric
-      await logger.debug(
+      await _logger.debug(
         `Metric recorded: ${name} = ${value}`,
         {
           metric: name,
@@ -188,7 +188,7 @@ class MonitoringSystem {
         'metrics'
       );
     } catch (error) {
-      logger.error('Failed to record metric ${name}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to record metric ${name}:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -223,7 +223,7 @@ class MonitoringSystem {
       // Record as metric
       await this.recordMetric(name, newValue, tags);
     } catch (error) {
-      logger.error('Failed to record counter ${name}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to record counter ${name}:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -252,7 +252,7 @@ class MonitoringSystem {
         await this.recordMetric(`${name}_avg`, avg, tags);
       }
     } catch (error) {
-      logger.error('Failed to record timer ${name}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to record timer ${name}:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -264,7 +264,7 @@ class MonitoringSystem {
     try {
       await this.recordMetric(name, value, tags);
     } catch (error) {
-      logger.error('Failed to record gauge ${name}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to record gauge ${name}:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -316,7 +316,7 @@ class MonitoringSystem {
           await this.sendAlertNotification(alert);
 
           // Log alert
-          await logger.warn(
+          await _logger.warn(
             `Alert triggered: ${rule.name}`,
             {
               ruleId: rule.id,
@@ -428,7 +428,7 @@ class MonitoringSystem {
           break;
       }
     } catch (error) {
-      logger.error('Failed to send ${channel} alert:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to send ${channel} alert:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -475,7 +475,7 @@ class MonitoringSystem {
 
       return data || [];
     } catch (error) {
-      logger.error('Failed to get metrics ${name}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to get metrics ${name}:', { error: error instanceof Error ? error.message : String(error) });
       return [];
     }
   }
@@ -516,7 +516,7 @@ class MonitoringSystem {
         alert.resolvedAt = new Date().toISOString();
       }
 
-      await logger.info(
+      await _logger.info(
         `Alert resolved: ${alertId}`,
         {
           alertId,
@@ -525,7 +525,7 @@ class MonitoringSystem {
         'alerts'
       );
     } catch (error) {
-      logger.error('Failed to resolve alert ${alertId}:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to resolve alert ${alertId}:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 

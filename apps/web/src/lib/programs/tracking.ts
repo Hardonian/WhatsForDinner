@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('tracking');
+const _logger = createComponentLogger('tracking');
 
 /**
  * Program Tracking Utilities
@@ -31,10 +31,10 @@ export async function trackProgramEvent(params: TrackEventParams): Promise<void>
     });
 
     if (!response.ok) {
-      logger.error('Failed to track program event');
+      _logger.error('Failed to track program event');
     }
   } catch (error) {
-    logger.error('Error tracking program event:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Error tracking program event:', { error: error instanceof Error ? error.message : String(error) });
   }
 }
 
@@ -72,11 +72,11 @@ export function handleAttributionOnSignup(userId: string): Promise<void> {
   })
     .then((response) => {
       if (!response.ok) {
-        logger.error('Failed to process attribution');
+        _logger.error('Failed to process attribution');
       }
     })
     .catch((error) => {
-      logger.error('Error processing attribution:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Error processing attribution:', { error: error instanceof Error ? error.message : String(error) });
     });
 }
 

@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-collections-purchase');
+const _logger = createComponentLogger('test-collections-purchase');
 
 describe('collections-purchase API Route', () => {
   beforeEach(() => {

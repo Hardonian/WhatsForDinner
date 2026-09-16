@@ -1,7 +1,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('page');
+const _logger = createComponentLogger('page');
 
 
 
@@ -137,7 +137,7 @@ export default function ReferralProgramPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (error) {
-      logger.error('Failed to copy to clipboard:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to copy to clipboard:', { error: error instanceof Error ? error.message : String(error) });
     }
   }, []);
 
@@ -152,7 +152,7 @@ export default function ReferralProgramPage() {
       } catch (error) {
         // User cancelled or error occurred
         if (error instanceof Error && error.name !== 'AbortError') {
-          logger.error('Error sharing:', { error: error instanceof Error ? error.message : String(error) });
+          _logger.error('Error sharing:', { error: error instanceof Error ? error.message : String(error) });
         }
       }
     } else {

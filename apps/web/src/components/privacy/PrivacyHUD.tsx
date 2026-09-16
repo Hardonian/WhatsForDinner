@@ -1,7 +1,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('privacyhud');
+const _logger = createComponentLogger('privacyhud');
 
 
 
@@ -44,7 +44,7 @@ export function PrivacyHUD({ className }: PrivacyHUDProps) {
         );
       }
     } catch (err) {
-      logger.error('Failed to fetch privacy status', { err });
+      _logger.error('Failed to fetch privacy status', { err });
     } finally {
       setLoading(false);
     }
@@ -72,7 +72,7 @@ export function PrivacyHUD({ className }: PrivacyHUDProps) {
         setPausedUntil(pauseUntil);
       }
     } catch (err) {
-      logger.error('Failed to pause monitoring', { err });
+      _logger.error('Failed to pause monitoring', { err });
     }
   };
 
@@ -95,7 +95,7 @@ export function PrivacyHUD({ className }: PrivacyHUDProps) {
         setPausedUntil(null);
       }
     } catch (err) {
-      logger.error('Failed to resume monitoring', { err });
+      _logger.error('Failed to resume monitoring', { err });
     }
   };
 

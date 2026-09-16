@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/server';
 import { GroceryCartItem } from '@/lib/grocery/types';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('grocery-cart-api');
+const _logger = createComponentLogger('grocery-cart-api');
 
 export async function POST(req: NextRequest) {
   try {
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       data: cart,
     });
   } catch (error) {
-    logger.error('Grocery cart API error:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Grocery cart API error:', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { success: false, error: 'Failed to add to cart' },
       { status: 500 }

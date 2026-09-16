@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('promptinjectiontests');
+const _logger = createComponentLogger('promptinjectiontests');
 
 import { aiSafetyGuardrails } from './aiSafetyGuardrails';
 
@@ -179,12 +179,12 @@ class PromptInjectionTestSuite {
         // Log test result
         const status = passed ? '✅ PASS' : '❌ FAIL';
         if (safetyResult.violations.length > 0) {
-          logger.info(`${status} ${testCase.name} - Violations: ${safetyResult.violations.join(', ')}`);
+          _logger.info(`${status} ${testCase.name} - Violations: ${safetyResult.violations.join(', ')}`);
         } else {
-          logger.info(`${status} ${testCase.name}`);
+          _logger.info(`${status} ${testCase.name}`);
         }
       } catch (error) {
-        logger.error('❌ ERROR in test "${testCase.name}":', { error });
+        _logger.error('❌ ERROR in test "${testCase.name}":', { error });
         failedTests++;
         summary[testCase.expectedRisk].failed++;
 
@@ -200,7 +200,7 @@ class PromptInjectionTestSuite {
       }
     }
 
-    logger.info(`\nTest Summary: ${passedTests}/${this.testCases.length} passed`);
+    _logger.info(`\nTest Summary: ${passedTests}/${this.testCases.length} passed`);
                     
     return {
       totalTests: this.testCases.length,
@@ -236,9 +236,9 @@ class PromptInjectionTestSuite {
         });
 
         const status = passed ? '✅ PASS' : '❌ FAIL';
-        logger.info('${status} ${testCase.name}');
+        _logger.info('${status} ${testCase.name}');
       } catch (error) {
-        logger.error('❌ ERROR in critical test "${testCase.name}":', { error });
+        _logger.error('❌ ERROR in critical test "${testCase.name}":', { error });
         results.push({
           testName: testCase.name,
           input: testCase.input,
@@ -381,10 +381,10 @@ export async function runAutomatedRedTeamTests(): Promise<void> {
         
     // Exit with error code if tests failed
     if (results.failedTests > 0) {
-      logger.error('❌ ${results.failedTests} tests failed!');
+      _logger.error('❌ ${results.failedTests} tests failed!');
       process.exit(1);
     } else {
-      logger.info('✅ All tests passed!');
+      _logger.info('✅ All tests passed!');
     }
   } catch (error) {
     // Error handled: ❌ Error running red team tests:

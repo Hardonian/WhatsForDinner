@@ -11,7 +11,7 @@ import { join } from 'path';
 import crypto from 'crypto';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('route-ts');
+const _logger = createComponentLogger('route-ts');
 const EVIDENCE_DIR = join(process.cwd(), 'reports', 'connectivity', 'evidence', 'webhooks');
 
 mkdirSync(EVIDENCE_DIR, { recursive: true });
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Store evidence
-    logger.info('Evidence stored at ${evidenceFile}');
+    _logger.info('Evidence stored at ${evidenceFile}');
     
     return NextResponse.json({
       received: true,

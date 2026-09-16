@@ -1,7 +1,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('pantrymanager');
+const _logger = createComponentLogger('pantrymanager');
 
 
 
@@ -54,7 +54,7 @@ export default function PantryManager({
       } catch (error) {
         // Rollback on error
         setOptimisticItems(prev => prev.filter(item => item.id !== tempId));
-        logger.error('Failed to add item:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Failed to add item:', { error: error instanceof Error ? error.message : String(error) });
       } finally {
         setPendingOps(prev => {
           const next = new Set(prev);
@@ -80,7 +80,7 @@ export default function PantryManager({
     } catch (error) {
       // Rollback on error
       setOptimisticItems(items);
-      logger.error('Failed to update item:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to update item:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setPendingOps(prev => {
         const next = new Set(prev);
@@ -105,7 +105,7 @@ export default function PantryManager({
       if (itemToDelete) {
         setOptimisticItems(prev => [...prev, itemToDelete].sort((a, b) => a.id - b.id));
       }
-      logger.error('Failed to delete item:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to delete item:', { error: error instanceof Error ? error.message : String(error) });
     } finally {
       setPendingOps(prev => {
         const next = new Set(prev);

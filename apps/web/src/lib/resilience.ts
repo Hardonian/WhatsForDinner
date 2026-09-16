@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('resilience');
+const _logger = createComponentLogger('resilience');
 
 import { createClient } from '@supabase/supabase-js';
 
@@ -261,7 +261,7 @@ export function withGracefulDegradation<T, R>(
 ): Promise<T | R> {
   return operation().catch(error => {
     if (isTransient(error)) {
-      if (process.env.NODE_ENV === 'development') { logger.warn('Operation failed, using fallback:', { error: error.message }); }
+      if (process.env.NODE_ENV === 'development') { _logger.warn('Operation failed, using fallback:', { error: error.message }); }
       return fallback();
     }
     throw error;

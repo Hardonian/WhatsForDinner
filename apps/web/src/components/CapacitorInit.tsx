@@ -1,7 +1,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('capacitorinit');
+const _logger = createComponentLogger('capacitorinit');
 
 
 

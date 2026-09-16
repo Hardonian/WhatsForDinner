@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('grocery-cart-export-api');
+const _logger = createComponentLogger('grocery-cart-export-api');
 
 const GroceryItemEntry = z.union([
   z.string().min(1),
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     const rawItems = parseResult.data.items || parseResult.data.ingredients || [];
     const items = rawItems.map(item => typeof item === 'string' ? item : item.name);
     const { retailer, postalCode, recipeTitle } = parseResult.data;
-    logger.info('Generating grocery cart export', { itemCount: items.length, retailer, recipeTitle });
+    _logger.info('Generating grocery cart export', { itemCount: items.length, retailer, recipeTitle });
 
     // Build retailer deep-links with affiliate attribution
     const encodedQuery = encodeURIComponent(items.join(' '));
@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    logger.error('Grocery cart export failed', { error: message });
+    _logger.error('Grocery cart export failed', { error: message });
     return NextResponse.json(
       { error: 'Failed to export grocery cart' },
       { status: 500 }

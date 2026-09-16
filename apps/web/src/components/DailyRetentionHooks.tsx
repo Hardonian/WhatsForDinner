@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('dailyretentionhooks');
+const _logger = createComponentLogger('dailyretentionhooks');
 
 
 
@@ -54,7 +54,7 @@ export function DailyRetentionHooks({ userId, compact = false }: DailyRetentionH
         setDailySuggestion(data);
       }
     } catch (error) {
-      logger.error('Failed to load daily suggestion:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to load daily suggestion:', { error: error instanceof Error ? error.message : String(error) });
     }
   };
 

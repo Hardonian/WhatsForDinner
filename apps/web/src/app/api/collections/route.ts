@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { handleApiError, getCorrelationId } from '@whats-for-dinner/utils';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('collections-api');
+const _logger = createComponentLogger('collections-api');
 
 const CollectionSchema = z.object({
   name: z.string().min(1).max(100),
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false });
 
     if (error) {
-      logger.error('Error fetching collections', {
+      _logger.error('Error fetching collections', {
         error: error.message,
         userId: user.id,
         correlationId: getCorrelationId(request),
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      logger.error('Error creating collection', {
+      _logger.error('Error creating collection', {
         error: error.message,
         userId: user.id,
         correlationId: getCorrelationId(request),
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    logger.info('Collection created', {
+    _logger.info('Collection created', {
       collectionId: collection.id,
       userId: user.id,
       correlationId: getCorrelationId(request),

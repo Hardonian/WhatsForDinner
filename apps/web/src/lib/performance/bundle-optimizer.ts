@@ -6,7 +6,7 @@
 
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('bundle-optimizer');
+const _logger = createComponentLogger('bundle-optimizer');
 
 /**
  * Lazy load component with loading state
@@ -42,7 +42,7 @@ export async function dynamicImport<T>(
   try {
     return await importFn();
   } catch (error) {
-    logger.error('Dynamic import failed', {
+    _logger.error('Dynamic import failed', {
       error: error instanceof Error ? error.message : String(error),
     });
     throw error;
@@ -59,7 +59,7 @@ export function preloadModule<T>(
 ): void {
   // Preload in background
   importFn().catch(error => {
-    logger.warn('Module preload failed', {
+    _logger.warn('Module preload failed', {
       error: error instanceof Error ? error.message : String(error),
     });
   });

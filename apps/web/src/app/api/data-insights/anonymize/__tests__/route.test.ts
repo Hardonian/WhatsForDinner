@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-data-insights-anonymize');
+const _logger = createComponentLogger('test-data-insights-anonymize');
 
 describe('data-insights-anonymize API Route', () => {
   beforeEach(() => {

@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-admin-wiki-sync-markdown');
+const _logger = createComponentLogger('test-admin-wiki-sync-markdown');
 
 describe('admin-wiki-sync-markdown API Route', () => {
   beforeEach(() => {

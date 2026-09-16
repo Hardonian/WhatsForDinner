@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { GET } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-cron-data-aggregation');
+const _logger = createComponentLogger('test-cron-data-aggregation');
 
 describe('cron-data-aggregation API Route', () => {
   beforeEach(() => {

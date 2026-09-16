@@ -6,7 +6,7 @@
 
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('cache-strategy');
+const _logger = createComponentLogger('cache-strategy');
 
 interface CacheEntry<T> {
   data: T;
@@ -121,7 +121,7 @@ export class StaleWhileRevalidateCache<T> {
       this.revalidateFn(key).then(data => {
         this.set(key, data);
       }).catch(error => {
-        logger.error('Background revalidation failed', {
+        _logger.error('Background revalidation failed', {
           key,
           error: error instanceof Error ? error.message : String(error),
         });
@@ -135,7 +135,7 @@ export class StaleWhileRevalidateCache<T> {
       this.revalidateFn(key).then(data => {
         this.set(key, data);
       }).catch(error => {
-        logger.error('Background revalidation failed', {
+        _logger.error('Background revalidation failed', {
           key,
           error: error instanceof Error ? error.message : String(error),
         });
@@ -179,7 +179,7 @@ export class CacheInvalidator {
       }
     }
     
-    logger.info('Cache invalidated by pattern', {
+    _logger.info('Cache invalidated by pattern', {
       pattern: pattern.toString(),
       invalidated,
     });

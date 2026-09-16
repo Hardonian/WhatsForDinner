@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-recipes-generate-image');
+const _logger = createComponentLogger('test-recipes-generate-image');
 
 describe('recipes-generate-image API Route', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('ugcgrowth');
+const _logger = createComponentLogger('ugcgrowth');
 
 import { supabase } from './supabaseClient';
 
@@ -175,7 +175,7 @@ export class UGCGrowth {
         .single();
 
       if (fetchError) {
-        logger.error('Error fetching share data:', { fetchError });
+        _logger.error('Error fetching share data:', { fetchError });
         throw fetchError;
       }
 
@@ -190,7 +190,7 @@ export class UGCGrowth {
         .eq('id', shareId);
 
       if (updateError) {
-        logger.error('Error updating social platforms:', { updateError });
+        _logger.error('Error updating social platforms:', { updateError });
         throw updateError;
       }
 
@@ -274,7 +274,7 @@ export class UGCGrowth {
         .single();
 
       if (fetchError) {
-        logger.error('Error fetching current metrics:', { fetchError });
+        _logger.error('Error fetching current metrics:', { fetchError });
         return;
       }
 
@@ -319,7 +319,7 @@ export class UGCGrowth {
         .eq('id', shareId);
 
       if (updateError) {
-        logger.error('Error updating engagement metrics:', { updateError });
+        _logger.error('Error updating engagement metrics:', { updateError });
         throw updateError;
       }
 

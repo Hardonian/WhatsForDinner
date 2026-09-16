@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('image-generation');
+const _logger = createComponentLogger('image-generation');
 
 /**
  * Recipe Image Generation
@@ -43,7 +43,7 @@ export async function generateRecipeImage(
 
     return response.data[0]?.url || '';
   } catch (error) {
-    logger.error('Image generation error:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Image generation error:', { error: error instanceof Error ? error.message : String(error) });
     // Fallback to Unsplash
     return getUnsplashFallback(options.recipeTitle, options.cuisine);
   }

@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('index');
+const _logger = createComponentLogger('index');
 
 /**
  * Monetization Abstraction Layer
@@ -51,7 +51,7 @@ class MonetizationManager {
       try {
         await revenueCat.initialize(userId);
       } catch (error) {
-        if (process.env.NODE_ENV === 'development') { logger.warn('[Monetization] RevenueCat failed, using native billing:', { error }); }
+        if (process.env.NODE_ENV === 'development') { _logger.warn('[Monetization] RevenueCat failed, using native billing:', { error }); }
       }
     }
 
@@ -71,7 +71,7 @@ class MonetizationManager {
         return await revenueCat.getProducts();
       }
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') { logger.warn('[Monetization] RevenueCat getProducts failed:', { error }); }
+      if (process.env.NODE_ENV === 'development') { _logger.warn('[Monetization] RevenueCat getProducts failed:', { error }); }
     }
 
     // Fallback to native billing
@@ -99,7 +99,7 @@ class MonetizationManager {
         return { success: true, productId, transactionId: result.transactionIdentifier };
       }
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') { logger.warn('[Monetization] RevenueCat purchase failed:', { error }); }
+      if (process.env.NODE_ENV === 'development') { _logger.warn('[Monetization] RevenueCat purchase failed:', { error }); }
     }
 
     // Fallback to native billing
@@ -135,7 +135,7 @@ class MonetizationManager {
         }));
       }
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') { logger.warn('[Monetization] RevenueCat restore failed:', { error }); }
+      if (process.env.NODE_ENV === 'development') { _logger.warn('[Monetization] RevenueCat restore failed:', { error }); }
     }
 
     // Fallback to native billing
@@ -163,7 +163,7 @@ class MonetizationManager {
         return await revenueCat.hasEntitlement('premium');
       }
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') { logger.warn('[Monetization] RevenueCat check failed:', { error }); }
+      if (process.env.NODE_ENV === 'development') { _logger.warn('[Monetization] RevenueCat check failed:', { error }); }
     }
 
     return false;

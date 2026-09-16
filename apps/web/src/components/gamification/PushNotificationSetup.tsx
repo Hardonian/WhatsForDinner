@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('pushnotificationsetup');
+const _logger = createComponentLogger('pushnotificationsetup');
 
 ;
 import { supabase } from "@/lib/supabase/client";
@@ -58,7 +58,7 @@ export function usePushNotifications() {
         hapticTap();
       }
     } catch (err) {
-      logger.error('Push subscription failed:', { err });
+      _logger.error('Push subscription failed:', { err });
     }
   }
 
@@ -80,7 +80,7 @@ export function usePushNotifications() {
       setIsSubscribed(false);
       setSubscription(null);
     } catch (err) {
-      logger.error('Push unsubscription failed:', { err });
+      _logger.error('Push unsubscription failed:', { err });
     }
   }
 

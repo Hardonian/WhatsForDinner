@@ -7,7 +7,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('optimization');
+const _logger = createComponentLogger('optimization');
 
 /**
  * Optimized query helper with caching
@@ -108,7 +108,7 @@ export async function paginatedQuery<T>(
  */
 export function logSlowQuery(query: string, duration: number, threshold: number = 1000): void {
   if (duration > threshold) {
-    logger.warn(`Slow query detected (${duration}ms):`, query.substring(0, 200));
+    _logger.warn(`Slow query detected (${duration}ms):`, query.substring(0, 200));
     // In production, send to monitoring service
   }
 }

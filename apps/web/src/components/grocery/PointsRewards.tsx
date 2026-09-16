@@ -6,7 +6,7 @@
 'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('pointsrewards');
+const _logger = createComponentLogger('pointsrewards');
 
 
 
@@ -43,7 +43,7 @@ export function PointsRewards({ userId }: PointsRewardsProps) {
       setRewards(userRewards);
       setAchievements(userAchievements);
     } catch (error) {
-      logger.error('Failed to load points/rewards:', { error: error instanceof Error ? error.message : String(error) });
+      _logger.error('Failed to load points/rewards:', { error: error instanceof Error ? error.message : String(error) });
     }
   }
 

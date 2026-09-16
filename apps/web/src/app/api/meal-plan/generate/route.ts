@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import { withCSRFProtection } from '@/lib/csrf-middleware';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('meal-plan-generate-api');
+const _logger = createComponentLogger('meal-plan-generate-api');
 
 async function handler(request: NextRequest) {
   try {
@@ -83,7 +83,7 @@ async function handler(request: NextRequest) {
 
         return { recipes: mappedRecipes };
       } catch (err) {
-        logger.warn('Direct recipe generation failed, using structured fallback', {
+        _logger.warn('Direct recipe generation failed, using structured fallback', {
           error: err instanceof Error ? err.message : String(err),
         });
         return {
@@ -111,7 +111,7 @@ async function handler(request: NextRequest) {
 
     // Quick Mode (for onboarding / instant gratification)
     if (quickMode) {
-      logger.info('Generating quick recipe for onboarding/guest', {
+      _logger.info('Generating quick recipe for onboarding/guest', {
         itemCount: pantryItemNames.length,
         isGuest: !user,
       });
@@ -171,7 +171,7 @@ async function handler(request: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to generate meal plan';
-    logger.error('Meal plan generation error', { error: message });
+    _logger.error('Meal plan generation error', { error: message });
     return NextResponse.json(
       { error: message },
       { status: 500 }

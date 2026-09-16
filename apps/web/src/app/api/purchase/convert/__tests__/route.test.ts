@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-purchase-convert');
+const _logger = createComponentLogger('test-purchase-convert');
 
 describe('purchase-convert API Route', () => {
   beforeEach(() => {

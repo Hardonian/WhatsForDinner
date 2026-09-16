@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('cache');
+const _logger = createComponentLogger('cache');
 
 /**
  * Caching Utilities
@@ -25,7 +25,7 @@ class CacheManager {
         import('ioredis').then((Redis) => {
           this.redisClient = new Redis.default(process.env.REDIS_URL);
         }).catch(() => {
-          logger.warn('Redis not available, using memory cache');
+          _logger.warn('Redis not available, using memory cache');
         });
       } catch {
         // Redis not available, use memory cache
@@ -46,7 +46,7 @@ class CacheManager {
           return JSON.parse(value) as T;
         }
       } catch (error) {
-        logger.error('Redis get error:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Redis get error:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
 
@@ -84,7 +84,7 @@ class CacheManager {
         }
         return;
       } catch (error) {
-        logger.error('Redis set error:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Redis set error:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
 
@@ -105,7 +105,7 @@ class CacheManager {
       try {
         await this.redisClient.del(key);
       } catch (error) {
-        logger.error('Redis delete error:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Redis delete error:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
     this.memoryCache.delete(key);
@@ -126,7 +126,7 @@ class CacheManager {
           }
         }
       } catch (error) {
-        logger.error('Redis invalidate error:', { error: error instanceof Error ? error.message : String(error) });
+        _logger.error('Redis invalidate error:', { error: error instanceof Error ? error.message : String(error) });
       }
     }
     // Memory cache doesn't support tags, so we clear all

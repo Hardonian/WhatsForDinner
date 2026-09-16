@@ -5,7 +5,7 @@ import { GET } from '../route';
 import { POST } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('test-gamification-challenges');
+const _logger = createComponentLogger('test-gamification-challenges');
 
 describe('gamification-challenges API Route', () => {
   beforeEach(() => {

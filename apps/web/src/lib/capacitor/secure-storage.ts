@@ -1,6 +1,6 @@
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const logger = createComponentLogger('secure-storage');
+const _logger = createComponentLogger('secure-storage');
 
 /**
  * Secure Storage Utilities for Capacitor
@@ -21,7 +21,7 @@ export async function setSecure(key: string, value: string): Promise<void> {
       value: value, // In production, encrypt before storing
     });
   } catch (error) {
-    logger.error('Failed to store secure value for ${key}:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Failed to store secure value for ${key}:', { error: error instanceof Error ? error.message : String(error) });
     throw error;
   }
 }
@@ -34,7 +34,7 @@ export async function getSecure(key: string): Promise<string | null> {
     const result = await Preferences.get({ key: `${STORAGE_KEY_PREFIX}${key}` });
     return result.value;
   } catch (error) {
-    logger.error('Failed to retrieve secure value for ${key}:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Failed to retrieve secure value for ${key}:', { error: error instanceof Error ? error.message : String(error) });
     return null;
   }
 }
@@ -46,7 +46,7 @@ export async function removeSecure(key: string): Promise<void> {
   try {
     await Preferences.remove({ key: `${STORAGE_KEY_PREFIX}${key}` });
   } catch (error) {
-    logger.error('Failed to remove secure value for ${key}:', { error: error instanceof Error ? error.message : String(error) });
+    _logger.error('Failed to remove secure value for ${key}:', { error: error instanceof Error ? error.message : String(error) });
   }
 }
 
