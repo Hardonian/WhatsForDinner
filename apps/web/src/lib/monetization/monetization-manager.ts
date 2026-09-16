@@ -11,7 +11,7 @@ import { Capacitor } from '@capacitor/core';
 import { revenueCat } from './revenuecat';
 import { nativeBilling } from './native-billing';
 // Note: catalog.json path relative to web app root
-import catalogConfig from '../../../../ops/monetization/catalog.json';
+import catalogConfig from '../../../ops/monetization/catalog.json';
 
 export const MONETIZATION_MODE = (process.env.MONETIZATION_MODE || 'billing_native') as
   | 'none'

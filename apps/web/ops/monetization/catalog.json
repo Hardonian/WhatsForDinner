@@ -1,0 +1,124 @@
+{
+  "app_id": "app.whatsfordinner",
+  "monetization_mode": "billing_native",
+  "products": {
+    "premium_monthly": {
+      "type": "subscription",
+      "platforms": ["ios", "android"],
+      "ios_product_id": "premium_monthly",
+      "android_product_id": "premium_monthly",
+      "revenuecat_product_id": "premium_monthly",
+      "price_tiers": {
+        "usd": 9.99,
+        "eur": 8.99,
+        "gbp": 7.99
+      },
+      "features": [
+        "unlimited_meal_plans",
+        "advanced_pantry_management",
+        "nutritional_analysis",
+        "meal_prep_tools",
+        "shopping_list_export",
+        "recipe_collections",
+        "ad_free"
+      ],
+      "trial_days": 7,
+      "introductory_price": {
+        "amount": 4.99,
+        "periods": 1
+      }
+    },
+    "premium_yearly": {
+      "type": "subscription",
+      "platforms": ["ios", "android"],
+      "ios_product_id": "premium_yearly",
+      "android_product_id": "premium_yearly",
+      "revenuecat_product_id": "premium_yearly",
+      "price_tiers": {
+        "usd": 79.99,
+        "eur": 69.99,
+        "gbp": 59.99
+      },
+      "features": [
+        "unlimited_meal_plans",
+        "advanced_pantry_management",
+        "nutritional_analysis",
+        "meal_prep_tools",
+        "shopping_list_export",
+        "recipe_collections",
+        "ad_free",
+        "priority_support"
+      ],
+      "trial_days": 7,
+      "introductory_price": {
+        "amount": 39.99,
+        "periods": 1
+      },
+      "discount_percentage": 33
+    },
+    "meal_plan_unlock": {
+      "type": "non_consumable",
+      "platforms": ["ios", "android"],
+      "ios_product_id": "meal_plan_unlock",
+      "android_product_id": "meal_plan_unlock",
+      "revenuecat_product_id": "meal_plan_unlock",
+      "price_tiers": {
+        "usd": 4.99,
+        "eur": 4.49,
+        "gbp": 3.99
+      },
+      "features": [
+        "unlimited_meal_plans"
+      ],
+      "one_time": true
+    }
+  },
+  "test_products": {
+    "premium_monthly": {
+      "ios": "premium_monthly_test",
+      "android": "android.test.purchased"
+    },
+    "premium_yearly": {
+      "ios": "premium_yearly_test",
+      "android": "android.test.purchased"
+    }
+  },
+  "entitlements": {
+    "premium": {
+      "identifier": "premium",
+      "display_name": "Premium Features",
+      "products": ["premium_monthly", "premium_yearly", "meal_plan_unlock"]
+    },
+    "meal_plans": {
+      "identifier": "meal_plans",
+      "display_name": "Unlimited Meal Plans",
+      "products": ["premium_monthly", "premium_yearly", "meal_plan_unlock"]
+    }
+  },
+  "paywall_config": {
+    "primary_product": "premium_monthly",
+    "recommended_product": "premium_yearly",
+    "show_trial": true,
+    "show_intro_offer": true,
+    "restore_button": true,
+    "terms_link": "/legal/terms.html",
+    "privacy_link": "/legal/privacy.html"
+  },
+  "revenuecat": {
+    "api_key": "${REVENUECAT_API_KEY}",
+    "proxy_url": "${REVENUECAT_PROXY_URL}",
+    "enabled": true
+  },
+  "fallback_mode": {
+    "native_billing": {
+      "enabled": true,
+      "storekit_2": true,
+      "google_play_billing_5": true
+    },
+    "reader_app": {
+      "enabled": false,
+      "external_url": "https://whatsfordinner.app/subscribe",
+      "description": "Reader app mode - external subscription management"
+    }
+  }
+}
