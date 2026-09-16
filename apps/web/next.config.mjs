@@ -1,6 +1,6 @@
-import type { NextConfig } from 'next';
 
-const nextConfig: NextConfig = {
+
+const nextConfig = {
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
   transpilePackages: ["@whats-for-dinner/ui", "@whats-for-dinner/utils", "@whats-for-dinner/theme", "@whats-for-dinner/config"],
