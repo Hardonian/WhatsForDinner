@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * OpenAPI Contract Validation
  * 

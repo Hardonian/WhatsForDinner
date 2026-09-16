@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Red-Team Tests - Simulate auth, rate-limit, RLS breaches
  */

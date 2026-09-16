@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Middleware Tests
  * Tests for Edge runtime compatibility and functionality

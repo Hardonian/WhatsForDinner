@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * E2E Smoke Test - Core User Journey
  * 

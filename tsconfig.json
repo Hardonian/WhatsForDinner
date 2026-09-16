@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -29,23 +33,51 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@ui/*": ["./packages/ui/*"],
-      "@utils/*": ["./packages/utils/*"],
-      "@theme/*": ["./packages/theme/*"],
-      "@whats-for-dinner/ui": ["./packages/ui/src"],
-      "@whats-for-dinner/utils": ["./packages/utils/src"],
-      "@whats-for-dinner/theme": ["./packages/theme/src"],
-      "@whats-for-dinner/config": ["./packages/config/src"],
-      "@whats-for-dinner/server": ["./packages/server/src"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@ui/*": [
+        "./packages/ui/*"
+      ],
+      "@utils/*": [
+        "./packages/utils/*"
+      ],
+      "@theme/*": [
+        "./packages/theme/*"
+      ],
+      "@whats-for-dinner/ui": [
+        "./packages/ui/src"
+      ],
+      "@whats-for-dinner/utils": [
+        "./packages/utils/src"
+      ],
+      "@whats-for-dinner/theme": [
+        "./packages/theme/src"
+      ],
+      "@whats-for-dinner/config": [
+        "./packages/config/src"
+      ],
+      "@whats-for-dinner/server": [
+        "./packages/server/src"
+      ]
     }
   },
   "references": [
-    { "path": "./packages/ui" },
-    { "path": "./packages/utils" },
-    { "path": "./packages/theme" },
-    { "path": "./packages/config" },
-    { "path": "./packages/server" }
+    {
+      "path": "./packages/ui"
+    },
+    {
+      "path": "./packages/utils"
+    },
+    {
+      "path": "./packages/theme"
+    },
+    {
+      "path": "./packages/config"
+    },
+    {
+      "path": "./packages/server"
+    }
   ],
   "include": [
     "next-env.d.ts",

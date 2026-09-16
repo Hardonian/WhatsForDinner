@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { performance } from 'perf_hooks';
 

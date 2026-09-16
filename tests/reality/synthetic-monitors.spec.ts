@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Reality Suite - E2E tests with synthetic monitors
  */

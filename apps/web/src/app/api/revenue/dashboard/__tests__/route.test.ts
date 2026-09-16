@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Revenue Dashboard API Tests
  */

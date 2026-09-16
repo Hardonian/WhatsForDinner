@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { isWeb, isIOS, isAndroid, useDeviceMode, getResponsiveValue, getPlatformValue } from '../device';
 

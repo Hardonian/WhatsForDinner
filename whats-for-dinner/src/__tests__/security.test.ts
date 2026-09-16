@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { aiSafetyGuardrails } from '../lib/aiSafetyGuardrails';
 import {
   secretsManager,

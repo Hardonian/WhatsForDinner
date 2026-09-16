@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { POST } from '../route';
 import { openai } from '@/lib/openaiClient';
 

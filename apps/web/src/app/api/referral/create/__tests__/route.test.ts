@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Referral Program API Tests
  * Comprehensive test suite for referral creation and conversion

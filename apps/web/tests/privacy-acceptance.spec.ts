@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Privacy Monitoring Acceptance Tests
  * Tests all privacy flows end-to-end

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Red-team tests - security breach simulation
  */

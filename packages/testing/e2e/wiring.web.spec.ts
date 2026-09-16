@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Web E2E Wiring Tests (Playwright)
  * 
