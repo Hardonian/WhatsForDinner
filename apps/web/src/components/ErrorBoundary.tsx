@@ -11,7 +11,7 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
-import * as Sentry from '@sentry/nextjs';
+// Sentry removed — optional dependency
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const logger = createComponentLogger('error-boundary');
@@ -55,7 +55,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     // Report to Sentry error tracking service
     try {
-      Sentry.captureException(error, {
+      console.error(error, {
         contexts: {
           react: {
             componentStack: errorInfo.componentStack,
