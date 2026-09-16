@@ -1,6 +1,5 @@
 import { requireAuth } from '@/lib/auth-middleware';
 
-export const dynamic = "force-dynamic";
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 async function logPrivacyAction(

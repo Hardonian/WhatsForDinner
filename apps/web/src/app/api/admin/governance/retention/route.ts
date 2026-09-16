@@ -1,6 +1,5 @@
 import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
 
-export const dynamic = "force-dynamic";
 import { retentionPolicies } from '@whats-for-dinner/server/db/schema';
 
 export async function GET(request: NextRequest) {

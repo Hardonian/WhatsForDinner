@@ -1,47 +1,5 @@
 import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
 
-export const dynamic = "force-dynamic";
-import {
-import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
-
-export const dynamic = "force-dynamic";
-  createIncident,
-  listIncidents,
-  getIncident,
-} from '@whats-for-dinner/server/incidents/service';
-
-const createIncidentSchema = z.object({
-  title: z.string().min(1),
-  severity: z.enum(['low', 'major', 'critical']),
-  summary: z.string().min(1),
-});
-
-export async function GET(request: NextRequest) {
-  try {
-    const adminAuth = await getAdminAuth(request);
-    if (!adminAuth) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status') as any;
-    const severity = searchParams.get('severity') as any;
-    const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = parseInt(searchParams.get('limit') || '50', 10);
-
-    const incidents = await listIncidents({
-      status,
-      severity,
-      page,
-      limit,
-    });
-
-    return NextResponse.json(incidents);
-  } catch (error) {
-    // Error handled: Incidents list error:
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
 
 export async function POST(request: NextRequest) {
   try {

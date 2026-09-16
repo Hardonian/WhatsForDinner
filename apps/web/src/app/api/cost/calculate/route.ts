@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-
 export const dynamic = "force-dynamic";
+
 import {
-import { NextRequest, NextResponse } from 'next/server';
-
-export const dynamic = "force-dynamic";
   getRecipeCost,
   getCostPerServing,
   getMealPlanCost,
@@ -76,5 +73,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-export const dynamic = "force-dynamic";

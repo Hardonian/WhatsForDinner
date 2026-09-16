@@ -1,10 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
+/**
+ * Production Health Check Endpoint
+ * 
+ * Provides comprehensive health checking for production monitoring:
+ * - GET /api/health - Full health check with all checks
+ * - GET /api/health/live - Liveness probe (simple alive check)
+ * - GET /api/health/ready - Readiness probe (ready to accept traffic)
+ */
 
+import { NextRequest, NextResponse } from 'next/server';
 export const dynamic = "force-dynamic";
+
 import {
-import { NextRequest, NextResponse } from 'next/server';
-
-export const dynamic = "force-dynamic";
   runHealthCheck,
   createLivenessHandler,
   createReadinessHandler,
@@ -68,5 +74,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-
-export const dynamic = "force-dynamic";
