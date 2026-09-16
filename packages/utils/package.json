@@ -18,5 +18,13 @@
     "@types/js-yaml": "^4.0.9",
     "@types/react": "^18.3.1",
     "typescript": "^5"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts",
+    "./api": "./src/api/index.ts",
+    "./api/*": "./src/api/*.ts",
+    "./guardian": "./src/api/guardian/index.ts",
+    "./guardian/*": "./src/api/guardian/*.ts"
   }
 }
