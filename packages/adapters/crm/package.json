@@ -10,5 +10,9 @@
   "devDependencies": {
     "@types/node": "^20",
     "typescript": "^5"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./*": "./*.ts"
   }
 }

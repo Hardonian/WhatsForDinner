@@ -8,8 +8,8 @@ import { db } from '../db/index';
 import { journeyStates, users, mealPlans, lifecycleEvents } from '../db/schema';
 import { eq, and, sql, gte, lte, count } from 'drizzle-orm';
 import { logger } from '../observability/index';
-import { crmAdapter } from '../../../adapters/crm/index';
-import type { EmailMessage } from '../../../adapters/crm/types';
+import { crmAdapter } from '@whats-for-dinner/adapters-crm';
+import type { EmailMessage } from '@whats-for-dinner/adapters-crm/types';
 
 export interface JourneyRule {
   key: string;

@@ -7,8 +7,8 @@ import { db } from '../db/index';
 import { users, mealPlans, healthMetrics } from '../db/schema';
 import { eq, gte, sql } from 'drizzle-orm';
 import { logger } from '../observability/index';
-import { crmAdapter } from '../../../adapters/crm/index';
-import type { EmailMessage } from '../../../adapters/crm/types';
+import { crmAdapter } from '@whats-for-dinner/adapters-crm';
+import type { EmailMessage } from '@whats-for-dinner/adapters-crm/types';
 
 export async function digestRunnerProcessor(data: {
   dayOfWeek?: number; // 0 = Sunday
