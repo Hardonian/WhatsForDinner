@@ -50,7 +50,7 @@
     "monetization:enable": "./scripts/enable-monetization.sh",
     "monetization:enable:api": "tsx scripts/enable-monetization-api.ts",
     "monetization:enable:all": "tsx scripts/enable-all-monetization.ts",
-    "monetization:status": "node -e \"console.log('Monetization channels:', process.env.AFFILIATE_ENABLED ? '✅ Enabled' : '❌ Disabled')\"",
+    "monetization:status": "node -e \"console.log('Monetization channels:', process.env.AFFILIATE_ENABLED ? '\u2705 Enabled' : '\u274c Disabled')\"",
     "weekly:activation:review": "tsx scripts/weekly-activation-review.ts",
     "archive:non-core": "tsx scripts/archive-non-core-features.ts",
     "test:coverage:scaffold": "tsx scripts/increase-test-coverage.ts",
@@ -226,7 +226,7 @@
     "deploy:validate": "tsx scripts/validate-deployment-config.ts",
     "deploy:doctor": "tsx scripts/deploy-doctor.ts",
     "env:validate": "tsx -e \"import('./packages/config/src/env-loader.ts').then(m => m.loadEnv({ strict: false }))\"",
-    "env:check": "tsx -e \"import('./packages/config/src/env-loader.ts').then(m => { const result = m.checkRequiredEnv(['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY']); if (!result.valid) { console.error('Missing required env vars:', result.missing); process.exit(1); } else { console.log('✅ All required env vars are set'); } })\"",
+    "env:check": "tsx -e \"import('./packages/config/src/env-loader.ts').then(m => { const result = m.checkRequiredEnv(['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY']); if (!result.valid) { console.error('Missing required env vars:', result.missing); process.exit(1); } else { console.log('\u2705 All required env vars are set'); } })\"",
     "env:doctor": "tsx scripts/env-doctor.ts",
     "env:doctor:check": "tsx scripts/env-doctor.ts --check",
     "env:doctor:validate": "tsx scripts/env-doctor.ts --validate",
@@ -277,7 +277,7 @@
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
-    "node": ">=18.0.0 <21.0.0",
+    "node": ">=18.0.0",
     "pnpm": ">=8.0.0"
   }
 }
