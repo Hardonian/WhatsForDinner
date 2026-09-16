@@ -11,8 +11,8 @@ export async function GET(request: NextRequest) {
     // Note: In production, these should be imported from @nomad/server package
     // For now, using dynamic require
     const { getAdminAuth } = await import('@whats-for-dinner/server/auth/admin');
-    const { db } = await import('../../../../packages/server/src/db/index.js');
-    const schema = await import('../../../../packages/server/src/db/schema.js');
+    const { db } = await import('@whats-for-dinner/server/db');
+    const schema = await import('@whats-for-dinner/server/db/schema');
     const { eq, sql, count } = await import('drizzle-orm');
 
     const adminAuth = await getAdminAuth(request);
