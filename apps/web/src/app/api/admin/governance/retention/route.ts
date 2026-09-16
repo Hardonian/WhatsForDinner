@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getAdminAuth } from '@/../../../../packages/server/src/auth/admin.js';
+import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
 import {
   runRetentionPolicies,
   getRetentionPreview,
