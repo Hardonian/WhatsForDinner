@@ -1,106 +1,219 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
-  "pipeline": {
+  "globalDependencies": [
+    "**/.env.*local"
+  ],
+  "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**", "build/**"],
-      "env": ["NODE_ENV", "NEXT_PUBLIC_*"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "build/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "NEXT_PUBLIC_*"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["NODE_ENV", "NEXT_PUBLIC_*"]
+      "env": [
+        "NODE_ENV",
+        "NEXT_PUBLIC_*"
+      ]
     },
     "lint": {
-      "dependsOn": ["^build"],
-      "outputs": ["eslint-report.json"],
-      "env": ["NODE_ENV"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "eslint-report.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "lint:fix": {
-      "dependsOn": ["^build"],
-      "env": ["NODE_ENV"]
+      "dependsOn": [
+        "^build"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "test": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**", "test-results/**"],
-      "env": ["NODE_ENV", "CI"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "coverage/**",
+        "test-results/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "CI"
+      ]
     },
     "test:watch": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "cache": false,
       "persistent": true,
-      "env": ["NODE_ENV"]
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "test:coverage": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**"],
-      "env": ["NODE_ENV", "CI"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "coverage/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "CI"
+      ]
     },
     "type-check": {
-      "dependsOn": ["^build"],
-      "outputs": ["tsconfig.tsbuildinfo"],
-      "env": ["NODE_ENV"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "tsconfig.tsbuildinfo"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "clean": {
       "cache": false
     },
     "format": {
       "outputs": [],
-      "env": ["NODE_ENV"]
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "format:check": {
       "outputs": [],
-      "env": ["NODE_ENV"]
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "perf:monitor": {
-      "dependsOn": ["build"],
-      "outputs": ["REPORTS/**"],
-      "env": ["NODE_ENV"]
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": [
+        "REPORTS/**"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "perf:analyze": {
-      "dependsOn": ["build"],
-      "outputs": ["REPORTS/**"],
-      "env": ["NODE_ENV"]
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": [
+        "REPORTS/**"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "release": {
-      "dependsOn": ["build", "test", "lint", "type-check"],
-      "outputs": ["dist/**", "*.tgz"],
-      "env": ["NODE_ENV", "NPM_TOKEN"]
+      "dependsOn": [
+        "build",
+        "test",
+        "lint",
+        "type-check"
+      ],
+      "outputs": [
+        "dist/**",
+        "*.tgz"
+      ],
+      "env": [
+        "NODE_ENV",
+        "NPM_TOKEN"
+      ]
     },
     "doctor": {
-      "outputs": ["REPORTS/doctor-*.json"],
-      "env": ["NODE_ENV"]
+      "outputs": [
+        "REPORTS/doctor-*.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "a11y": {
-      "dependsOn": ["build"],
-      "outputs": ["REPORTS/a11y-*.json"],
-      "env": ["NODE_ENV"]
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": [
+        "REPORTS/a11y-*.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "obs": {
-      "outputs": ["REPORTS/obs-*.json"],
-      "env": ["NODE_ENV"]
+      "outputs": [
+        "REPORTS/obs-*.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "security:audit": {
-      "outputs": ["security-audit-report.json"],
-      "env": ["NODE_ENV"]
+      "outputs": [
+        "security-audit-report.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "security:scan": {
-      "outputs": ["security-scan-report.json"],
-      "env": ["NODE_ENV"]
+      "outputs": [
+        "security-scan-report.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "security:deps": {
-      "outputs": ["REPORTS/security-deps-*.json"],
-      "env": ["NODE_ENV"]
+      "outputs": [
+        "REPORTS/security-deps-*.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "security:secrets": {
-      "outputs": ["REPORTS/security-secrets-*.json"],
-      "env": ["NODE_ENV"]
+      "outputs": [
+        "REPORTS/security-secrets-*.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     },
     "security:headers": {
-      "dependsOn": ["build"],
-      "outputs": ["REPORTS/security-headers-*.json"],
-      "env": ["NODE_ENV"]
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": [
+        "REPORTS/security-headers-*.json"
+      ],
+      "env": [
+        "NODE_ENV"
+      ]
     }
   }
 }
