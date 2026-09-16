@@ -123,7 +123,7 @@ export function createLogger(source = 'app'): Logger {
   let Sentry: any = null;
   try {
     // Dynamic import to avoid breaking if Sentry is not installed
-    Sentry = require('@sentry/nextjs');
+    Sentry = null; // Stubbed for build
   } catch {
     // Sentry not available, continue without it
   }
