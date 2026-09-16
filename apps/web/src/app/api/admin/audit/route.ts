@@ -6,7 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
-import { getAuditLogs } from '@/../../../../packages/server/src/audit/index.js';
+import { getAuditLogs } from '@whats-for-dinner/server/audit';
 
 export async function GET(request: NextRequest) {
   try {

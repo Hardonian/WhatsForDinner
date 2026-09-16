@@ -10,9 +10,9 @@ import { getAdminAuth } from '@whats-for-dinner/server/auth/admin';
 import {
   runRetentionPolicies,
   getRetentionPreview,
-} from '@/../../../../packages/server/src/jobs/retentionRunner.js';
-import { db } from '@/../../../../packages/server/src/db/index.js';
-import { retentionPolicies } from '@/../../../../packages/server/src/db/schema.js';
+} from '@whats-for-dinner/server/jobs/retentionRunner';
+import { db } from '@whats-for-dinner/server/db';
+import { retentionPolicies } from '@whats-for-dinner/server/db/schema';
 
 export async function GET(request: NextRequest) {
   try {

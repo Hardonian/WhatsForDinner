@@ -12,7 +12,7 @@ import {
   createIncident,
   listIncidents,
   getIncident,
-} from '@/../../../../packages/server/src/incidents/service.js';
+} from '@whats-for-dinner/server/incidents/service';
 
 const createIncidentSchema = z.object({
   title: z.string().min(1),
