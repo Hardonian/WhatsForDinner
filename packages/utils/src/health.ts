@@ -80,7 +80,7 @@ async function checkDatabase(): Promise<CheckResult> {
     }
     
     // Simple query to check connectivity
-    const { error } = await supabase.from('health').select('1');
+    const { error } = await (supabase as any).from('health').select('1');
     const latency = Date.now() - start;
     
     if (error) {
