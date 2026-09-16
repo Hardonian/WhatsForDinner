@@ -1,15 +1,18 @@
 import type { NextConfig } from 'next';
-import { withSentryConfig } from '@sentry/nextjs';
+let withSentryConfig: any;
+try {
+  ({ withSentryConfig } = require('@sentry/nextjs'));
+} catch {}
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  
   transpilePackages: ["@whats-for-dinner/ui", "@whats-for-dinner/utils", "@whats-for-dinner/theme", "@whats-for-dinner/config"],
   
   // Phase 2: Performance & UX Stability - Bundle Optimization
   experimental: {
     optimizePackageImports: ["@whats-for-dinner/ui", "lucide-react", "@radix-ui/react-slot", "@radix-ui/react-label", "@radix-ui/react-separator", "@radix-ui/react-switch", "@radix-ui/react-tabs"],
     optimizeCss: true,
-    serverComponentsExternalPackages: ['@supabase/supabase-js'],
+    serverComponentsExternalPackages: ['@supabase/supabase-js', 'archiver', '@sendgrid/mail'],
   },
   
   // Phase 2: Image Optimization with WebP/AVIF support

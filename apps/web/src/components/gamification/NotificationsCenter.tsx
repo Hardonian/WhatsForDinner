@@ -30,7 +30,7 @@ export default function NotificationsCenter() {
     }
   }
 
-  function subscribeToNotifications() {
+  async function subscribeToNotifications() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
