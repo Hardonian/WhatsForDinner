@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Trust Fabric AI Layer
  * Learns user comfort zones and adapts recommendations

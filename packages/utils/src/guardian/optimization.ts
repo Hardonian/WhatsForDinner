@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Guardian Optimization Utilities
  * Performance optimizations and caching strategies

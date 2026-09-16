@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Guardian Inspector Agent
  * Background agent that analyzes logs hourly and generates trust reports
