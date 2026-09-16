@@ -3,7 +3,7 @@
  * Disabled mode for development/testing
  */
 
-import type { EmailTemplate, EmailMessage, EmailSubscription } from './types.js';
+import type { EmailTemplate, EmailMessage, EmailSubscription } from './types';
 import { logger } from '@whats-for-dinner/server/observability';
 
 export class NoopAdapter {

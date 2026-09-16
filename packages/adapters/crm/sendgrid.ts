@@ -6,7 +6,7 @@
 // @sendgrid/mail will be installed in package.json
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const sgMail = require('@sendgrid/mail');
-import type { EmailTemplate, EmailMessage, EmailSubscription } from './types.js';
+import type { EmailTemplate, EmailMessage, EmailSubscription } from './types';
 import { logger } from '@whats-for-dinner/server/observability';
 
 const apiKey = process.env.SENDGRID_API_KEY;

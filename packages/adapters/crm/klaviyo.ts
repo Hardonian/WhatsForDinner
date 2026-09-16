@@ -3,7 +3,7 @@
  * Handles identify, track, subscribe, and send flows via Klaviyo API
  */
 
-import type { EmailTemplate, EmailMessage, EmailSubscription } from './types.js';
+import type { EmailTemplate, EmailMessage, EmailSubscription } from './types';
 import { logger } from '@whats-for-dinner/server/observability';
 
 const apiKey = process.env.KLAVIYO_API_KEY;

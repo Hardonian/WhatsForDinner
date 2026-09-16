@@ -3,10 +3,10 @@
  * Switches between SendGrid, Klaviyo, or No-op based on env
  */
 
-import { sendGridAdapter, SendGridAdapter } from './sendgrid.js';
-import { klaviyoAdapter, KlaviyoAdapter } from './klaviyo.js';
-import { noopAdapter, NoopAdapter } from './noop.js';
-import type { CRMAdapter } from './types.js';
+import { sendGridAdapter, SendGridAdapter } from './sendgrid';
+import { klaviyoAdapter, KlaviyoAdapter } from './klaviyo';
+import { noopAdapter, NoopAdapter } from './noop';
+import type { CRMAdapter } from './types';
 
 const provider = process.env.CRM_PROVIDER || 'noop';
 
@@ -24,7 +24,7 @@ export function getCRMAdapter(): CRMAdapter {
 
 export const crmAdapter = getCRMAdapter();
 
-export * from './types.js';
-export * from './sendgrid.js';
-export * from './klaviyo.js';
-export * from './noop.js';
+export * from './types';
+export * from './sendgrid';
+export * from './klaviyo';
+export * from './noop';
