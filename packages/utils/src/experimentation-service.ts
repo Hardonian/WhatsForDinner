@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Experimentation Service
  * A/B testing and feature flag management

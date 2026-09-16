@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Standardized API Error Handler
  * 

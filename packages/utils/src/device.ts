@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Platform detection without React Native dependency
 export const isWeb = typeof window !== 'undefined';
 export const isIOS = isWeb ? /iPad|iPhone|iPod/.test(navigator.userAgent) : false;

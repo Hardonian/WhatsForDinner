@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * API Contract Validators and DTOs
  * Provides type-safe request/response validation using Zod

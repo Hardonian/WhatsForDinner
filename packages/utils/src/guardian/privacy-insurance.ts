@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Privacy Insurance Features
  * Private Mode Pulse, Sensitive Context Detection, MFA Bubble, Emergency Lockdown

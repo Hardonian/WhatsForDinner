@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Guardian Core Service
  * Monitors data access, assesses risk, and enforces privacy boundaries

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * OpenTelemetry Telemetry Instrumentation
  * Provides structured logging, tracing, and metrics

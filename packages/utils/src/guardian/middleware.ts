@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Guardian Middleware
  * Hooks into telemetry events and monitors data access

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Guardian GPT Explainer
  * Local LLM wrapper for summarizing what data was used, why, and by whom

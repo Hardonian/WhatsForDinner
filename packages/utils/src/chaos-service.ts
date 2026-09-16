@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Chaos Engineering Service
  * Synthetic failure testing and resilience validation

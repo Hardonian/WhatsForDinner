@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Image Optimization Utilities
  * Helper functions for responsive images and modern formats

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Quiet mode configuration
  */

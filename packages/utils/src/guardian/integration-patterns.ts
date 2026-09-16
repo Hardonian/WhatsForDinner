@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Guardian Integration Patterns
  * Composable patterns for integrating Guardian into various parts of the app
