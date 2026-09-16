@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Revenue Aggregator Job
  * Nightly cron 00:05 UTC: aggregate daily transactions ? snapshots

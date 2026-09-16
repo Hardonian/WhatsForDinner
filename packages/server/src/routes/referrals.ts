@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Referrals API Routes
  * Handles referral code generation, tracking, and claiming

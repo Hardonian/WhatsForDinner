@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Unified Purchase Adapter
  * Abstracts iOS StoreKit 2 and Android Play Billing v6

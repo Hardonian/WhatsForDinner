@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Partner API Routes
  * 

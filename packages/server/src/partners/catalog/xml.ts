@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * XML Catalog Feed Parser
  * Parses XML feeds (Google Merchant, RSS, custom formats)

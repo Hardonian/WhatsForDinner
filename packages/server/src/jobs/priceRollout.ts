@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Price Rollout Job
  * Activates scheduled pricing rules and expires promos

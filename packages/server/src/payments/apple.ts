@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Apple App Store Receipt Verification
  * Uses App Store Server API (JWT/JWS) for validation

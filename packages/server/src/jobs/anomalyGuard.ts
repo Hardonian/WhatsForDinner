@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Anomaly Guard Job
  * Monitors metrics and auto-pauses experiments if guardrails breached

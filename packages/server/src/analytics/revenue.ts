@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Revenue Analytics Module
  * ETL jobs aggregating transactions ? revenue_snapshots

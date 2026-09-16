@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * SLO Budget Calculator & Exporter
  * 

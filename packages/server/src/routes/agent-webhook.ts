@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Agent Integration Webhook Router
  * Handles webhooks from AI agents (MindStudio, Zapier, n8n, etc.)

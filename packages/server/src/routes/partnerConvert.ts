@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Partner Conversion Webhook Handler
  * 

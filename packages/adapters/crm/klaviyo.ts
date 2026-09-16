@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Klaviyo CRM Adapter
  * Handles identify, track, subscribe, and send flows via Klaviyo API

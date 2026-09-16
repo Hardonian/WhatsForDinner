@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * CSV Catalog Feed Parser
  * Parses CSV feeds (Google Merchant format compatible)

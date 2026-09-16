@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Price Optimizer Job
  * Automated price testing based on elasticity

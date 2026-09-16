@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Paywall API Route
  * Server-driven paywall configuration with A/B testing

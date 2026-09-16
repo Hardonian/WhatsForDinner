@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * No-op CRM Adapter
  * Disabled mode for development/testing

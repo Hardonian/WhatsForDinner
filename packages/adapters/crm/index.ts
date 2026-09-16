@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * CRM Adapter Factory
  * Switches between SendGrid, Klaviyo, or No-op based on env

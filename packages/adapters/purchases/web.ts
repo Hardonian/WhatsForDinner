@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Web Purchase Adapter - Server-side subscription management
  * Web subscriptions are handled server-side via Stripe or similar

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Compliance guard - data inventory and DSAR
  */

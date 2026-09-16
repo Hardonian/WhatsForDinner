@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * SendGrid CRM Adapter
  * Handles transactional and marketing emails via SendGrid

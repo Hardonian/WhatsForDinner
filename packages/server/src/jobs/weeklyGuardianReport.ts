@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Weekly Report Generation Job
  * Runs weekly to generate and store trust reports

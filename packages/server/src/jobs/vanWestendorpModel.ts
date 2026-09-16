@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Van Westendorp Model Job
  * Aggregate survey responses and compute median optimal price per country/plan

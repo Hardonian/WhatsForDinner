@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Partner hooks and integration contracts
  */

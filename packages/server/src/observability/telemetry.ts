@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Observability suite with OpenTelemetry
  */

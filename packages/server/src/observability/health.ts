@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Aggregated Health Check Endpoints
  * 

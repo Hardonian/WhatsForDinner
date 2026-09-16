@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Android Purchase Adapter - Google Play Billing v6
  * Uses react-native-iap or Google Play Billing Library

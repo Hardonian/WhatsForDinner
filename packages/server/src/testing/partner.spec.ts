@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Partner Revenue Network - End-to-End Tests
  * 

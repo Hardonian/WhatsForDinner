@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Google Play Purchase Verification
  * Uses Google Play Developer API

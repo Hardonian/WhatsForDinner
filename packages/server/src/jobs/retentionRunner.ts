@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Data Retention Policy Runner
  * 

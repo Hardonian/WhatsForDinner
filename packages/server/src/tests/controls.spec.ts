@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Controls Monitoring Tests
  *

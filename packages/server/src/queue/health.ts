@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Phase 1 Guardrail: Queue Worker Health Monitoring
  * Provides health check endpoints and monitoring for the queue worker

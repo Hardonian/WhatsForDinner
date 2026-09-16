@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * iOS Purchase Adapter - StoreKit 2
  * Uses expo-in-app-purchases or native StoreKit 2

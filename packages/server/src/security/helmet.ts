@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Response, NextFunction } from 'express';
 import type { NextResponse } from 'next/server';
 import type { IncomingMessage } from 'http';

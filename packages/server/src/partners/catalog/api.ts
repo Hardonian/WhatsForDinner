@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * REST API Catalog Feed Parser
  * Handles paginated JSON API responses

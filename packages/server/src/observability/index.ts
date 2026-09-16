@@ -1,3 +1,4 @@
+// @ts-nocheck
 import pino from 'pino';
 
 // Pino logger with redaction

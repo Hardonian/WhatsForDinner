@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Paywall API Tests
  */

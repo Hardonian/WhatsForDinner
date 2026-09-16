@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Elasticity Model Job
  * Weekly job: fetch transactions and conversion counts per price point

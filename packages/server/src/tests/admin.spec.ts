@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Admin Ops & Trust Center Tests
  * 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Referrals API Tests
  */

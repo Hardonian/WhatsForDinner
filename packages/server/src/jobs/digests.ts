@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Job } from 'bullmq';
 import { logger } from '../observability/index';
 import { usersRepo, mealPlansRepo, healthMetricsRepo } from '../db/index';

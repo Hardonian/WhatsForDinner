@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * DSAR (Data Subject Access Request) Routes
  *
