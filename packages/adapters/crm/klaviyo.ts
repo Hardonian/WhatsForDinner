@@ -4,7 +4,7 @@
  */
 
 import type { EmailTemplate, EmailMessage, EmailSubscription } from './types.js';
-import { logger } from '../../server/src/observability/index.js';
+import { logger } from '@whats-for-dinner/server/observability';
 
 const apiKey = process.env.KLAVIYO_API_KEY;
 const listId = process.env.KLAVIYO_LIST_ID;

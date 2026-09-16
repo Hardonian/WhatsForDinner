@@ -1,4 +1,0 @@
-/**
- * CRM Adapter Types
- */
-export {};

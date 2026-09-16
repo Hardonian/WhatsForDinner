@@ -7,7 +7,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const sgMail = require('@sendgrid/mail');
 import type { EmailTemplate, EmailMessage, EmailSubscription } from './types.js';
-import { logger } from '../../server/src/observability/index.js';
+import { logger } from '@whats-for-dinner/server/observability';
 
 const apiKey = process.env.SENDGRID_API_KEY;
 const fromEmail = process.env.SENDGRID_FROM || 'no-reply@nomad.app';

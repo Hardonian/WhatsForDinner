@@ -4,7 +4,7 @@
  */
 
 import type { EmailTemplate, EmailMessage, EmailSubscription } from './types.js';
-import { logger } from '../../server/src/observability/index.js';
+import { logger } from '@whats-for-dinner/server/observability';
 
 export class NoopAdapter {
   async sendTransactional(_message: EmailMessage): Promise<{ success: boolean; messageId?: string; error?: string }> {
