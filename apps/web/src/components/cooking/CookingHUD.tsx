@@ -24,12 +24,19 @@ import {
   AlertCircle,
   Thermometer,
   ShieldCheck,
+  Shuffle,
+  RefreshCw,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { soundEffects } from '@/lib/audio/sound-effects';
+import {
+  DynamicRecipe,
+  applyIngredientSwap,
+  shuffleRecipeRemix,
+} from '@/lib/recipes/recipe-mutator';
 
 export const USDA_TEMPERATURE_GUIDE = [
   { item: 'Poultry (Whole, Ground, Breasts)', tempF: 165, tempC: 74, rest: '0 min' },
@@ -80,6 +87,15 @@ const COMMON_SUBSTITUTIONS: Record<string, string> = {
 };
 
 export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
+  const [activeRecipe, setActiveRecipe] = useState<DynamicRecipe>({
+    ...recipe,
+    difficulty: recipe.difficulty || 'Easy',
+    cuisine: 'Chef Specialty',
+    proTips: recipe.proTips || {},
+    substitutions: recipe.substitutions || {},
+    activeSwaps: [],
+  });
+
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [isVoiceActive, setIsVoiceActive] = useState(false);
@@ -89,6 +105,43 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
   const [isSubstitutionsOpen, setIsSubstitutionsOpen] = useState(false);
   const [selectedSubIngredient, setSelectedSubIngredient] = useState<string | null>(null);
   const [isTempsGuideOpen, setIsTempsGuideOpen] = useState(false);
+
+  useEffect(() => {
+    setActiveRecipe({
+      ...recipe,
+      difficulty: recipe.difficulty || 'Easy',
+      cuisine: 'Chef Specialty',
+      proTips: recipe.proTips || {},
+      substitutions: recipe.substitutions || {},
+      activeSwaps: [],
+    });
+  }, [recipe]);
+
+  const handleSwapIngredient = (ingredientKey: string) => {
+    const updated = applyIngredientSwap(activeRecipe, ingredientKey);
+    setActiveRecipe(updated);
+    soundEffects.playClick();
+    const isNowActive = updated.activeSwaps?.some(
+      s => s.original.toLowerCase() === ingredientKey.toLowerCase()
+    );
+    if (isNowActive) {
+      toast.success(`Swapped ${ingredientKey}!`, {
+        description: `Adapted cooking instructions, timings, and heat control across all steps.`,
+      });
+    } else {
+      toast.info(`Reverted ${ingredientKey} to original recipe.`);
+    }
+  };
+
+  const handleShuffleRemix = () => {
+    const remixed = shuffleRecipeRemix(activeRecipe);
+    setActiveRecipe(remixed);
+    setCurrentStepIndex(0);
+    soundEffects.playVictory();
+    toast.success(`Shuffled Style: ${remixed.variationName}!`, {
+      description: `Updated culinary technique, prep steps, and cook time (${remixed.cookTime}).`,
+    });
+  };
 
   const containerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<unknown>(null);
@@ -207,7 +260,7 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
       return;
     }
 
-    const currentStepText = recipe.steps[currentStepIndex];
+    const currentStepText = activeRecipe.steps[currentStepIndex];
     if (!currentStepText) return;
 
     const utterance = new SpeechSynthesisUtterance(`Step ${currentStepIndex + 1}: ${currentStepText}`);
@@ -226,7 +279,7 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
     if (!completedSteps.includes(currentStepIndex)) {
       setCompletedSteps(prev => [...prev, currentStepIndex]);
     }
-    if (currentStepIndex < recipe.steps.length - 1) {
+    if (currentStepIndex < activeRecipe.steps.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
     } else {
       toast.success('🎉 Cooking completed! Bon appétit!');
@@ -302,9 +355,9 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  const currentStep = recipe.steps[currentStepIndex] || 'Ready to cook!';
-  const proTip = recipe.proTips?.[currentStepIndex];
-  const progressPercent = Math.round(((completedSteps.length) / recipe.steps.length) * 100);
+  const currentStep = activeRecipe.steps[currentStepIndex] || 'Ready to cook!';
+  const proTip = activeRecipe.proTips?.[currentStepIndex];
+  const progressPercent = Math.round(((completedSteps.length) / activeRecipe.steps.length) * 100);
 
   return (
     <div
@@ -320,17 +373,33 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
             <Badge className="bg-primary/20 text-primary border-primary/40 font-semibold px-2.5 py-0.5">
               OmniChef™ Kitchen HUD
             </Badge>
+            {activeRecipe.variationName && (
+              <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">
+                {activeRecipe.variationName}
+              </Badge>
+            )}
             <span className="text-xs text-slate-400 font-medium">
-              Step {currentStepIndex + 1} of {recipe.steps.length}
+              Step {currentStepIndex + 1} of {activeRecipe.steps.length} • {activeRecipe.cookTime}
             </span>
           </div>
           <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white line-clamp-1">
-            {recipe.title}
+            {activeRecipe.title}
           </h1>
         </div>
 
         {/* HUD Control Bar */}
         <div className="flex items-center gap-2">
+          {/* Shuffle / Remix Recipe Variation */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleShuffleRemix}
+            className="border-purple-800/80 bg-purple-950/60 hover:bg-purple-900/80 text-purple-300 text-xs h-9"
+          >
+            <Shuffle className="w-4 h-4 mr-1.5 text-purple-400" />
+            <span>Shuffle Recipe</span>
+          </Button>
+
           {/* Voice Mode Toggle */}
           <Button
             variant={isVoiceActive ? 'default' : 'outline'}
@@ -420,6 +489,30 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
             />
           </div>
         </div>
+
+        {/* Active Swaps Indicator Banner */}
+        {activeRecipe.activeSwaps && activeRecipe.activeSwaps.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-purple-300 font-semibold uppercase tracking-wider">
+              Adapted Recipe Swaps:
+            </span>
+            {activeRecipe.activeSwaps.map(swap => (
+              <Badge
+                key={swap.original}
+                className="bg-purple-950 border border-purple-500/50 text-purple-200 text-xs py-1 px-3 flex items-center gap-2"
+              >
+                <span>🔄 {swap.original} → {swap.replacement}</span>
+                <button
+                  onClick={() => handleSwapIngredient(swap.original)}
+                  className="hover:text-red-400 font-black text-sm ml-1 leading-none"
+                  title="Revert swap to original"
+                >
+                  ×
+                </button>
+              </Badge>
+            ))}
+          </div>
+        )}
 
         {/* Large Counter-Optimized Step Hero */}
         <Card className="border border-slate-800 bg-slate-900/90 shadow-2xl p-6 sm:p-10 rounded-3xl relative overflow-hidden backdrop-blur">
@@ -552,7 +645,7 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
           onClick={handleNextStep}
           className="bg-primary hover:bg-primary/90 text-primary-foreground font-black px-8 h-14 rounded-2xl shadow-xl shadow-primary/20 flex-1 sm:flex-initial"
         >
-          <span>{currentStepIndex === recipe.steps.length - 1 ? 'Finish Dish' : 'Next Step'}</span>
+          <span>{currentStepIndex === activeRecipe.steps.length - 1 ? 'Finish Dish' : 'Next Step'}</span>
           <ChevronRight className="w-5 h-5 ml-1.5" />
         </Button>
       </footer>
@@ -584,28 +677,47 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
 
               <CardContent className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
                 <p className="text-xs text-slate-400">
-                  Missing an ingredient mid-cook? Tap any item below for verified culinary ratio conversions:
+                  Missing an ingredient mid-cook? Tap <strong>Apply Swap</strong> to dynamically re-write cooking instructions, temperatures, and timings:
                 </p>
 
-                <div className="space-y-2">
-                  {Object.entries({ ...COMMON_SUBSTITUTIONS, ...recipe.substitutions }).map(
-                    ([ingredient, alternative]) => (
-                      <div
-                        key={ingredient}
-                        onClick={() =>
-                          setSelectedSubIngredient(
-                            selectedSubIngredient === ingredient ? null : ingredient
-                          )
-                        }
-                        className="p-3 rounded-2xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer transition-all space-y-1.5"
-                      >
-                        <div className="flex items-center justify-between font-bold text-sm text-white capitalize">
-                          <span>{ingredient}</span>
-                          <span className="text-[11px] text-primary font-normal">Swap</span>
+                <div className="space-y-2.5">
+                  {Object.entries({ ...COMMON_SUBSTITUTIONS, ...activeRecipe.substitutions }).map(
+                    ([ingredient, alternative]) => {
+                      const isSwapped = activeRecipe.activeSwaps?.some(
+                        s => s.original.toLowerCase() === ingredient.toLowerCase()
+                      );
+
+                      return (
+                        <div
+                          key={ingredient}
+                          className={`p-3.5 rounded-2xl border transition-all space-y-2 ${
+                            isSwapped
+                              ? 'border-purple-500/60 bg-purple-950/40 shadow-lg shadow-purple-900/20'
+                              : 'border-slate-800 bg-slate-950/60 hover:border-slate-700'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between font-bold text-sm text-white capitalize">
+                            <span className="flex items-center gap-2">
+                              {isSwapped && <span className="text-purple-400 text-xs">● ACTIVE</span>}
+                              <span>{ingredient}</span>
+                            </span>
+                            <Button
+                              size="sm"
+                              variant={isSwapped ? 'secondary' : 'default'}
+                              onClick={() => handleSwapIngredient(ingredient)}
+                              className={`text-xs h-7 px-2.5 font-bold ${
+                                isSwapped
+                                  ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                                  : 'bg-primary hover:bg-primary/90 text-primary-foreground'
+                              }`}
+                            >
+                              {isSwapped ? 'Revert Original' : 'Apply Swap to Steps'}
+                            </Button>
+                          </div>
+                          <p className="text-xs text-slate-300 leading-relaxed">{alternative}</p>
                         </div>
-                        <p className="text-xs text-slate-300 leading-relaxed">{alternative}</p>
-                      </div>
-                    )
+                      );
+                    }
                   )}
                 </div>
               </CardContent>
