@@ -1,12 +1,10 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Admin Dashboard Page
  * 
  * Overview of key metrics: Active partners, Flagged campaigns, Fraud alerts, Open incidents
  */
 
-'use client';
 
 import { useEffect, useState } from 'react';
 

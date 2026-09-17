@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Trust Dashboard Page
  * User-facing transparency dashboard showing Guardian activity
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

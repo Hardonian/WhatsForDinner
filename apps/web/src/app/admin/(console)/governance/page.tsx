@@ -1,12 +1,10 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Admin Data Governance Page
  * 
  * Manage retention policies, data classification, and auto-purge settings
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

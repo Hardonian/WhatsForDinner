@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Partner Program Page
  * Enterprise and strategic partnership opportunities
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

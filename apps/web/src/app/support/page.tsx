@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Support Center Page
  * Ticketing system and support resources
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

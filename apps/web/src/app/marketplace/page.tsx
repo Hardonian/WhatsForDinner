@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Recipe Marketplace
  * Users can buy premium recipe packs and customizations
  */
 
-'use client';
 
 import { useState } from 'react';
 import { ShoppingCart, Star, Clock, Users, Sparkles, Check } from 'lucide-react';

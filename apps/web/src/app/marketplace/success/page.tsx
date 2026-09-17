@@ -1,10 +1,8 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Marketplace Purchase Success Page
  */
 
-'use client';
 
 import { useEffect, useState } from 'react';
 import { Check, Sparkles } from 'lucide-react';

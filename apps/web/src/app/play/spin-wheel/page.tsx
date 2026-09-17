@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Spin the Wheel Game
  * Random recipe selection game
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

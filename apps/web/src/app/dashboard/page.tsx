@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Dashboard Page
  * Main user dashboard with daily hooks, suggestions, and quick actions
  */
 
-'use client';
 
 import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';

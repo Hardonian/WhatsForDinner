@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Investors Page
  * Financial metrics, growth projections, and investor materials
  */
 
-'use client';
 
 import { TrendingUp, Users, DollarSign, BarChart3, Download, Target, Zap, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';

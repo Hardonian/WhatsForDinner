@@ -1,10 +1,8 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Credits Purchase Success Page
  */
 
-'use client';
 
 import { useEffect, useState } from 'react';
 import { Check, Zap } from 'lucide-react';

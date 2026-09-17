@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Recipe Collections Marketplace
  * Users create and sell recipe collections
  */
 
-'use client';
 
 import { useState } from 'react';
 import { Plus, Star, TrendingUp, Users } from 'lucide-react';

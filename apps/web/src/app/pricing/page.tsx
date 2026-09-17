@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Pricing Page - Optimized for Conversions
  * Clear value props, social proof, and conversion optimization
  */
 
-'use client';
 
 import { useState } from 'react';
 import { Check, Star, Zap, Users, TrendingUp, ArrowRight } from 'lucide-react';

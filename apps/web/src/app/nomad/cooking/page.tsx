@@ -1,7 +1,5 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 
 import { useState } from 'react';
 import { ChefHat, Clock, Users, TrendingUp, Share2, Heart, Play } from 'lucide-react';

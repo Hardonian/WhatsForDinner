@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Main Home Page - Redirects to marketing home or app dashboard
  * Clean, professional, and optimized
  */
 
-'use client';
 
 import { useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';

@@ -1,12 +1,10 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Controls Dashboard
  *
  * View SOC2/ISO27001 controls status, evidence links, filter by framework
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

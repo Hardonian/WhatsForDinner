@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Professional Landing Page - What's for Dinner
  * 
@@ -7,7 +6,6 @@ export const dynamic = 'force-dynamic';
  * with clear value propositions, brand elements, and engagement features
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

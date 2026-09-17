@@ -1,12 +1,10 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Admin Incidents Page
  * 
  * Manage incidents, timeline, and severity tracking
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

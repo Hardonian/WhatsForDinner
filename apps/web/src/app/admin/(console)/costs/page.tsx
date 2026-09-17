@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Admin Cost Dashboard
  * 
@@ -12,7 +11,6 @@ export const dynamic = 'force-dynamic';
  * - Budget alerts
  */
 
-'use client';
 
 import { useEffect, useState } from 'react';
 

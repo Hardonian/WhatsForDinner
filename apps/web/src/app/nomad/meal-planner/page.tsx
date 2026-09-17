@@ -1,7 +1,5 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 
 import { useState } from 'react';
 import { Calendar, Plus, DragHandleDots2Icon, Utensils, Clock } from 'lucide-react';

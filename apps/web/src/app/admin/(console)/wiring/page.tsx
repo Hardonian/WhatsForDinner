@@ -1,12 +1,10 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Developer Dashboard: Connectivity Matrix
  * 
  * Renders Connectivity Matrix, last run, failing checks, quick links to PRs/logs.
  */
 
-'use client';
 
 import { useEffect, useState } from 'react';
 

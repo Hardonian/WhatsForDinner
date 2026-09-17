@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Performance Intelligence Layer: Admin Metrics Dashboard
  * Visualizes performance metrics from all sources with Recharts
  */
 
-'use client';
 
 import { useEffect, useState } from 'react';
 import {

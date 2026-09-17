@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Pay-Per-Use Credits Page
  * Alternative to subscription model
  */
 
-'use client';
 
 import { useState } from 'react';
 import { Zap, Check, TrendingUp } from 'lucide-react';

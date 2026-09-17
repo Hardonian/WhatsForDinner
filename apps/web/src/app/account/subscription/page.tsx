@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Enhanced Subscription Management Page
  * Beautiful subscription hub with usage tracking
  */
 
-'use client';
 
 import { SubscriptionHub } from '@/components/SubscriptionHub';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

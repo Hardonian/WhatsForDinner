@@ -1,11 +1,9 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Family Plan Invite Page
  * Easy family sharing setup
  */
 
-'use client';
 
 import { useState } from 'react';
 import { Users, Mail, Send, Check } from 'lucide-react';

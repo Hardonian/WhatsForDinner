@@ -1,12 +1,10 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * DSAR Portal - Self-Serve Privacy Requests
  *
  * Users can create and track Data Subject Access Requests (export, erase, restrict, rectify)
  */
 
-'use client';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('page');

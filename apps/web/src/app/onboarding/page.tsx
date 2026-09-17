@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-
+'use client';
 /**
  * Smart Onboarding Flow - Fully Wired & Converting
  * Features:
@@ -11,7 +10,6 @@ export const dynamic = 'force-dynamic';
  * 6. 1-Click Grocery Cart Export (Instacart, Amazon Fresh, Walmart) + Pro Upgrade CTA
  */
 
-'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
