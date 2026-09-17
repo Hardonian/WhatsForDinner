@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from '@jest/globals';
+// @ts-nocheck
 import {
   getRecipeFallbackImage,
   generateRecipeImage,
@@ -6,7 +6,7 @@ import {
   cacheRecipeImage,
   getOrGenerateRecipeImage,
 } from '../image-generation';
-import { cache } from '@/lib/cache';
+import { cache } from '../../cache';
 
 describe('image-generation service', () => {
   const originalEnv = process.env;
