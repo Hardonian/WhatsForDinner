@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Dashboard Page
  * Main user dashboard with daily hooks, suggestions, and quick actions

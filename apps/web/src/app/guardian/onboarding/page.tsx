@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Guardian Onboarding Walkthrough
  * Teaches users how Guardian works

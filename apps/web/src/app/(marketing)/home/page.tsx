@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Professional Landing Page - What's for Dinner
  * 

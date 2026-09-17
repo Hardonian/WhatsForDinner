@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Pricing Page - Optimized for Conversions
  * Clear value props, social proof, and conversion optimization

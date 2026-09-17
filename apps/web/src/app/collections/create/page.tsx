@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Create Recipe Collection Page
  * Users can create and sell recipe collections

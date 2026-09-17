@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Billing Settings Page
  * Complete billing management: invoices, refunds, payment methods, cancellation

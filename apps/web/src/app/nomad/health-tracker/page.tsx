@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 
 import { useState } from 'react';
 import { Heart, Activity, Droplet, Moon, TrendingUp, Calendar } from 'lucide-react';

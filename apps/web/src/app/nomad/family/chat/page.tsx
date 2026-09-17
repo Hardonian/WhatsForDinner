@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, Users, Heart, Share2 } from 'lucide-react';

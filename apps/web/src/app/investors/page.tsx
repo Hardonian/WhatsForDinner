@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Investors Page
  * Financial metrics, growth projections, and investor materials

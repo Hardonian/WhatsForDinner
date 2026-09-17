@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Family Plan Invite Page
  * Easy family sharing setup

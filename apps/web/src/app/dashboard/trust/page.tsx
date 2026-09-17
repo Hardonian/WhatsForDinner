@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Trust Dashboard Page
  * User-facing transparency dashboard showing Guardian activity

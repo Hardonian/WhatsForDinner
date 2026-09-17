@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Enhanced Subscription Management Page
  * Beautiful subscription hub with usage tracking

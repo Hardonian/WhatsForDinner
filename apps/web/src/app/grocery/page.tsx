@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Main Grocery Page
  * Integrates all grocery features: categories, search, cart, quiz, gamification, social

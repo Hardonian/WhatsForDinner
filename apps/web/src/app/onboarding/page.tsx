@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Smart Onboarding Flow - Fully Wired & Converting
  * Features:

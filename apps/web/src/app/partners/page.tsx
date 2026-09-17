@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Partner Program Page
  * Enterprise and strategic partnership opportunities

@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 
 import { Button } from '@whats-for-dinner/ui';
 import { usePantry } from '@whats-for-dinner/utils';

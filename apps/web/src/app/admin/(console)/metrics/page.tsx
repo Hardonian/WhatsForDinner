@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Performance Intelligence Layer: Admin Metrics Dashboard
  * Visualizes performance metrics from all sources with Recharts

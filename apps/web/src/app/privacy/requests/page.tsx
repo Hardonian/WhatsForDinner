@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * DSAR Portal - Self-Serve Privacy Requests
  *

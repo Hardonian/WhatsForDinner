@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Recipe Marketplace
  * Users can buy premium recipe packs and customizations

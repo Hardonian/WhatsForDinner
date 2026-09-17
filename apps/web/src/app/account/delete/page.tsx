@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Account Deletion Page
  * Secure account deletion with data export option

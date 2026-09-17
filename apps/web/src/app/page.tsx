@@ -1,4 +1,6 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
 /**
  * Main Home Page - Redirects to marketing home or app dashboard
  * Clean, professional, and optimized
