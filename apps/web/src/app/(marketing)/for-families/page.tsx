@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Navbar from '@/components/Navbar';
-import { EmailCapture } from '@/components/EmailCapture';
-import { SocialShare } from '@/components/SocialShare';
+import EmailCapture from '@/components/EmailCapture';
+import SocialShare from '@/components/SocialShare';
 import { analytics } from '@/lib/analytics';
 import { 
   Heart, 
