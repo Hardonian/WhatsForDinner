@@ -4,11 +4,10 @@ export const dynamic = 'force-dynamic';
 
 
 import { useState } from 'react';
-import { Calendar, Plus, GripVertical, Utensils, Clock } from 'lucide-react';
+import { Calendar, Plus, GripVertical, Utensils } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface MealSlot {
   id: string;
@@ -28,7 +27,7 @@ const MEAL_TYPES = [
 ];
 
 export default function MealPlannerPage() {
-  const [selectedWeek, setSelectedWeek] = useState(new Date());
+  const [selectedWeek, setSelectedWeek] = useState<'this-week' | 'next-week'>('this-week');
   const [meals, setMeals] = useState<MealSlot[]>([]);
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
 
@@ -87,7 +86,7 @@ export default function MealPlannerPage() {
       {/* Week Selector */}
       <div className="border-b">
         <div className="container mx-auto px-4 py-4">
-          <Tabs defaultValue="this-week" className="w-full">
+          <Tabs value={selectedWeek} onValueChange={(val) => setSelectedWeek(val as 'this-week' | 'next-week')} className="w-full">
             <TabsList>
               <TabsTrigger value="this-week">This Week</TabsTrigger>
               <TabsTrigger value="next-week">Next Week</TabsTrigger>
@@ -138,7 +137,7 @@ export default function MealPlannerPage() {
                             className="p-2 bg-muted rounded-lg cursor-move hover:bg-muted/80 transition-colors"
                           >
                             <div className="flex items-start gap-2">
-                              <DragHandleDots2Icon className="w-4 h-4 text-muted-foreground mt-0.5" />
+                              <GripVertical className="w-4 h-4 text-muted-foreground mt-0.5" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium truncate">{meal.name}</p>
                                 {meal.calories && (
