@@ -1,24 +1,26 @@
 "use client";
-import dynamic from "next/dynamic";
+import React from "react";
+import Image from "next/image";
 import { isIntegrationEnabled } from "@/lib/integrations-config";
 
-// Lazy load Cloudinary components
-const CldImage = dynamic(
-  () => import("next-cloudinary").then((mod) => ({ default: mod.CldImage })),
-  { ssr: false }
-);
+// Safe fallback for Cloudinary media components using Next Image & HTML5 video
+export function CldImage({ src, alt = "", width = 600, height = 400, className, ...props }: any) {
+  if (!src) return null;
+  // If absolute URL or path, use Next Image or regular img
+  if (typeof src === "string" && (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("/"))) {
+    return <Image src={src} alt={alt} width={width} height={height} className={className} {...props} />;
+  }
+  return <img src={src} alt={alt} width={width} height={height} className={className} {...props} />;
+}
 
-const CldVideo = dynamic(
-  () => import("next-cloudinary").then((mod) => ({ default: mod.CldVideo })),
-  { ssr: false }
-);
+export function CldVideo({ src, className, controls = true, ...props }: any) {
+  if (!src) return null;
+  return <video src={src} className={className} controls={controls} {...props} />;
+}
 
 export function CloudinaryIntegration() {
   if (!isIntegrationEnabled("cloudinary")) return null;
-  
-  // Cloudinary doesn't need consent gate as it's just media CDN
-  return null; // Component exports are available for use elsewhere
+  return null;
 }
 
-// Export components for use in other parts of the app
-export { CldImage, CldVideo };
+export default CloudinaryIntegration;

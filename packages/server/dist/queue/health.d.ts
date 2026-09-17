@@ -29,7 +29,7 @@ export declare function getQueueMetrics(): Promise<{
     recentJobs: {
         id: string;
         name: string;
-        state: import("bullmq").JobState | "unknown";
+        state: "unknown" | import("bullmq").JobState;
         progress: import("bullmq").JobProgress;
         createdAt: number;
     }[];

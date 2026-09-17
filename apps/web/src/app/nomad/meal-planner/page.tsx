@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 
 import { useState } from 'react';
-import { Calendar, Plus, DragHandleDots2Icon, Utensils, Clock } from 'lucide-react';
+import { Calendar, Plus, GripVertical, Utensils, Clock } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

@@ -70,3 +70,18 @@ export function DashboardSkeleton() {
     </div>
   );
 }
+
+export function InputPromptSkeleton() {
+  return (
+    <Card className="animate-pulse">
+      <CardContent className="p-6">
+        <div className="h-5 bg-muted rounded w-1/3 mb-4" />
+        <div className="h-12 bg-muted rounded w-full mb-3" />
+        <div className="flex justify-between items-center">
+          <div className="h-4 bg-muted rounded w-1/4" />
+          <div className="h-9 bg-muted rounded w-28" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

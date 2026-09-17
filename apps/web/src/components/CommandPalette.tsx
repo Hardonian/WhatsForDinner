@@ -21,7 +21,6 @@ import {
   Flame,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { useTheme } from 'next-themes';
 
 interface CommandItem {
   id: string;
@@ -38,7 +37,6 @@ export function CommandPalette() {
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
 
   // Keyboard shortcut listener (Cmd+K / Ctrl+K)
   useEffect(() => {

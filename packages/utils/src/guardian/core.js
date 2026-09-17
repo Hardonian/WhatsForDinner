@@ -8,24 +8,33 @@ import { createComponentLogger } from '../logger';
 const logger = createComponentLogger('guardian');
 // Lazy-load Node.js builtins (guardian runs server-side only)
 function getNodeFs() {
+    if (typeof window !== 'undefined')
+        return null;
     try {
-        return require('fs');
+        const req = eval('require');
+        return req('fs');
     }
     catch {
         return null;
     }
 }
 function getNodePath() {
+    if (typeof window !== 'undefined')
+        return null;
     try {
-        return require('path');
+        const req = eval('require');
+        return req('path');
     }
     catch {
         return null;
     }
 }
 function getNodeCrypto() {
+    if (typeof window !== 'undefined')
+        return null;
     try {
-        return require('crypto');
+        const req = eval('require');
+        return req('crypto');
     }
     catch {
         return null;
@@ -35,6 +44,10 @@ let _config = null;
 function getConfig() {
     if (_config)
         return _config;
+    if (typeof window !== 'undefined') {
+        _config = { policies: [], defaultRiskLevel: 'low' };
+        return _config;
+    }
     const fs = getNodeFs();
     const path = getNodePath();
     if (fs && path) {

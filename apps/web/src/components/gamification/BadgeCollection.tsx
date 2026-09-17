@@ -84,3 +84,5 @@ export function BadgeCollection({ userId }: BadgeCollectionProps) {
     </Card>
   );
 }
+
+export default BadgeCollection;
