@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrGenerateRecipeImage, getCachedRecipeImage } from '@/lib/ai/image-generation';
+import {
+  getOrGenerateRecipeImage,
+  getCachedRecipeImage,
+  getRecipeFallbackImage,
+  getRecipeImagePlaceholder,
+} from '@/lib/ai/image-generation';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,11 +22,31 @@ export async function GET(req?: NextRequest) {
   try {
     const url = new URL(req?.url || 'http://localhost');
     const recipeId = url.searchParams.get('recipeId');
+    const recipeTitle = url.searchParams.get('recipeTitle') || url.searchParams.get('title');
+    const cuisine = url.searchParams.get('cuisine') || undefined;
+
     if (recipeId) {
       const cached = await getCachedRecipeImage(recipeId);
       if (cached) {
-        return NextResponse.json({ status: 'ok', success: true, imageUrl: cached, recipeId });
+        return NextResponse.json({
+          status: 'ok',
+          success: true,
+          imageUrl: cached,
+          recipeId,
+          placeholder: getRecipeImagePlaceholder(cuisine),
+        });
       }
+    }
+
+    if (recipeTitle) {
+      const fallbackUrl = getRecipeFallbackImage(recipeTitle, cuisine);
+      return NextResponse.json({
+        status: 'ok',
+        success: true,
+        imageUrl: fallbackUrl,
+        fallback: true,
+        placeholder: getRecipeImagePlaceholder(cuisine),
+      });
     }
   } catch {
     // Return standard response on query parse errors
@@ -53,13 +78,19 @@ export async function POST(req?: NextRequest) {
       ingredients: Array.isArray(body.ingredients) ? body.ingredients : undefined,
       cuisine: typeof body.cuisine === 'string' ? body.cuisine : undefined,
       style: body.style,
+      quality: body.quality,
+      aspectRatio: body.aspectRatio,
+      lighting: body.lighting,
     });
+
+    const placeholder = getRecipeImagePlaceholder(body.cuisine);
 
     return NextResponse.json({
       status: 'ok',
       success: true,
       imageUrl,
       recipeId: body.recipeId,
+      placeholder,
     });
   } catch (error) {
     return NextResponse.json(
