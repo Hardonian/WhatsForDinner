@@ -8,14 +8,18 @@ const _logger = createComponentLogger('image-generation');
  */
 
 import OpenAI from 'openai';
+import { cache } from '@/lib/cache';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function getOpenAIClient(): OpenAI {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY || 'sk-mock-key-for-testing',
+    dangerouslyAllowBrowser: true,
+  });
+}
 
 export interface ImageGenerationOptions {
   recipeTitle: string;
-  ingredients: string[];
+  ingredients?: string[];
   cuisine?: string;
   style?: 'photographic' | 'illustrated' | 'minimalist';
 }
@@ -27,12 +31,22 @@ export async function generateRecipeImage(
   options: ImageGenerationOptions
 ): Promise<string> {
   try {
+    if (!process.env.OPENAI_API_KEY) {
+      _logger.debug('OPENAI_API_KEY not provided, using verified culinary fallback');
+      return getUnsplashFallback(options.recipeTitle, options.cuisine);
+    }
+
+    const ingredientsList = Array.isArray(options.ingredients) && options.ingredients.length > 0
+      ? options.ingredients.join(', ')
+      : 'fresh culinary ingredients';
+
     const prompt = `A beautiful, appetizing photo of ${options.recipeTitle}. 
-    Ingredients include: ${options.ingredients.join(', ')}.
+    Ingredients include: ${ingredientsList}.
     ${options.cuisine ? `Cuisine style: ${options.cuisine}.` : ''}
     ${options.style ? `Style: ${options.style}.` : 'Photographic style, professional food photography.'}
     High quality, well-lit, appetizing, on a clean plate or serving dish.`;
 
+    const openai = getOpenAIClient();
     const response = await openai.images.generate({
       model: 'dall-e-3',
       prompt,
@@ -82,6 +96,22 @@ const CULINARY_PHOTO_MAP: Array<{ keywords: string[]; url: string }> = [
     keywords: ['soup', 'stew', 'broth', 'chili', 'chowder'],
     url: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1024&q=80',
   },
+  {
+    keywords: ['dessert', 'cake', 'chocolate', 'cookie', 'sweet', 'pie', 'pastry', 'bake'],
+    url: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['breakfast', 'egg', 'pancake', 'waffle', 'toast', 'omelet', 'brunch'],
+    url: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['pizza', 'flatbread', 'focaccia'],
+    url: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['taco', 'mexican', 'burrito', 'enchilada', 'quesadilla', 'salsa'],
+    url: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=1024&q=80',
+  },
 ];
 
 export function getRecipeFallbackImage(recipeTitle: string, cuisine?: string): string {
@@ -97,11 +127,66 @@ async function getUnsplashFallback(recipeTitle: string, cuisine?: string): Promi
 }
 
 /**
- * Cache image URL in database
+ * Retrieve cached image URL for a recipe
+ */
+export async function getCachedRecipeImage(
+  recipeId: string
+): Promise<string | null> {
+  try {
+    const cachedUrl = await cache.get<string>(`recipe:image:${recipeId}`);
+    if (cachedUrl) {
+      _logger.debug('Found cached recipe image', { recipeId, cachedUrl });
+      return cachedUrl;
+    }
+  } catch (error) {
+    _logger.warn('Error fetching cached recipe image', {
+      recipeId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+  return null;
+}
+
+/**
+ * Cache image URL in database/cache
  */
 export async function cacheRecipeImage(
   recipeId: string,
-  imageUrl: string
+  imageUrl: string,
+  ttlSeconds: number = 86400 * 30 // 30 days
 ): Promise<void> {
   _logger.debug('Caching recipe image mapping', { recipeId, imageUrl });
+  try {
+    await cache.set(`recipe:image:${recipeId}`, imageUrl, {
+      ttl: ttlSeconds,
+      tags: ['recipes', 'recipe-images'],
+    });
+  } catch (error) {
+    _logger.warn('Failed to cache recipe image', {
+      recipeId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+}
+
+/**
+ * Get cached recipe image or generate a new one
+ */
+export async function getOrGenerateRecipeImage(
+  options: ImageGenerationOptions & { recipeId?: string }
+): Promise<string> {
+  if (options.recipeId) {
+    const cached = await getCachedRecipeImage(options.recipeId);
+    if (cached) {
+      return cached;
+    }
+  }
+
+  const imageUrl = await generateRecipeImage(options);
+
+  if (options.recipeId && imageUrl) {
+    await cacheRecipeImage(options.recipeId, imageUrl);
+  }
+
+  return imageUrl;
 }

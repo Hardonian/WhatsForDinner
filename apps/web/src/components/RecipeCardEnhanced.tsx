@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { ShareRecipeButton } from './ShareRecipeButton';
 import { RecipeCustomizer } from './RecipeCustomizer';
 import { triggerConfetti } from '@/lib/animations/confetti';
+import { getRecipeFallbackImage } from '@/lib/ai/image-generation';
 import Image from 'next/image';
 
 interface RecipeCardEnhancedProps {
@@ -49,13 +50,15 @@ export function RecipeCardEnhanced({
   };
 
   const totalTime = (recipe.prepTime || 0) + (recipe.cookTime || 0);
+  const fallbackUrl = getRecipeFallbackImage(recipe.title);
+  const displayImage = !imageError ? (recipe.imageUrl || fallbackUrl) : fallbackUrl;
 
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
-      {recipe.imageUrl && !imageError && (
+      {displayImage && (
         <div className="relative w-full h-48 overflow-hidden">
           <Image
-            src={recipe.imageUrl}
+            src={displayImage}
             alt={recipe.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
