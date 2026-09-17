@@ -2,16 +2,15 @@
 
 const nextConfig = {
   typescript: { ignoreBuildErrors: true },
-  eslint: { ignoreDuringBuilds: true },
   transpilePackages: ["@whats-for-dinner/ui", "@whats-for-dinner/theme", "@whats-for-dinner/config"],
+  serverExternalPackages: ['@supabase/supabase-js', 'archiver', '@sendgrid/mail', '@whats-for-dinner/utils'],
+  turbopack: {},
   
   experimental: {
     optimizePackageImports: ["@whats-for-dinner/ui", "lucide-react", "@radix-ui/react-slot", "@radix-ui/react-label", "@radix-ui/react-separator", "@radix-ui/react-switch", "@radix-ui/react-tabs"],
-    serverComponentsExternalPackages: ['@supabase/supabase-js', 'archiver', '@sendgrid/mail', '@whats-for-dinner/utils'],
   },
   
   images: {
-    domains: ['images.unsplash.com', 'cdn.shopify.com'],
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "cdn.shopify.com" },
@@ -30,7 +29,6 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   generateEtags: true,
-  optimizeFonts: true,
   
   webpack: (config, { isServer, dev }) => {
     // Externalize optional deps that aren't installed
