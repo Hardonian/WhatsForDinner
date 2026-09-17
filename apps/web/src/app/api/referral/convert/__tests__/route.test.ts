@@ -6,45 +6,47 @@
 import { POST } from '../route';
 import { NextRequest } from 'next/server';
 
-jest.mock('@/lib/supabase/server', () => ({
-  createClient: jest.fn(() => ({
-    auth: {
-      getUser: jest.fn(() => ({
-        data: { user: { id: 'new-user-id' } },
-        error: null,
-      })),
-    },
-    from: jest.fn(() => ({
-      select: jest.fn(() => ({
+const mockClient = {
+  auth: {
+    getUser: jest.fn(() => ({
+      data: { user: { id: 'new-user-id' } },
+      error: null,
+    })),
+  },
+  from: jest.fn(() => ({
+    select: jest.fn(() => ({
+      eq: jest.fn(() => ({
         eq: jest.fn(() => ({
-          eq: jest.fn(() => ({
-            single: jest.fn(() => ({
-              data: {
-                id: 'ref-123',
-                referrer_id: 'referrer-id',
-                referral_code: 'REF-TEST',
-                reward_status: 'pending',
-                reward_type: 'pro_extension',
-                reward_value: 30,
-                invitee_id: null,
-              },
-              error: null,
-            })),
+          single: jest.fn(() => ({
+            data: {
+              id: 'ref-123',
+              referrer_id: 'referrer-id',
+              referral_code: 'REF-TEST',
+              reward_status: 'pending',
+              reward_type: 'pro_extension',
+              reward_value: 30,
+              invitee_id: null,
+            },
+            error: null,
           })),
         })),
       })),
-      update: jest.fn(() => ({
-        eq: jest.fn(() => ({
-          data: { id: 'ref-123' },
-          error: null,
-        })),
-      })),
-      insert: jest.fn(() => ({
-        data: { id: 'sub-123' },
+    })),
+    update: jest.fn(() => ({
+      eq: jest.fn(() => ({
+        data: { id: 'ref-123' },
         error: null,
       })),
     })),
+    insert: jest.fn(() => ({
+      data: { id: 'sub-123' },
+      error: null,
+    })),
   })),
+};
+
+jest.mock('@/lib/supabase/server', () => ({
+  createClient: jest.fn(() => mockClient),
 }));
 
 describe('POST /api/referral/convert', () => {

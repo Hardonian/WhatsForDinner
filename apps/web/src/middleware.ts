@@ -7,6 +7,23 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const startTime = Date.now();
+
+  // Preview environment protection
+  if (process.env.PREVIEW_REQUIRE_AUTH === 'true') {
+    const hostname = request.nextUrl.hostname || '';
+    if ((hostname.includes('preview') || hostname.includes('vercel.app')) && !request.headers.get('authorization')) {
+      return new NextResponse('Authentication Required', { status: 401 });
+    }
+  }
+
+  // API monetization / rate limiting check
+  if (process.env.API_MONETIZATION_ENABLED === 'true' && request.nextUrl.pathname.startsWith('/api/')) {
+    const apiKey = request.headers.get('x-api-key');
+    if (!apiKey || apiKey === 'test-key') {
+      return new NextResponse('Unauthorized API Key', { status: 401 });
+    }
+  }
+
   const origin = request.headers.get('origin');
   const requestOrigin = request.nextUrl.origin;
   const configuredOrigins = (process.env.CORS_ORIGINS?.split(',') || []).map(o => o.trim()).filter(Boolean);
@@ -24,14 +41,16 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Correlation and performance tracking headers
-  const requestId = crypto.randomUUID();
+  const requestId = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `req-${Date.now()}`;
   response.headers.set('X-Request-ID', requestId);
   const duration = Date.now() - startTime;
   response.headers.set('X-Response-Time', `${duration}ms`);
 
   // Enterprise Security Headers
   response.headers.set('X-Content-Type-Options', 'nosniff');
-  response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('X-DNS-Prefetch-Control', 'on');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');

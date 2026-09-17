@@ -10,7 +10,7 @@ describe('code-splitting', () => {
 
   it('renders with required props', () => {
     const props = {};
-    render(<code-splitting {...props} />);
+    render(<CodeSplitting {...props} />);
     expect(screen.getByRole('main') || screen.getByTestId('code-splitting')).toBeDefined();
   });
 });

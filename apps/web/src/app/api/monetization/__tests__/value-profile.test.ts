@@ -8,28 +8,30 @@ import { GET } from '../value-profile/route';
 import { NextRequest } from 'next/server';
 
 // Mock dependencies
-vi.mock('@supabase/auth-helpers-nextjs', () => ({
-  createRouteHandlerClient: vi.fn(() => ({
-    auth: {
-      getUser: vi.fn(),
-    },
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(),
-        })),
+const mockSupabaseClient = {
+  auth: {
+    getUser: jest.fn(),
+  },
+  from: jest.fn(() => ({
+    select: jest.fn(() => ({
+      eq: jest.fn(() => ({
+        single: jest.fn(),
       })),
     })),
   })),
+};
+
+jest.mock('@supabase/auth-helpers-nextjs', () => ({
+  createRouteHandlerClient: jest.fn(() => mockSupabaseClient),
 }));
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
+jest.mock('next/headers', () => ({
+  cookies: jest.fn(),
 }));
 
-vi.mock('@/lib/monetization/value-engine', () => ({
+jest.mock('@/lib/monetization/value-engine', () => ({
   valueEngine: {
-    analyzeCustomerValue: vi.fn(),
+    analyzeCustomerValue: jest.fn(),
   },
 }));
 

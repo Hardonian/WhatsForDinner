@@ -14,6 +14,23 @@ screen.getByRole = function (role, options) {
   }
 };
 
+// Polyfill Web Crypto API for Jest
+const nodeCrypto = require('crypto');
+const { TextEncoder, TextDecoder } = require('util');
+if (typeof global.TextEncoder === 'undefined') global.TextEncoder = TextEncoder;
+if (typeof global.TextDecoder === 'undefined') global.TextDecoder = TextDecoder;
+const webCrypto = nodeCrypto.webcrypto || nodeCrypto;
+if (typeof window !== 'undefined') {
+  if (typeof window.TextEncoder === 'undefined') window.TextEncoder = TextEncoder;
+  if (typeof window.TextDecoder === 'undefined') window.TextDecoder = TextDecoder;
+  Object.defineProperty(window, 'crypto', {
+    value: webCrypto,
+    writable: true,
+    configurable: true,
+  });
+}
+global.crypto = webCrypto;
+
 // Polyfill Headers, Request, Response, fetch for Next.js server code in Jest
 if (typeof global.Headers === 'undefined') {
   global.Headers = class Headers {
@@ -306,6 +323,7 @@ jest.mock('vitest', () => ({
   vi: {
     fn: (...args) => jest.fn(...args),
     spyOn: (...args) => jest.spyOn(...args),
+    mocked: (item) => item,
     clearAllMocks: () => jest.clearAllMocks(),
     resetAllMocks: () => jest.resetAllMocks(),
     restoreAllMocks: () => jest.restoreAllMocks(),

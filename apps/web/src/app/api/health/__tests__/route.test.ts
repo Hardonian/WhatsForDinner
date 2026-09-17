@@ -1,21 +1,23 @@
 // @ts-nocheck
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { NextRequest } from 'next/server';
 import { GET } from '../route';
-import { runHealthCheck } from '@whats-for-dinner/utils';
 
-vi.mock('@whats-for-dinner/utils', async () => {
-  const actual = await vi.importActual('@whats-for-dinner/utils');
-  return {
-    ...actual,
-    runHealthCheck: vi.fn(),
-  };
-});
+const mockRunHealthCheck = jest.fn();
 
 describe('Health Check API Route', () => {
+  beforeEach(() => {
+    mockRunHealthCheck.mockReset();
+    (globalThis as any).__mockRunHealthCheck = mockRunHealthCheck;
+  });
+
+  afterEach(() => {
+    delete (globalThis as any).__mockRunHealthCheck;
+  });
+
   describe('GET /api/health', () => {
     it('should return healthy status when all checks pass', async () => {
-      vi.mocked(runHealthCheck).mockResolvedValue({
+      mockRunHealthCheck.mockResolvedValue({
         status: 'healthy',
         timestamp: new Date().toISOString(),
         checks: {
@@ -35,7 +37,7 @@ describe('Health Check API Route', () => {
     });
 
     it('should return degraded status when some checks fail', async () => {
-      vi.mocked(runHealthCheck).mockResolvedValue({
+      mockRunHealthCheck.mockResolvedValue({
         status: 'degraded',
         timestamp: new Date().toISOString(),
         checks: {
@@ -55,7 +57,7 @@ describe('Health Check API Route', () => {
     });
 
     it('should return 503 when unhealthy', async () => {
-      vi.mocked(runHealthCheck).mockResolvedValue({
+      mockRunHealthCheck.mockResolvedValue({
         status: 'unhealthy',
         timestamp: new Date().toISOString(),
         checks: {
@@ -71,7 +73,7 @@ describe('Health Check API Route', () => {
     });
 
     it('should handle errors gracefully', async () => {
-      vi.mocked(runHealthCheck).mockRejectedValue(new Error('Health check failed'));
+      mockRunHealthCheck.mockRejectedValue(new Error('Health check failed'));
 
       const request = new NextRequest('http://localhost:3000/api/health');
       const response = await GET(request);

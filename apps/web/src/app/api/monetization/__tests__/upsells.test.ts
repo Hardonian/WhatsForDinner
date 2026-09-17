@@ -7,28 +7,28 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GET } from '../upsells/route';
 import { NextRequest } from 'next/server';
 
-vi.mock('@supabase/auth-helpers-nextjs', () => ({
-  createRouteHandlerClient: vi.fn(() => ({
+jest.mock('@supabase/auth-helpers-nextjs', () => ({
+  createRouteHandlerClient: jest.fn(() => ({
     auth: {
-      getUser: vi.fn(),
+      getUser: jest.fn(),
     },
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(),
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          single: jest.fn(),
         })),
       })),
     })),
   })),
 }));
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
+jest.mock('next/headers', () => ({
+  cookies: jest.fn(),
 }));
 
-vi.mock('@/lib/monetization/value-engine', () => ({
+jest.mock('@/lib/monetization/value-engine', () => ({
   valueEngine: {
-    identifyUpsellOpportunities: vi.fn(),
+    identifyUpsellOpportunities: jest.fn(),
   },
 }));
 

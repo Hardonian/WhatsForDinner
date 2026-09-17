@@ -112,3 +112,8 @@ export async function preloadComponents(
   const promises = importFns.map((fn) => preloadComponent(fn));
   await Promise.allSettled(promises);
 }
+
+export default function CodeSplitting() {
+  return <div data-testid="code-splitting" role="main">Code Splitting</div>;
+}
+

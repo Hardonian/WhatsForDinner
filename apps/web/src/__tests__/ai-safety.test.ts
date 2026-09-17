@@ -121,7 +121,7 @@ describe('AI Safety Integration Tests', () => {
 
       const result = await aiSafetyGuardrails.validateOutput(nonJsonOutput);
       expect(result.safe).toBe(false);
-      expect(result.violations).toContain(
+      expect(result.violations).toContainEqual(
         expect.stringContaining('Invalid JSON format')
       );
     });

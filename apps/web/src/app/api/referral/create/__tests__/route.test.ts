@@ -7,45 +7,46 @@
 import { POST } from '../route';
 import { NextRequest } from 'next/server';
 
-// Mock Supabase
-jest.mock('@/lib/supabase/server', () => ({
-  createClient: jest.fn(() => ({
-    auth: {
-      getUser: jest.fn(() => ({
-        data: { user: { id: 'test-user-id' } },
-        error: null,
-      })),
-    },
-    from: jest.fn(() => ({
-      insert: jest.fn(() => ({
-        select: jest.fn(() => ({
-          single: jest.fn(() => ({
-            data: {
-              id: 'ref-123',
-              referrer_id: 'test-user-id',
-              referral_code: 'REF-TEST-CODE',
-              reward_status: 'pending',
-              reward_type: 'pro_extension',
-              reward_value: 30,
-            },
-            error: null,
-          })),
+const mockClient = {
+  auth: {
+    getUser: jest.fn(() => ({
+      data: { user: { id: 'test-user-id' } },
+      error: null,
+    })),
+  },
+  from: jest.fn(() => ({
+    insert: jest.fn(() => ({
+      select: jest.fn(() => ({
+        single: jest.fn(() => ({
+          data: {
+            id: 'ref-123',
+            referrer_id: 'test-user-id',
+            referral_code: 'REF-TEST-CODE',
+            reward_status: 'pending',
+            reward_type: 'pro_extension',
+            reward_value: 30,
+          },
+          error: null,
         })),
       })),
-      select: jest.fn(() => ({
+    })),
+    select: jest.fn(() => ({
+      eq: jest.fn(() => ({
         eq: jest.fn(() => ({
-          eq: jest.fn(() => ({
-            limit: jest.fn(() => ({
-              single: jest.fn(() => ({
-                data: null,
-                error: null,
-              })),
+          limit: jest.fn(() => ({
+            single: jest.fn(() => ({
+              data: null,
+              error: null,
             })),
           })),
         })),
       })),
     })),
   })),
+};
+
+jest.mock('@/lib/supabase/server', () => ({
+  createClient: jest.fn(() => mockClient),
 }));
 
 describe('POST /api/referral/create', () => {

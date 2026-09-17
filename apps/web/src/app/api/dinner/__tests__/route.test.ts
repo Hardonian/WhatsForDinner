@@ -7,36 +7,36 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 const _logger = createComponentLogger('test-dinner-api');
 
 // Mock dependencies
-vi.mock('@/lib/openaiService', () => ({
-  generateRecipesWithFallback: vi.fn(),
+jest.mock('@/lib/openaiService', () => ({
+  generateRecipesWithFallback: jest.fn(),
 }));
 
-vi.mock('@/lib/aiOptimization', () => ({
+jest.mock('@/lib/aiOptimization', () => ({
   aiOptimization: {
-    getOptimizedResponse: vi.fn(),
+    getOptimizedResponse: jest.fn(),
   },
 }));
 
-vi.mock('@/lib/stripe', () => ({
+jest.mock('@/lib/stripe', () => ({
   StripeService: {
-    calculateTokenCost: vi.fn(),
+    calculateTokenCost: jest.fn(),
   },
 }));
 
-vi.mock('@/lib/auth-middleware', () => ({
-  getTenantContext: vi.fn(),
+jest.mock('@/lib/auth-middleware', () => ({
+  getTenantContext: jest.fn(),
 }));
 
-vi.mock('@/lib/cache', () => ({
+jest.mock('@/lib/cache', () => ({
   suggestionCache: {
-    get: vi.fn(),
-    set: vi.fn(),
+    get: jest.fn(),
+    set: jest.fn(),
   },
 }));
 
-vi.mock('@/lib/analytics', () => ({
+jest.mock('@/lib/analytics', () => ({
   analytics: {
-    trackEvent: vi.fn(),
+    trackEvent: jest.fn(),
   },
 }));
 

@@ -6,31 +6,33 @@
 import { GET } from '../route';
 import { NextRequest } from 'next/server';
 
-jest.mock('@/lib/supabase/server', () => ({
-  createClient: jest.fn(() => ({
-    auth: {
-      getUser: jest.fn(() => ({
-        data: { user: { id: 'admin-user' } },
-        error: null,
-      })),
-    },
-    from: jest.fn(() => ({
-      select: jest.fn(() => ({
-        eq: jest.fn(() => ({
-          single: jest.fn(() => ({
-            data: { role: 'owner' },
-            error: null,
-          })),
+const mockClient = {
+  auth: {
+    getUser: jest.fn(() => ({
+      data: { user: { id: 'admin-user' } },
+      error: null,
+    })),
+  },
+  from: jest.fn(() => ({
+    select: jest.fn(() => ({
+      eq: jest.fn(() => ({
+        single: jest.fn(() => ({
+          data: { role: 'owner' },
+          error: null,
         })),
-        count: 'exact',
-        head: true,
       })),
-      gte: jest.fn(() => ({
-        data: [],
-        error: null,
-      })),
+      count: 'exact',
+      head: true,
+    })),
+    gte: jest.fn(() => ({
+      data: [],
+      error: null,
     })),
   })),
+};
+
+jest.mock('@/lib/supabase/server', () => ({
+  createClient: jest.fn(() => mockClient),
 }));
 
 jest.mock('stripe', () => {

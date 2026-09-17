@@ -7,32 +7,32 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GET, POST } from '../usage-premium/route';
 import { NextRequest } from 'next/server';
 
-vi.mock('@supabase/auth-helpers-nextjs', () => ({
-  createRouteHandlerClient: vi.fn(() => ({
+jest.mock('@supabase/auth-helpers-nextjs', () => ({
+  createRouteHandlerClient: jest.fn(() => ({
     auth: {
-      getUser: vi.fn(),
+      getUser: jest.fn(),
     },
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(),
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          single: jest.fn(),
         })),
       })),
     })),
   })),
 }));
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(),
+jest.mock('next/headers', () => ({
+  cookies: jest.fn(),
 }));
 
-vi.mock('@/lib/monetization/usage-premium', () => ({
+jest.mock('@/lib/monetization/usage-premium', () => ({
   usagePremium: {
-    getUserCredits: vi.fn(),
-    getAvailableFeatures: vi.fn(),
-    recommendFeatures: vi.fn(),
-    purchaseCredits: vi.fn(),
-    useCredits: vi.fn(),
+    getUserCredits: jest.fn(),
+    getAvailableFeatures: jest.fn(),
+    recommendFeatures: jest.fn(),
+    purchaseCredits: jest.fn(),
+    useCredits: jest.fn(),
   },
 }));
 

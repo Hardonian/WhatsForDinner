@@ -9,6 +9,9 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@whats-for-dinner/utils$': '<rootDir>/../../packages/utils/src/index.ts',
+    '^@whats-for-dinner/server$': '<rootDir>/../../packages/server/src/index.ts',
+    '^@whats-for-dinner/ui$': '<rootDir>/../../packages/ui/src/index.ts',
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
@@ -28,6 +31,10 @@ const customJestConfig = {
   testMatch: [
     '**/__tests__/**/*.{js,jsx,ts,tsx}',
     '**/*.{spec,test}.{js,jsx,ts,tsx}',
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/tests/',
   ],
   transformIgnorePatterns: [
     '/node_modules/',

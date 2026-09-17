@@ -5,8 +5,8 @@ import { GET } from '../route';
 import { supabase } from '@/lib/supabaseClient';
 import { headers } from 'next/headers';
 
-vi.mock('@/lib/supabaseClient');
-vi.mock('next/headers');
+jest.mock('@/lib/supabaseClient');
+jest.mock('next/headers');
 
 describe('/api/onboarding/checklist GET', () => {
   beforeEach(() => {

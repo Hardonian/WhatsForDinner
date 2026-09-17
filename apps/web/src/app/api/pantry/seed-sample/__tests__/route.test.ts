@@ -7,17 +7,17 @@ import { createComponentLogger } from '@whats-for-dinner/utils';
 const _logger = createComponentLogger('test-pantry-seed-api');
 
 // Mock dependencies
-vi.mock('@/lib/supabaseClient', () => ({
+jest.mock('@/lib/supabaseClient', () => ({
   supabase: {
     auth: {
-      getUser: vi.fn(),
+      getUser: jest.fn(),
     },
-    from: vi.fn(),
+    from: jest.fn(),
   },
 }));
 
-vi.mock('next/headers', () => ({
-  headers: vi.fn(),
+jest.mock('next/headers', () => ({
+  headers: jest.fn(),
 }));
 
 describe('Pantry Seed Sample API Route', () => {

@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server';
 import { GET } from '../route';
 import * as csrfLib from '@/lib/csrf';
 
-vi.mock('@/lib/csrf');
+jest.mock('@/lib/csrf');
 
 describe('/api/csrf-token GET', () => {
   beforeEach(() => {
