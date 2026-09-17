@@ -8,17 +8,11 @@ import {
   GitCommit,
   Plus,
   Minus,
-  Check,
-  Sparkles,
-  ArrowRight,
-  UserCheck,
   Coins,
-  Share2,
   Clock,
   Flame,
   Utensils,
   Shuffle,
-  ChefHat,
   ChevronRight,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -31,7 +25,6 @@ import {
   DynamicRecipe,
   applyIngredientSwap,
   shuffleRecipeRemix,
-  INGREDIENT_SWAP_RULES,
 } from '@/lib/recipes/recipe-mutator';
 
 export interface RecipeBranch {
@@ -70,6 +63,7 @@ const DEFAULT_BRANCHES: RecipeBranch[] = [
       servings: 2,
       difficulty: 'Intermediate',
       cuisine: 'Mediterranean Classic',
+      imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1200&q=80',
       pantryIngredientsUsed: [
         '2 Atlantic Salmon fillets (6 oz each)',
         '1 bunch fresh asparagus, trimmed',
@@ -116,6 +110,7 @@ const DEFAULT_BRANCHES: RecipeBranch[] = [
       servings: 2,
       difficulty: 'Intermediate',
       cuisine: 'Sichuan Fusion',
+      imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1200&q=80',
       pantryIngredientsUsed: [
         '2 Atlantic Salmon fillets (6 oz each)',
         '2 tbsp Lao Gan Ma spicy chili crunch oil',
@@ -160,6 +155,7 @@ const DEFAULT_BRANCHES: RecipeBranch[] = [
       servings: 2,
       difficulty: 'Easy',
       cuisine: 'Modern Fast & Clean',
+      imageUrl: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=80',
       pantryIngredientsUsed: [
         '2 Atlantic Salmon fillets (6 oz each)',
         'Avocado oil spray (100% pure)',
@@ -375,6 +371,30 @@ export function ForkableRecipeTree({
             animate={{ opacity: 1, y: 0 }}
             className="p-5 rounded-2xl border bg-muted/20 space-y-5"
           >
+            {/* Branch Hero Photography */}
+            <div className="relative w-full h-48 sm:h-56 rounded-xl overflow-hidden bg-muted shadow-inner">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={activeBranch.recipe.imageUrl || '/recipe-placeholder.jpg'}
+                alt={activeBranch.recipe.title}
+                onError={e => {
+                  (e.target as HTMLImageElement).src = '/recipe-placeholder.jpg';
+                }}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+              <div className="absolute bottom-3 left-4 right-4 flex flex-wrap items-end justify-between gap-2">
+                <div>
+                  <Badge className="bg-purple-600 text-white font-mono text-[10px] mb-1">
+                    branch: {activeBranch.branchName}
+                  </Badge>
+                  <h3 className="text-lg sm:text-xl font-black text-white drop-shadow-md">
+                    {activeBranch.recipe.title}
+                  </h3>
+                </div>
+              </div>
+            </div>
+
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <GitCommit className="w-4 h-4 text-purple-600 dark:text-purple-400" />
@@ -390,14 +410,9 @@ export function ForkableRecipeTree({
               </Badge>
             </div>
 
-            <div>
-              <h3 className="text-lg font-black text-foreground">
-                {activeBranch.recipe.title}
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1">
-                {activeBranch.description}
-              </p>
-            </div>
+            <p className="text-xs text-muted-foreground">
+              {activeBranch.description}
+            </p>
 
             {/* Branch Metrics Bar */}
             <div className="flex flex-wrap items-center gap-3 text-xs font-medium">
@@ -566,7 +581,7 @@ export function ForkableRecipeTree({
                     <span>Create New Recipe Branch</span>
                   </CardTitle>
                   <CardDescription className="text-xs mt-1">
-                    Fork "{baseRecipeTitle}" and attach your unique spin. You will receive 30% of all affiliate grocery revenue generated through your branch.
+                    Fork &ldquo;{baseRecipeTitle}&rdquo; and attach your unique spin. You will receive 30% of all affiliate grocery revenue generated through your branch.
                   </CardDescription>
                 </div>
 

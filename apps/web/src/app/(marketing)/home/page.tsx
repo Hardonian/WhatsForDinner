@@ -166,6 +166,17 @@ export default function HomePage() {
             </Button>
           </div>
 
+          {/* Hero Visual Preview Showcase */}
+          <div className="relative mx-auto max-w-4xl rounded-3xl overflow-hidden shadow-2xl border border-primary/20 mb-12 group bg-muted/40">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/og-image.png"
+              alt="What's For Dinner AI Intelligent Culinary Operating System"
+              className="w-full h-auto object-cover group-hover:scale-[1.01] transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-50 pointer-events-none" />
+          </div>
+
           {/* Interactive Virtual Fridge Sandbox Hero Feature */}
           <div className="mt-6 mb-16 text-left">
             <InteractiveFridgeSandbox />

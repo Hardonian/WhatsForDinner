@@ -53,6 +53,7 @@ export interface CookingRecipe {
   calories: number;
   servings: number;
   difficulty?: string;
+  imageUrl?: string;
   pantryIngredientsUsed: string[];
   missingIngredients?: string[];
   steps: string[];
@@ -368,23 +369,38 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
     >
       {/* Top Header & Kitchen HUD Toolbar */}
       <header className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-800">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Badge className="bg-primary/20 text-primary border-primary/40 font-semibold px-2.5 py-0.5">
-              OmniChef™ Kitchen HUD
-            </Badge>
-            {activeRecipe.variationName && (
-              <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">
-                {activeRecipe.variationName}
+        <div className="flex items-center gap-3.5">
+          {activeRecipe.imageUrl && (
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border border-slate-700/80 shrink-0 bg-slate-900 shadow-md">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={activeRecipe.imageUrl}
+                alt={activeRecipe.title}
+                onError={e => {
+                  (e.target as HTMLImageElement).src = '/recipe-placeholder.jpg';
+                }}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Badge className="bg-primary/20 text-primary border-primary/40 font-semibold px-2.5 py-0.5">
+                OmniChef™ Kitchen HUD
               </Badge>
-            )}
-            <span className="text-xs text-slate-400 font-medium">
-              Step {currentStepIndex + 1} of {activeRecipe.steps.length} • {activeRecipe.cookTime}
-            </span>
+              {activeRecipe.variationName && (
+                <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">
+                  {activeRecipe.variationName}
+                </Badge>
+              )}
+              <span className="text-xs text-slate-400 font-medium">
+                Step {currentStepIndex + 1} of {activeRecipe.steps.length} • {activeRecipe.cookTime}
+              </span>
+            </div>
+            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white line-clamp-1">
+              {activeRecipe.title}
+            </h1>
           </div>
-          <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white line-clamp-1">
-            {activeRecipe.title}
-          </h1>
         </div>
 
         {/* HUD Control Bar */}

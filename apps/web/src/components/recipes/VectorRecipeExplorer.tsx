@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Sparkles,
   Search,
@@ -9,13 +9,7 @@ import {
   Cpu,
   Flame,
   Clock,
-  ArrowRight,
   Utensils,
-  CheckCircle2,
-  GitFork,
-  ChevronRight,
-  TrendingUp,
-  Layers,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { VectorSearchResult } from '@/lib/ai/recipe-vector-db';
+import { OpenRecipe } from '@/lib/ai/open-recipe-database';
 
 const PRESET_VECTOR_QUERIES = [
   'Tangy 20-min salmon with citrus',
@@ -68,7 +63,7 @@ export function VectorRecipeExplorer() {
     }
   };
 
-  const handleCookInHUD = (recipe: any) => {
+  const handleCookInHUD = (recipe: OpenRecipe) => {
     if (typeof window !== 'undefined') {
       try {
         sessionStorage.setItem(
@@ -80,6 +75,7 @@ export function VectorRecipeExplorer() {
             calories: recipe.calories,
             servings: 2,
             difficulty: recipe.difficulty,
+            imageUrl: recipe.imageUrl,
             pantryIngredientsUsed: recipe.pantryIngredients,
             steps: recipe.steps,
             flavorProfile: recipe.flavorProfile,

@@ -135,7 +135,7 @@ export const RECIPE_REMIX_VARIATIONS: Array<{
     calorieAdjustment: -90,
     addedIngredients: ['Avocado oil spray', 'Smoked garlic seasoning rub'],
     removedIngredients: ['Pan Sauté Step', 'Excess basting butter'],
-    stepTransformer: (baseSteps) => [
+    stepTransformer: (_baseSteps) => [
       'Preheat your air fryer to 400°F (205°C) for 3 minutes.',
       'Pat protein dry, mist generously with avocado oil spray, and coat with smoked garlic seasoning.',
       'Place into the perforated air fryer basket in a single layer with space for convective airflow.',
@@ -154,7 +154,7 @@ export const RECIPE_REMIX_VARIATIONS: Array<{
     calorieAdjustment: +60,
     addedIngredients: ['Crispy chili crunch oil (2 tbsp)', 'Toasted sesame seeds', 'Sliced scallions', 'Sichuan peppercorn'],
     removedIngredients: ['Lemon Zest Emulsion'],
-    stepTransformer: (baseSteps) => [
+    stepTransformer: (_baseSteps) => [
       'Pat protein dry and dust lightly with ground Sichuan peppercorn and coarse sea salt.',
       'Heat 1 tbsp chili crunch oil in a wok or heavy skillet until smoking hot and fragrant.',
       'Sear protein undisturbed for 4 minutes until crust is charred with red chili lacquer.',
@@ -173,7 +173,7 @@ export const RECIPE_REMIX_VARIATIONS: Array<{
     calorieAdjustment: +110,
     addedIngredients: ['Sun-dried tomatoes in olive oil', 'Baby spinach (2 cups)', 'Grated Parmigiano-Reggiano', 'Fresh basil'],
     removedIngredients: ['Plain olive oil spray'],
-    stepTransformer: (baseSteps) => [
+    stepTransformer: (_baseSteps) => [
       'Season protein with sea salt, black pepper, and dried Italian oregano.',
       'Sear protein in skillet with olive oil for 4 minutes per side until golden; transfer to a side plate.',
       'In same pan drippings, sauté minced garlic and chopped sun-dried tomatoes for 60 seconds until aromatic.',
@@ -192,7 +192,7 @@ export const RECIPE_REMIX_VARIATIONS: Array<{
     calorieAdjustment: +45,
     addedIngredients: ['Hot honey (1.5 tbsp)', 'Chipotle chili powder', 'Fresh lime zest & juice', 'Cilantro'],
     removedIngredients: ['Butter'],
-    stepTransformer: (baseSteps) => [
+    stepTransformer: (_baseSteps) => [
       'Coat protein in chipotle chili powder, ground cumin, and sea salt.',
       'Whisk hot honey with fresh lime juice in a small ramekin to create finishing glaze.',
       'Sear protein in hot olive oil for 4 minutes on first side until deeply blackened.',

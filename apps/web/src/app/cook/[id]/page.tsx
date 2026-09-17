@@ -14,6 +14,7 @@ const DEMO_RECIPE: CookingRecipe = {
   calories: 540,
   servings: 2,
   difficulty: 'Intermediate',
+  imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80',
   pantryIngredientsUsed: [
     '2 Atlantic Salmon fillets (6 oz each)',
     '1 bunch fresh asparagus, trimmed',
@@ -58,6 +59,7 @@ export default function CookPage({ params }: { params: Promise<{ id: string }> }
         calories: matchingOpenRecipe.calories,
         servings: 2,
         difficulty: matchingOpenRecipe.difficulty,
+        imageUrl: matchingOpenRecipe.imageUrl,
         pantryIngredientsUsed: matchingOpenRecipe.pantryIngredients,
         steps: matchingOpenRecipe.steps,
         proTips: {
