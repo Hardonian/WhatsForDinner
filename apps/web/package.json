@@ -106,7 +106,7 @@
     "@radix-ui/react-radio-group": "^1.2.2",
     "@vercel/analytics": "^1.5.0",
     "@whats-for-dinner/adapters-crm": "workspace:*",
-    "drizzle-orm": "^0.39.0"
+    "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
     "@capacitor/android": "^7.4.4",
