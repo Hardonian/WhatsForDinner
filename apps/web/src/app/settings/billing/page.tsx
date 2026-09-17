@@ -191,16 +191,18 @@ export default function BillingSettingsPage() {
     }
   };
 
-  if (!user) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-      <p>Please log in to view billing settings.</p>
-    </div>
-    );
-  }
-
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
+      {!user && (
+        <div className="mb-6 p-4 rounded-xl border border-primary/20 bg-primary/5 flex items-center justify-between">
+          <div className="text-sm">
+            <span className="font-semibold">Exploring in Guest Chef Mode.</span> Link your email to sync across devices.
+          </div>
+          <Button size="sm" variant="outline" asChild>
+            <a href="/login?redirect=/billing">Sign In</a>
+          </Button>
+        </div>
+      )}
       <h1 className="text-4xl font-bold mb-8">Billing & Subscription</h1>
 
       <Tabs defaultValue="subscription" className="space-y-6">
@@ -295,13 +297,22 @@ export default function BillingSettingsPage() {
           ) : (
             <Card>
               <CardHeader>
-                <CardTitle>No Active Subscription</CardTitle>
-                <CardDescription>Subscribe to unlock premium features</CardDescription>
+                <CardTitle className="text-xl">Free Chef Tier</CardTitle>
+                <CardDescription>You are currently on the free community tier. Upgrade to unlock unlimited AI suggestions, voice OmniChef HUD, and automated grocery price arbitrage.</CardDescription>
               </CardHeader>
-              <CardContent>
-                <Button asChild>
-                  <a href="/pricing">View Plans</a>
-                </Button>
+              <CardContent className="space-y-4">
+                <div className="flex flex-wrap gap-3">
+                  <Button asChild className="font-bold">
+                    <a href="/pricing">
+                      Upgrade to Pro ($9.99/mo)
+                    </a>
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <a href="/pricing">
+                      Family Plan ($19.99/mo)
+                    </a>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}
