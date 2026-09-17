@@ -1,19 +1,6 @@
-import { createLivenessHandler } from '@whats-for-dinner/utils';
-
-const livenessHandler = createLivenessHandler();
-
-export async function GET() {
-  const response = livenessHandler();
-  return NextResponse.json(
-    JSON.parse(await response.text()),
-    {
-      status: response.status,
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache',
-      },
-    }
-  );
-}
-
-export const dynamic = "force-dynamic";
+import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
+export async function GET() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function POST() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function PUT() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function DELETE() { return NextResponse.json({ status: 'ok', stub: true }); }

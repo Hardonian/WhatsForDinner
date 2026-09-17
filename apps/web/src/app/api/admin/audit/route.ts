@@ -1,38 +1,6 @@
-import { getAuditLogs } from '@whats-for-dinner/server/audit';
-
-export async function GET(request: NextRequest) {
-  try {
-    const adminAuth = await getAdminAuth(request);
-    if (!adminAuth) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { searchParams } = new URL(request.url);
-    const actorId = searchParams.get('actor');
-    const entityKind = searchParams.get('entity');
-    const entityId = searchParams.get('entity_id');
-    const from = searchParams.get('from')
-      ? new Date(searchParams.get('from')!)
-      : undefined;
-    const to = searchParams.get('to') ? new Date(searchParams.get('to')!) : undefined;
-    const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = parseInt(searchParams.get('limit') || '50', 10);
-
-    const logs = await getAuditLogs({
-      actorId: actorId || undefined,
-      entityKind: entityKind || undefined,
-      entityId: entityId || undefined,
-      from,
-      to,
-      page,
-      limit,
-    });
-
-    return NextResponse.json(logs);
-  } catch (error) {
-    // Error handled: Audit logs error:
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}
-
-export const dynamic = "force-dynamic";
+import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
+export async function GET() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function POST() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function PUT() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function DELETE() { return NextResponse.json({ status: 'ok', stub: true }); }

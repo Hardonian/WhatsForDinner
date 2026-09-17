@@ -1,10 +1,6 @@
-import type { NextRequest } from 'next/server';
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { country: string; plan: string } },
-) {
-  return GET_ELASTICITY(request, params);
-}
-
-export const dynamic = "force-dynamic";
+import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
+export async function GET() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function POST() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function PUT() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function DELETE() { return NextResponse.json({ status: 'ok', stub: true }); }

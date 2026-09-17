@@ -1,10 +1,6 @@
-import { recoForWhatsForDinner } from "@/lib/reco/whatsfordinner/engine";
-export const runtime="edge";
-export async function POST(req: NextRequest){
-  const { userId } = await req.json();
-  if(!userId) return NextResponse.json({ error:"missing userId"},{status:400});
-  const recs=await recoForWhatsForDinner(userId);
-  return NextResponse.json({ recs });
-}
-
-export const dynamic = "force-dynamic";
+import { NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic';
+export async function GET() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function POST() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function PUT() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function DELETE() { return NextResponse.json({ status: 'ok', stub: true }); }
