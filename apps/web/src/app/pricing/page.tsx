@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 
 import { useState } from 'react';
-import { Check, Star, Zap, Users, TrendingUp, ArrowRight } from 'lucide-react';
+import { Check, Star, TrendingUp, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -247,7 +247,7 @@ export default function PricingPage() {
           ].map((testimonial, idx) => (
             <Card key={idx}>
               <CardContent className="pt-6">
-                <p className="text-sm mb-4">"{testimonial.quote}"</p>
+                <p className="text-sm mb-4">&ldquo;{testimonial.quote}&rdquo;</p>
                 <div>
                   <div className="font-semibold">{testimonial.author}</div>
                   <div className="text-xs text-muted-foreground">{testimonial.role}</div>
@@ -277,7 +277,7 @@ export default function PricingPage() {
             },
             {
               q: 'Can I get a refund?',
-              a: 'Yes, we offer a 30-day money-back guarantee. If you\'re not satisfied, we\'ll refund you in full.'
+              a: 'Yes, we offer a 30-day money-back guarantee. If you are not satisfied, we will refund you in full.'
             }
           ].map((faq, idx) => (
             <Card key={idx}>
@@ -296,7 +296,7 @@ export default function PricingPage() {
       <div className="mt-16 text-center bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-12">
         <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
         <p className="text-xl text-muted-foreground mb-8">
-          Join thousands of users who've made meal planning effortless.
+          Join thousands of users who&apos;ve made meal planning effortless.
         </p>
         <Button size="lg" className="text-lg px-8 py-6" asChild>
           <Link href="/signup">

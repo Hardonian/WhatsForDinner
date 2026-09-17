@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, ArrowRight, CheckCircle2, ChefHat, ShieldCheck } from 'lucide-react';
+import { ArrowRight, ChefHat, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
@@ -29,7 +29,7 @@ function SignupContent() {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -98,9 +98,26 @@ function SignupContent() {
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg">Selected Tier</CardTitle>
-              <Badge className={plan === 'pro' ? 'bg-primary' : plan === 'family' ? 'bg-purple-600' : 'bg-muted text-foreground'}>
-                {plan.toUpperCase()}
-              </Badge>
+              <div className="flex gap-1">
+                {(['free', 'pro', 'family'] as const).map(p => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setPlan(p)}
+                    className={`px-2 py-0.5 rounded text-xs font-bold transition-colors ${
+                      plan === p
+                        ? p === 'pro'
+                          ? 'bg-primary text-white'
+                          : p === 'family'
+                          ? 'bg-purple-600 text-white'
+                          : 'bg-foreground text-background'
+                        : 'bg-muted text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {p.toUpperCase()}
+                  </button>
+                ))}
+              </div>
             </div>
             <CardDescription>
               {plan === 'pro'

@@ -23,7 +23,6 @@ import {
   Plus,
   Minus,
   Trash2,
-  Sparkles,
   CheckCircle2,
   TrendingDown,
   ArrowRight,
@@ -307,7 +306,12 @@ export default function GroceryPage() {
                   </form>
 
                   {/* Cart Items List */}
-                  {cartItems.length === 0 ? (
+                  {loadingCart ? (
+                    <div className="text-center py-10 text-muted-foreground">
+                      <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                      <p className="text-xs">Syncing household cart...</p>
+                    </div>
+                  ) : cartItems.length === 0 ? (
                     <div className="text-center py-10 text-muted-foreground">
                       <ShoppingCart className="w-12 h-12 mx-auto mb-3 opacity-30" />
                       <p>Your grocery cart is currently empty.</p>

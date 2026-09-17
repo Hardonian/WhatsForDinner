@@ -106,7 +106,7 @@ export async function GET(req: NextRequest) {
       const invoice = SAMPLE_INVOICES.find(i => i.id === invoiceId) || SAMPLE_INVOICES[0];
       const pdfBytes = generateMinimalPdf(invoice);
 
-      return new NextResponse(pdfBytes, {
+      return new NextResponse(pdfBytes as unknown as BodyInit, {
         status: 200,
         headers: {
           'Content-Type': 'application/pdf',

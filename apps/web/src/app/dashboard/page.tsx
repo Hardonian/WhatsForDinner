@@ -9,7 +9,6 @@ export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
 import { DailyRetentionHooks } from '@/components/DailyRetentionHooks';
 import { TrustSignals } from '@/components/TrustSignals';
 import { CTAOptimizer } from '@/components/CTAOptimizer';
@@ -19,16 +18,27 @@ import SmartUpsell from '@/components/monetization/SmartUpsell';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Play, ShoppingCart, UtensilsCrossed, Dices, Flame, Clock, ArrowRight } from 'lucide-react';
+import { Sparkles, Play, ShoppingCart, UtensilsCrossed, Dices, Clock, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
+interface RecipePreview {
+  id: string;
+  title: string;
+  description: string;
+  cuisine: string;
+  cookTime: string;
+  macros?: {
+    calories?: number;
+    protein?: number;
+  };
+}
+
 export default function DashboardPage() {
-  const router = useRouter();
   const supabase = createClientComponentClient();
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [tenantId, setTenantId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
+  const [recentRecipes, setRecentRecipes] = useState<RecipePreview[]>([]);
 
   useEffect(() => {
     const loadUser = async () => {
