@@ -100,8 +100,8 @@ async function getUnsplashFallback(recipeTitle: string, cuisine?: string): Promi
  * Cache image URL in database
  */
 export async function cacheRecipeImage(
-  _recipeId: string,
-  _imageUrl: string
+  recipeId: string,
+  imageUrl: string
 ): Promise<void> {
-  // Stored in Supabase recipes table or image_cache table
+  _logger.debug('Caching recipe image mapping', { recipeId, imageUrl });
 }
