@@ -26,6 +26,7 @@ import {
   ShieldCheck,
   Shuffle,
   RefreshCw,
+  Bluetooth,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -37,6 +38,10 @@ import {
   applyIngredientSwap,
   shuffleRecipeRemix,
 } from '@/lib/recipes/recipe-mutator';
+import {
+  bluetoothProbeDriver,
+  BluetoothProbeReading,
+} from '@/lib/iot/bluetooth-probe';
 
 export const USDA_TEMPERATURE_GUIDE = [
   { item: 'Poultry (Whole, Ground, Breasts)', tempF: 165, tempC: 74, rest: '0 min' },
@@ -142,6 +147,42 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
     toast.success(`Shuffled Style: ${remixed.variationName}!`, {
       description: `Updated culinary technique, prep steps, and cook time (${remixed.cookTime}).`,
     });
+  };
+
+  const [probeReading, setProbeReading] = useState<BluetoothProbeReading>(bluetoothProbeDriver.getReading());
+  const [isPairingProbe, setIsPairingProbe] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = bluetoothProbeDriver.subscribe((reading) => {
+      setProbeReading(reading);
+      if (reading.connected && reading.isTargetReached) {
+        soundEffects.playVictory();
+        toast.success(`🎯 Meat Probe Alert: Core temp reached ${reading.currentTempF}°F!`, {
+          description: `Safe USDA target reached. Remove from heat and rest protein.`,
+        });
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleConnectProbe = async () => {
+    if (probeReading.connected) {
+      bluetoothProbeDriver.disconnect();
+      toast.info('Smart meat probe disconnected');
+      return;
+    }
+    setIsPairingProbe(true);
+    try {
+      const reading = await bluetoothProbeDriver.connect(145);
+      soundEffects.playClick();
+      toast.success(`Probe Connected: ${reading.deviceName}!`, {
+        description: `Monitoring internal temp (Target: ${reading.targetTempF}°F).`,
+      });
+    } catch {
+      toast.error('Bluetooth probe pairing failed');
+    } finally {
+      setIsPairingProbe(false);
+    }
   };
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -405,6 +446,26 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
 
         {/* HUD Control Bar */}
         <div className="flex items-center gap-2">
+          {/* Bluetooth Smart Meat Probe */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleConnectProbe}
+            disabled={isPairingProbe}
+            className={`font-semibold text-xs h-9 transition-all ${
+              probeReading.connected
+                ? 'border-emerald-500/60 bg-emerald-950/60 text-emerald-300'
+                : 'border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200'
+            }`}
+          >
+            <Bluetooth className={`w-4 h-4 mr-1.5 ${probeReading.connected ? 'text-emerald-400 animate-pulse' : 'text-slate-400'}`} />
+            <span>
+              {probeReading.connected
+                ? `${probeReading.currentTempF}°F / ${probeReading.targetTempF}°F`
+                : 'Pair Meat Probe'}
+            </span>
+          </Button>
+
           {/* Shuffle / Remix Recipe Variation */}
           <Button
             variant="outline"
