@@ -40,8 +40,8 @@ export interface RetryOptions {
 }
 export declare class RetryableError extends Error {
     readonly retryable: boolean;
-    readonly originalError?: unknown;
-    constructor(message: string, retryable?: boolean, originalError?: unknown);
+    readonly originalError?: unknown | undefined;
+    constructor(message: string, retryable?: boolean, originalError?: unknown | undefined);
 }
 /**
  * Retry a function with exponential backoff

@@ -27,7 +27,7 @@ export async function getAuthenticatedUser(
   request: NextRequest
 ): Promise<{ user: AuthenticatedUser; supabase: SupabaseClient } | null> {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = createRouteHandlerClient({ cookies } as any);
     
     // Get user from JWT token (validates the token)
     const {
@@ -147,7 +147,7 @@ export async function getTenantContext(
   const authResult = await requireAuth(request);
   
   if (!authResult.success) {
-    return authResult;
+    return { success: false, response: (authResult as any).response };
   }
 
   const { context } = authResult;
@@ -210,7 +210,7 @@ export async function getTenantContext(
   const tenantAccess = await requireTenantAccess(request, tenantId);
   
   if (!tenantAccess.success) {
-    return tenantAccess;
+    return { success: false, response: (tenantAccess as any).response };
   }
 
   return {

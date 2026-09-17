@@ -89,7 +89,7 @@ const ROADMAP_ITEMS: RoadmapItem[] = [
 ];
 
 export default function RoadmapPage() {
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const getUser = async () => {

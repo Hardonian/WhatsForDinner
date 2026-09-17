@@ -85,3 +85,7 @@ export function InputPromptSkeleton() {
     </Card>
   );
 }
+
+export default function SkeletonLoader() {
+  return <PantrySkeleton />;
+}

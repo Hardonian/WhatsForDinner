@@ -16,50 +16,50 @@ export declare const RecipeSchema: z.ZodObject<{
         carbs: z.ZodOptional<z.ZodNumber>;
         fat: z.ZodOptional<z.ZodNumber>;
     }, "strip", z.ZodTypeAny, {
-        calories?: number;
-        protein?: number;
-        carbs?: number;
-        fat?: number;
+        calories?: number | undefined;
+        protein?: number | undefined;
+        carbs?: number | undefined;
+        fat?: number | undefined;
     }, {
-        calories?: number;
-        protein?: number;
-        carbs?: number;
-        fat?: number;
+        calories?: number | undefined;
+        protein?: number | undefined;
+        carbs?: number | undefined;
+        fat?: number | undefined;
     }>>;
 }, "strip", z.ZodTypeAny, {
-    title?: string;
-    ingredients?: string[];
-    tags?: string[];
-    description?: string;
-    instructions?: string[];
-    prepTime?: number;
-    cookTime?: number;
-    servings?: number;
-    difficulty?: "easy" | "medium" | "hard";
-    imageUrl?: string;
+    title: string;
+    ingredients: string[];
+    tags: string[];
+    instructions: string[];
+    prepTime: number;
+    cookTime: number;
+    servings: number;
+    difficulty: "easy" | "medium" | "hard";
+    description?: string | undefined;
+    imageUrl?: string | undefined;
     nutrition?: {
-        calories?: number;
-        protein?: number;
-        carbs?: number;
-        fat?: number;
-    };
+        calories?: number | undefined;
+        protein?: number | undefined;
+        carbs?: number | undefined;
+        fat?: number | undefined;
+    } | undefined;
 }, {
-    title?: string;
-    ingredients?: string[];
-    tags?: string[];
-    description?: string;
-    instructions?: string[];
-    prepTime?: number;
-    cookTime?: number;
-    servings?: number;
-    difficulty?: "easy" | "medium" | "hard";
-    imageUrl?: string;
+    title: string;
+    ingredients: string[];
+    instructions: string[];
+    prepTime: number;
+    cookTime: number;
+    servings: number;
+    tags?: string[] | undefined;
+    description?: string | undefined;
+    difficulty?: "easy" | "medium" | "hard" | undefined;
+    imageUrl?: string | undefined;
     nutrition?: {
-        calories?: number;
-        protein?: number;
-        carbs?: number;
-        fat?: number;
-    };
+        calories?: number | undefined;
+        protein?: number | undefined;
+        carbs?: number | undefined;
+        fat?: number | undefined;
+    } | undefined;
 }>;
 export declare const PantryItemSchema: z.ZodObject<{
     id: z.ZodString;
@@ -70,21 +70,21 @@ export declare const PantryItemSchema: z.ZodObject<{
     expiryDate: z.ZodOptional<z.ZodDate>;
     addedAt: z.ZodDefault<z.ZodDate>;
 }, "strip", z.ZodTypeAny, {
-    id?: string;
-    unit?: string;
-    category?: string;
-    ingredient?: string;
-    quantity?: number;
-    expiryDate?: Date;
-    addedAt?: Date;
+    id: string;
+    ingredient: string;
+    quantity: number;
+    addedAt: Date;
+    unit?: string | undefined;
+    category?: string | undefined;
+    expiryDate?: Date | undefined;
 }, {
-    id?: string;
-    unit?: string;
-    category?: string;
-    ingredient?: string;
-    quantity?: number;
-    expiryDate?: Date;
-    addedAt?: Date;
+    id: string;
+    ingredient: string;
+    quantity: number;
+    unit?: string | undefined;
+    category?: string | undefined;
+    expiryDate?: Date | undefined;
+    addedAt?: Date | undefined;
 }>;
 export declare const UserPreferencesSchema: z.ZodObject<{
     dietaryRestrictions: z.ZodDefault<z.ZodArray<z.ZodString, "many">>;
@@ -93,17 +93,17 @@ export declare const UserPreferencesSchema: z.ZodObject<{
     spiceLevel: z.ZodDefault<z.ZodEnum<["mild", "medium", "hot"]>>;
     cookingSkill: z.ZodDefault<z.ZodEnum<["beginner", "intermediate", "advanced"]>>;
 }, "strip", z.ZodTypeAny, {
-    dietaryRestrictions?: string[];
-    allergies?: string[];
-    cuisinePreferences?: string[];
-    spiceLevel?: "medium" | "mild" | "hot";
-    cookingSkill?: "beginner" | "intermediate" | "advanced";
+    dietaryRestrictions: string[];
+    allergies: string[];
+    cuisinePreferences: string[];
+    spiceLevel: "medium" | "mild" | "hot";
+    cookingSkill: "beginner" | "intermediate" | "advanced";
 }, {
-    dietaryRestrictions?: string[];
-    allergies?: string[];
-    cuisinePreferences?: string[];
-    spiceLevel?: "medium" | "mild" | "hot";
-    cookingSkill?: "beginner" | "intermediate" | "advanced";
+    dietaryRestrictions?: string[] | undefined;
+    allergies?: string[] | undefined;
+    cuisinePreferences?: string[] | undefined;
+    spiceLevel?: "medium" | "mild" | "hot" | undefined;
+    cookingSkill?: "beginner" | "intermediate" | "advanced" | undefined;
 }>;
 export type Recipe = z.infer<typeof RecipeSchema>;
 export type PantryItem = z.infer<typeof PantryItemSchema>;

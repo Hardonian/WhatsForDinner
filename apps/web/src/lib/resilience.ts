@@ -156,7 +156,7 @@ export function createResilientSupabaseClient(url: string, key: string) {
             ...originalSelect,
             then: (onFulfilled?: any, onRejected?: any) => {
               return circuitBreakers.supabase.execute(() =>
-                withRetry(() => originalSelect.then(onFulfilled, onRejected))
+                withRetry(() => Promise.resolve(originalSelect).then(onFulfilled, onRejected))
               );
             }
           };
@@ -168,7 +168,7 @@ export function createResilientSupabaseClient(url: string, key: string) {
             ...originalInsert,
             then: (onFulfilled?: any, onRejected?: any) => {
               return circuitBreakers.supabase.execute(() =>
-                withRetry(() => originalInsert.then(onFulfilled, onRejected))
+                withRetry(() => Promise.resolve(originalInsert).then(onFulfilled, onRejected))
               );
             }
           };
@@ -180,7 +180,7 @@ export function createResilientSupabaseClient(url: string, key: string) {
             ...originalUpdate,
             then: (onFulfilled?: any, onRejected?: any) => {
               return circuitBreakers.supabase.execute(() =>
-                withRetry(() => originalUpdate.then(onFulfilled, onRejected))
+                withRetry(() => Promise.resolve(originalUpdate).then(onFulfilled, onRejected))
               );
             }
           };
@@ -192,7 +192,7 @@ export function createResilientSupabaseClient(url: string, key: string) {
             ...originalDelete,
             then: (onFulfilled?: any, onRejected?: any) => {
               return circuitBreakers.supabase.execute(() =>
-                withRetry(() => originalDelete.then(onFulfilled, onRejected))
+                withRetry(() => Promise.resolve(originalDelete).then(onFulfilled, onRejected))
               );
             }
           };

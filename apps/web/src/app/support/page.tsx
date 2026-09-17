@@ -65,8 +65,8 @@ export default function SupportPage() {
 
       {/* Quick Actions */}
       <div className="grid md:grid-cols-3 gap-6 mb-12">
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer" asChild>
-          <Link href="/wiki">
+        <Link href="/wiki" className="block">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
             <CardHeader>
               <BookOpen className="w-8 h-8 text-primary mb-2" />
               <CardTitle>Knowledge Base</CardTitle>
@@ -76,11 +76,11 @@ export default function SupportPage() {
                 Browse our comprehensive help articles and guides
               </p>
             </CardContent>
-          </Link>
-        </Card>
+          </Card>
+        </Link>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer" asChild>
-          <Link href="/wiki">
+        <Link href="/wiki" className="block">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
             <CardHeader>
               <MessageCircle className="w-8 h-8 text-primary mb-2" />
               <CardTitle>AI Assistant</CardTitle>
@@ -90,8 +90,8 @@ export default function SupportPage() {
                 Get instant answers from our AI chat bot
               </p>
             </CardContent>
-          </Link>
-        </Card>
+          </Card>
+        </Link>
 
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>

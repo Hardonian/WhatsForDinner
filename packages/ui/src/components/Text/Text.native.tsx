@@ -7,6 +7,8 @@ export interface TextProps {
   className?: string;
   testID?: string;
   style?: TextStyle;
+  accessibilityRole?: any;
+  accessibilityLabel?: string;
 }
 
 export function Text({
@@ -15,6 +17,8 @@ export function Text({
   className,
   testID,
   style,
+  accessibilityRole,
+  accessibilityLabel,
   ...props
 }: TextProps) {
   const variantStyles: Record<string, TextStyle> = {
@@ -66,6 +70,8 @@ export function Text({
     <RNText
       style={[variantStyles[variant], style]}
       testID={testID}
+      accessibilityRole={accessibilityRole}
+      accessibilityLabel={accessibilityLabel}
       {...props}
     >
       {children}

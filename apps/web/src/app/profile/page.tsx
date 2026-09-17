@@ -9,7 +9,7 @@ import BadgeCollection from "@/components/gamification/BadgeCollection";
 import ProgressChart from "@/components/gamification/ProgressChart";
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<unknown>(null);
+  const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [displayName, setDisplayName] = useState("");

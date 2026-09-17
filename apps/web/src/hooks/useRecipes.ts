@@ -111,7 +111,7 @@ export function useSaveRecipe() {
           title: recipe.title,
           details: recipe,
           calories: recipe.calories,
-          time: recipe.time,
+          time: (recipe as any).time || recipe.cookTime,
         })
         .select()
         .single();

@@ -15,6 +15,7 @@ interface EmailCaptureProps {
   cta?: string;
   variant?: 'default' | 'inline' | 'modal';
   source?: string;
+  onSuccess?: () => void | Promise<void>;
 }
 
 export default function EmailCapture({
@@ -23,6 +24,7 @@ export default function EmailCapture({
   cta = "Get Started Free",
   variant = 'default',
   source = 'email_capture',
+  onSuccess,
 }: EmailCaptureProps) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -64,6 +66,7 @@ export default function EmailCapture({
 
       setSubmitted(true);
       toast.success('Thanks! Check your email for next steps.');
+      await onSuccess?.();
 
       // Reset after 3 seconds
       setTimeout(() => {

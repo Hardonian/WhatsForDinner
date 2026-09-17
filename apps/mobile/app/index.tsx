@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, RefreshControl, Text as RNText } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Button, Card, ThemeToggle } from '@whats-for-dinner/ui';
-import { useDeviceInfo, useTheme } from '@whats-for-dinner/utils';
+import { useDeviceInfo, useTheme, createComponentLogger } from '@whats-for-dinner/utils';
 import { RecipeCard } from '../src/components/RecipeCard';
 import { InputPrompt } from '../src/components/InputPrompt';
 import { Navbar } from '../src/components/Navbar';
@@ -24,7 +24,7 @@ export default function HomeScreen() {
   const saveRecipeMutation = useSaveRecipe();
   const { data: pantryItems = [], isLoading: pantryLoading } = usePantryItems();
 
-  const pantryItemNames = (pantryItems as PantryItem[]).map(item => item.ingredient);
+  const pantryItemNames = (pantryItems as any[]).map(item => item?.ingredient || item?.name || '');
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

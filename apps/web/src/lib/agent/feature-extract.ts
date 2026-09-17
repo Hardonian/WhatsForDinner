@@ -2,8 +2,8 @@ import { createClient } from "@supabase/supabase-js";
 
 export async function computeSignalsForUser(userId: string, window: "1d"|"7d"|"30d" = "7d") {
   const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
   );
 
   const { data: events } = await supabase
@@ -34,9 +34,11 @@ export async function computeSignalsForUser(userId: string, window: "1d"|"7d"|"3
       v: s.v, 
       meta: s.meta 
     }));
-    await supabase.from("signals").insert(rows).catch(() => {
+    try {
+      await supabase.from("signals").insert(rows);
+    } catch {
       // Silently fail if insert fails (e.g., duplicate key)
-    });
+    }
   }
 
   return signals;
@@ -44,12 +46,12 @@ export async function computeSignalsForUser(userId: string, window: "1d"|"7d"|"3
 
 const windowMs = (w: "1d"|"7d"|"30d") => ({ "1d": 86400000, "7d": 604800000, "30d": 2592000000 }[w]);
 
-function countRageClicks(clicks: unknown[]) {
+function countRageClicks(clicks: any[]) {
   // naive heuristic: ≥4 clicks on same path within 2s
   const byPath: Record<string, number[]> = {};
   clicks.forEach(c => {
-    const t = new Date(c.ts).getTime();
-    const key = c.path || "unknown";
+    const t = new Date(c?.ts || Date.now()).getTime();
+    const key = c?.path || "unknown";
     byPath[key] ??= [];
     byPath[key].push(t);
   });

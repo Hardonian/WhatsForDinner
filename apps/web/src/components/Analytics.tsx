@@ -86,9 +86,4 @@ export function trackEvent(eventName: string, properties?: Record<string, unknow
   }
 }
 
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-    dataLayer?: unknown[];
-  }
-}
+export default Analytics;

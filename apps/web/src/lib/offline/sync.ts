@@ -7,7 +7,7 @@ export async function syncUp(userId:string, table:string, rows: unknown[]){
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
   );
   // Optimize: Batch upsert instead of individual operations
-  const { error } = await supa.from(table).upsert(rows.map(r=>({ user_id:userId, ...r })));
+  const { error } = await supa.from(table).upsert(rows.map(r=>({ user_id:userId, ...((r as Record<string, any>) || {}) })));
   if(error) throw error; return { synced: rows.length };
 }
 export async function syncDown(userId:string, table:string){

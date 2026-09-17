@@ -5,8 +5,8 @@
  */
 
 import type { TrustFabricModel, DataClass, ResponseAction } from './types';
-const fs = typeof window === 'undefined' ? require('fs') : null;
-const path = typeof window === 'undefined' ? require('path') : null;
+const fs = (typeof window === 'undefined' && typeof process !== 'undefined' && process.versions?.node) ? (() => { try { return eval('require')('fs'); } catch { return null; } })() : null;
+const path = (typeof window === 'undefined' && typeof process !== 'undefined' && process.versions?.node) ? (() => { try { return eval('require')('path'); } catch { return null; } })() : null;
 import { createComponentLogger } from '../logger';
 
 const logger = createComponentLogger('trust-fabric-ts');

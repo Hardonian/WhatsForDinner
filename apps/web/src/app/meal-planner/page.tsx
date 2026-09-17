@@ -44,14 +44,10 @@ interface WeeklyMealPlan {
   totalCost?: number;
 }
 
-interface User {
-  id: string;
-  email?: string;
-  [key: string]: unknown;
-}
+import type { AppUser } from '@/types/user';
 
 export default function MealPlannerPage() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(false);
   const [mealPlan, setMealPlan] = useState<WeeklyMealPlan | null>(null);
   const [preferences, setPreferences] = useState({
@@ -66,7 +62,7 @@ export default function MealPlannerPage() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      setUser(user);
+      setUser(user as any);
     };
 
     fetchUser();
@@ -236,7 +232,7 @@ export default function MealPlannerPage() {
                             className="p-4 rounded-lg bg-muted/50 cursor-pointer hover:bg-muted transition-colors"
                             onClick={async () => {
                               await analytics.trackEvent('RECIPE_VIEWED', {
-                                recipe_id: day.breakfast.id || 'unknown',
+                                recipe_id: (day.breakfast as any)?.id || 'unknown',
                                 recipe_source: 'curated',
                                 view_duration_seconds: 0,
                                 user_id: user?.id,
@@ -269,7 +265,7 @@ export default function MealPlannerPage() {
                           className="p-4 rounded-lg bg-primary/5 border-2 border-primary/20 cursor-pointer hover:bg-primary/10 transition-colors"
                           onClick={async () => {
                             await analytics.trackEvent('RECIPE_VIEWED', {
-                              recipe_id: day.dinner.id || 'unknown',
+                              recipe_id: (day.dinner as any)?.id || 'unknown',
                               recipe_source: 'curated',
                               view_duration_seconds: 0,
                               user_id: user?.id,

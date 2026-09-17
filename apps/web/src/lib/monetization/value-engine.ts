@@ -200,7 +200,7 @@ export class CustomerValueEngine {
     }
 
     // Opportunity 3: Annual subscription discount (for existing subscribers)
-    if (['pro', 'premium'].includes(profile.currentPlan) && profile.retentionDays > 30) {
+    if (['pro', 'premium'].includes(profile.currentPlan) && (profile.usagePatterns?.retentionDays || 0) > 30) {
       const annualSavings = profile.currentMRR * 12 - (profile.currentMRR * 10); // 2 months free
       opportunities.push({
         id: `upsell-annual-${Date.now()}`,

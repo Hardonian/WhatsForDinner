@@ -120,3 +120,5 @@ export function HealthMetricsCard() {
     </Card>
   );
 }
+
+export default HealthMetricsCard;

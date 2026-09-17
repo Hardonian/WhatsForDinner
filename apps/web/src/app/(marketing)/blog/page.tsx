@@ -82,7 +82,7 @@ const SAMPLE_POSTS: BlogPost[] = [
 ];
 
 export default function BlogPage() {
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<any>(null);
   const [posts, setPosts] = useState<BlogPost[]>(SAMPLE_POSTS);
 
   useEffect(() => {

@@ -31,7 +31,7 @@ export interface UsageCredits {
   tenantId: string;
   credits: number;
   expiresAt?: string;
-  source: 'purchase' | 'bonus' | 'referral' | 'trial';
+  source?: 'purchase' | 'bonus' | 'referral' | 'trial';
 }
 
 export class UsagePremiumManager {

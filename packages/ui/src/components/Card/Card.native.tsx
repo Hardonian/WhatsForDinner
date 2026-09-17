@@ -9,6 +9,8 @@ export interface CardProps {
   variant?: 'default' | 'elevated' | 'outlined' | 'filled' | 'brand';
   className?: string;
   testID?: string;
+  accessibilityRole?: any;
+  accessibilityLabel?: string;
 }
 
 export function Card({ 
@@ -18,6 +20,8 @@ export function Card({
   variant = 'default',
   className, 
   testID,
+  accessibilityRole,
+  accessibilityLabel,
   ...props 
 }: CardProps) {
   const baseClasses = 'rounded-lg border p-4';
@@ -38,6 +42,8 @@ export function Card({
         className
       )}
       testID={testID}
+      accessibilityRole={accessibilityRole}
+      accessibilityLabel={accessibilityLabel}
       {...props}
     >
       {title && (

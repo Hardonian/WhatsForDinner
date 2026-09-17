@@ -50,6 +50,12 @@ export function validateEnv(): boolean {
   return true;
 }
 
+export const GenerateRecipesRequestSchema = z.object({
+  ingredients: z.array(z.string()),
+  preferences: z.string().optional(),
+});
+export type GenerateRecipesRequest = z.infer<typeof GenerateRecipesRequestSchema>;
+
 export const createRecipeSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200, 'Title too long'),
   ingredients: z.array(z.string()).min(1, 'At least one ingredient is required'),

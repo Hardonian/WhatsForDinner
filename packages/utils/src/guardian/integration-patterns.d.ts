@@ -54,7 +54,7 @@ export declare function useExplainability(userId: string): {
         periodEnd?: Date;
     }) => Promise<{
         answer: string;
-        sources: any[];
+        sources: never[];
     }>;
     getFeatureExplanation: (featureId: string) => {
         featureId: string;

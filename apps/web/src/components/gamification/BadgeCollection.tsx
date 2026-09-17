@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { gamificationSystem, type Badge as BadgeType } from '@/lib/gamification/system';
 
 interface BadgeCollectionProps {
-  userId: string;
+  userId?: string;
 }
 
 const rarityColors = {
@@ -35,6 +35,8 @@ export function BadgeCollection({ userId }: BadgeCollectionProps) {
 
     if (userId) {
       loadBadges();
+    } else {
+      setIsLoading(false);
     }
   }, [userId]);
 

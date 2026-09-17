@@ -76,7 +76,6 @@ export default function PantryManager({
 
     try {
       await onUpdate(id, quantity);
-      setOptimisticItems(items);
     } catch (error) {
       // Rollback on error
       setOptimisticItems(items);
@@ -216,6 +215,7 @@ export default function PantryManager({
                   <button
                     onClick={() => handleDelete(item.id)}
                     disabled={isPending}
+                    aria-label="Delete"
                     className="p-2 text-red-600 hover:text-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     <svg

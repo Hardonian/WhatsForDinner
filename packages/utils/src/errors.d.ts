@@ -38,9 +38,9 @@ export interface ErrorDetails {
 export declare class AppError extends Error {
     readonly code: ErrorCode;
     readonly statusCode: number;
-    readonly details?: ErrorDetails;
+    readonly details?: ErrorDetails | undefined;
     readonly isOperational: boolean;
-    constructor(code: ErrorCode, message: string, statusCode?: number, details?: ErrorDetails, isOperational?: boolean);
+    constructor(code: ErrorCode, message: string, statusCode?: number, details?: ErrorDetails | undefined, isOperational?: boolean);
     toJSON(): Record<string, unknown>;
 }
 export declare class ValidationError extends AppError {

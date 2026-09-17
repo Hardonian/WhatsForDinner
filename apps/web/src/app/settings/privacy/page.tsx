@@ -28,7 +28,7 @@ export default function PrivacySettingsPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [prefs, setPrefs] = useState<unknown>(null);
+  const [prefs, setPrefs] = useState<any>(null);
   const [apps, setApps] = useState<AppAllowlist[]>([]);
   const [signals, setSignals] = useState<SignalToggle[]>([]);
   const [logs, setLogs] = useState<PrivacyTransparencyLog[]>([]);
@@ -286,7 +286,7 @@ export default function PrivacySettingsPage() {
                           {signal.enabled ? 'Enabled' : 'Disabled'}
                         </Badge>
                       </TableCell>
-                      <TableCell>{Math.round(parseFloat(signal.sampling_rate) * 100)}%</TableCell>
+                      <TableCell>{Math.round(parseFloat(String(signal.sampling_rate)) * 100)}%</TableCell>
                       <TableCell>
                         <Button
                           variant="outline"
@@ -332,7 +332,7 @@ export default function PrivacySettingsPage() {
                     min={1}
                     max={365}
                     onChange={(e) => {
-                      setPrefs({ ...prefs, data_retention_days: parseInt(e.target.value) });
+                      setPrefs({ ...(prefs || {}), data_retention_days: parseInt(e.target.value) });
                     }}
                   />
                   <p className="text-sm text-muted-foreground mt-1">
@@ -357,7 +357,7 @@ export default function PrivacySettingsPage() {
                   id="mfa-required"
                   checked={prefs?.mfa_required ?? true}
                   onCheckedChange={(checked) => {
-                    setPrefs({ ...prefs, mfa_required: checked });
+                    setPrefs({ ...(prefs || {}), mfa_required: checked });
                   }}
                 />
                 <Label htmlFor="mfa-required">Require MFA for sensitive actions</Label>

@@ -55,6 +55,8 @@ export default function InputPrompt({
     }
   };
 
+  const availablePantryItems = pantryItems.filter(item => !ingredients.includes(item));
+
   return (
     <Card className="mx-auto w-full max-w-2xl">
       <CardHeader className="text-center px-4 sm:px-6">
@@ -76,7 +78,7 @@ export default function InputPrompt({
                 value={newIngredient}
                 onChange={e => setNewIngredient(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Type an ingredient and press Enter..."
+                placeholder="Add an ingredient..."
                 className="flex-1 text-base sm:text-sm"
                 disabled={loading}
                 aria-label="Enter ingredient name"
@@ -97,13 +99,13 @@ export default function InputPrompt({
             </div>
           </div>
 
-          {pantryItems.length > 0 && (
+          {availablePantryItems.length > 0 && (
             <div className="space-y-2 sm:space-y-3">
               <Label className="text-sm sm:text-base font-medium">
                 Or add from your pantry:
               </Label>
               <div className="flex flex-wrap gap-2">
-                {pantryItems.map(item => (
+                {availablePantryItems.map(item => (
                   <Button
                     key={item}
                     type="button"
@@ -112,7 +114,7 @@ export default function InputPrompt({
                     size="sm"
                     className="h-9 sm:h-8 min-h-[36px] text-xs sm:text-sm px-2 sm:px-3"
                     disabled={loading}
-                    aria-label={`Add ${item} to ingredients`}
+                    aria-label={`+ ${item}`}
                   >
                     <Plus className="mr-1 h-3 w-3" aria-hidden="true" />
                     {item}
@@ -142,7 +144,7 @@ export default function InputPrompt({
                       size="icon"
                       className="h-5 w-5 sm:h-4 sm:w-4 p-0 hover:bg-destructive hover:text-destructive-foreground active:bg-destructive active:text-destructive-foreground min-h-[28px] min-w-[28px]"
                       disabled={loading}
-                      aria-label={`Remove ${ingredient}`}
+                      aria-label={`Remove ${ingredient} ×`}
                     >
                       <X className="h-3 w-3" aria-hidden="true" />
                     </Button>
@@ -176,7 +178,7 @@ export default function InputPrompt({
             disabled={loading || ingredients.length === 0}
             className="h-12 sm:h-11 w-full text-base sm:text-sm min-h-[48px] font-medium"
             size="lg"
-            aria-label={loading ? "Generating recipes" : "Generate recipes from selected ingredients"}
+            aria-label={loading ? "Generating recipes" : "What should I cook?"}
           >
             {loading ? (
               <div className="flex items-center gap-2">

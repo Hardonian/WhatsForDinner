@@ -112,3 +112,5 @@ export function MealPlanCard() {
     </Card>
   );
 }
+
+export default MealPlanCard;

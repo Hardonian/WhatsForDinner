@@ -3,7 +3,7 @@
  * Guardian Core Service
  * Monitors data access, assesses risk, and enforces privacy boundaries
  */
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { createComponentLogger } from '../logger';
 const logger = createComponentLogger('guardian');
 // Lazy-load Node.js builtins (guardian runs server-side only)
@@ -79,20 +79,4 @@ export class Guardian {
             timestamp: new Date().toISOString(),
         };
     }
-}
-export class GuardianInspector {
-    async inspect(event) {
-        const guardian = new Guardian();
-        return guardian.assessRisk(event);
-    }
-}
-export class GuardianGPT {
-    async analyze(event) {
-        return { analysis: 'Guardian analysis placeholder', event };
-    }
-}
-export function createGuardianMiddleware() {
-    return async function guardianMiddleware(request) {
-        return null;
-    };
 }

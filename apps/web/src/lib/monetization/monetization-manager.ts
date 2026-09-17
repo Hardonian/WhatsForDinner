@@ -68,7 +68,15 @@ class MonetizationManager {
 
     try {
       if (catalogConfig.revenuecat?.enabled) {
-        return await revenueCat.getProducts();
+        const rcProducts = await revenueCat.getProducts();
+        return rcProducts.map(p => ({
+          id: p.identifier,
+          name: p.title,
+          description: p.description,
+          price: p.price,
+          currency: p.currency,
+          type: p.type,
+        }));
       }
     } catch (error) {
       if (process.env.NODE_ENV === 'development') { _logger.warn('[Monetization] RevenueCat getProducts failed:', { error }); }
@@ -76,7 +84,15 @@ class MonetizationManager {
 
     // Fallback to native billing
     const productIds = Object.keys(catalogConfig.products);
-    return await nativeBilling.getProducts(productIds);
+    const nativeProducts = await nativeBilling.getProducts(productIds);
+    return nativeProducts.map(p => ({
+      id: p.productId,
+      name: p.title,
+      description: p.description,
+      price: parseFloat(p.price) || 0,
+      currency: p.currency,
+      type: 'subscription' as const,
+    }));
   }
 
   /**

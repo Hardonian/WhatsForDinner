@@ -12,9 +12,9 @@ export function memoized<T extends ComponentType<any>>(
   Component: T,
   displayName?: string
 ): T {
-  const Memoized = memo(Component) as T;
+  const Memoized = memo(Component) as unknown as T;
   if (displayName) {
-    Memoized.displayName = displayName;
+    (Memoized as any).displayName = displayName;
   }
   return Memoized;
 }

@@ -117,7 +117,7 @@ export async function generateRecipes({
         generated_at: new Date().toISOString(),
         ingredients_used: ingredients,
         cuisine_type: detectCuisineType(recipes) || undefined,
-        cook_time: recipes[0]?.cookTime || 'Unknown',
+        cook_time: String(recipes[0]?.cookTime || 'Unknown'),
         calories: recipes[0]?.calories || 0,
         api_latency_ms: attemptDuration,
         model_used: model,
@@ -244,7 +244,7 @@ function calculateCostEstimate(
 }
 
 function calculateConfidenceScore(
-  recipes: Array<{ ingredients?: string[]; title?: string; cookTime?: string; calories?: number; steps?: string[] }>,
+  recipes: Array<{ ingredients?: string[]; title?: string; cookTime?: string | number; calories?: number; steps?: string[] }>,
   ingredients: string[]
 ): number {
   let score = 0.5; // Base score

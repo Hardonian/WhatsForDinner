@@ -49,3 +49,5 @@ export function CardSkeleton() {
     </div>
   );
 }
+
+export default LoadingState;

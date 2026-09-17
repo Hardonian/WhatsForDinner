@@ -28,20 +28,20 @@ export declare const paginationSchema: z.ZodObject<{
     page: z.ZodDefault<z.ZodNumber>;
     limit: z.ZodDefault<z.ZodNumber>;
 }, "strip", z.ZodTypeAny, {
-    page?: number;
-    limit?: number;
+    page: number;
+    limit: number;
 }, {
-    page?: number;
-    limit?: number;
+    page?: number | undefined;
+    limit?: number | undefined;
 }>;
 export declare const dateRangeSchema: z.ZodObject<{
     from: z.ZodOptional<z.ZodDate>;
     to: z.ZodOptional<z.ZodDate>;
 }, "strip", z.ZodTypeAny, {
-    from?: Date;
-    to?: Date;
+    from?: Date | undefined;
+    to?: Date | undefined;
 }, {
-    from?: Date;
-    to?: Date;
+    from?: Date | undefined;
+    to?: Date | undefined;
 }>;
 //# sourceMappingURL=types.d.ts.map

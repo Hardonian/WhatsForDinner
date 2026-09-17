@@ -28,8 +28,8 @@ import { ChefHat, Clock, Users, Zap, ArrowRight, Check, Sparkles } from 'lucide-
 import Link from 'next/link';
 
 function LandingB() {
-  const [user, setUser] = useState<unknown>(null);
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [user, setUser] = useState<any>(null);
+  const [recipes, setRecipes] = useState<any[]>([]);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   const generateRecipesMutation = useGenerateRecipes();

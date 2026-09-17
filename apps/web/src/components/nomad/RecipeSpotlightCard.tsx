@@ -105,3 +105,5 @@ export function RecipeSpotlightCard() {
     </Card>
   );
 }
+
+export default RecipeSpotlightCard;

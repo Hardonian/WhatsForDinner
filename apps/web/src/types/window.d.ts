@@ -8,4 +8,5 @@ interface Window {
     targetId: string | Date,
     config?: Record<string, unknown>
   ) => void;
+  dataLayer?: unknown[];
 }

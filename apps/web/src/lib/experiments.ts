@@ -96,7 +96,7 @@ export function assignVariant(
       error: err.message,
       experimentId,
       variant,
-    }, 'analytics', 'experiments').catch(() => {});
+    }, 'system', 'experiments').catch(() => {});
   });
 
   return variant;
@@ -132,7 +132,7 @@ export async function trackConversion(
       userId,
       properties,
     },
-    'analytics',
+    'system',
     'experiments'
   );
 }

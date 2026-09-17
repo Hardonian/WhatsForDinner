@@ -10,7 +10,7 @@ describe('progress-bar', () => {
 
   it('renders with required props', () => {
     const props = {};
-    render(<progress-bar {...props} />);
+    render(<ProgressBar {...props} />);
     expect(screen.getByRole('main') || screen.getByTestId('progress-bar')).toBeDefined();
   });
 });

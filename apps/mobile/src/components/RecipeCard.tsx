@@ -103,7 +103,7 @@ export function RecipeCard({ recipe, onSave, canSave }: RecipeCardProps) {
 
       {showDetails && (
         <ScrollView className="max-h-64" accessibilityRole="list">
-          {recipe.steps.map((step, index) => (
+          {(recipe.instructions || (recipe as any).steps || []).map((step: string, index: number) => (
             <View key={index} className="flex-row gap-2 mb-3" accessibilityRole="text">
               <View className="bg-primary rounded-full w-6 h-6 items-center justify-center">
                 <Text variant="small" className="text-primary-foreground font-bold">

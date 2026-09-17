@@ -13,7 +13,7 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar({
-  value,
+  value = 0,
   max = 100,
   className,
   showLabel = false,
@@ -54,3 +54,5 @@ export function ProgressBar({
     </div>
   );
 }
+
+export default ProgressBar;

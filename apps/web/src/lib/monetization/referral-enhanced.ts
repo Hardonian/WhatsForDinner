@@ -220,7 +220,7 @@ export class EnhancedReferralProgram {
       // Find referral signup
       const { data: signup } = await supabase
         .from('referral_signups')
-        .select('referral_id, referrer_id')
+        .select('id, referral_id, referrer_id')
         .eq('referee_id', refereeUserId)
         .eq('status', 'pending')
         .single();

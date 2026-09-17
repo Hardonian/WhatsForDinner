@@ -74,3 +74,5 @@ export function AnimatedCardWrapper({ children, className }: AnimatedCardWrapper
     </Card>
   );
 }
+
+export default AnimatedCard;

@@ -162,3 +162,5 @@ export function StreaksBadgesCard() {
     </Card>
   );
 }
+
+export default StreaksBadgesCard;

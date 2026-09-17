@@ -6,7 +6,34 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { trace, context, SpanStatusCode } from '@opentelemetry/api';
+
+// Optional OpenTelemetry integration with graceful fallback
+const SpanStatusCode = {
+  UNSET: 0,
+  OK: 1,
+  ERROR: 2,
+};
+
+let otelApi: any = null;
+try {
+  otelApi = eval('require')('@opentelemetry/api');
+} catch {}
+
+const trace = otelApi?.trace || {
+  getTracer: () => ({
+    startSpan: () => ({
+      setAttributes: () => {},
+      setStatus: () => {},
+      recordException: () => {},
+      end: () => {},
+    }),
+  }),
+};
+
+const context = otelApi?.context || {
+  active: () => ({}),
+  with: (_ctx: any, fn: () => any) => fn(),
+};
 
 /**
  * Wrap API route handler with telemetry

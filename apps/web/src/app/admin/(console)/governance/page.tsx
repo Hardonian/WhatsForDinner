@@ -27,7 +27,7 @@ export default function GovernancePage() {
   const [policies, setPolicies] = useState<RetentionPolicy[]>([]);
   const [loading, setLoading] = useState(true);
   const [dryRun, setDryRun] = useState(true);
-  const [preview, setPreview] = useState<unknown>(null);
+  const [preview, setPreview] = useState<any>(null);
 
   useEffect(() => {
     loadPolicies();

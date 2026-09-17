@@ -26,10 +26,17 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   const state = useMemo(()=>({ flags, level: Math.floor(xp/100)+1, xp, dailyGoal, streak }), [xp, streak]);
   return <Ctx.Provider value={state}>{children}</Ctx.Provider>;
 }
+const defaultGamifyState: State = {
+  flags,
+  level: 1,
+  xp: 0,
+  dailyGoal: 50,
+  streak: 0,
+};
+
 export const useGamify = () => {
   const v = useContext(Ctx);
-  if(!v) throw new Error("GamificationProvider missing");
-  return v;
+  return v || defaultGamifyState;
 };
 export const awardXp = (delta=5) => {
   if (typeof window === "undefined") return;

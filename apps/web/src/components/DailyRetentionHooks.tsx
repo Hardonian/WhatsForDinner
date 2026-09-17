@@ -26,7 +26,7 @@ interface DailyRetentionHooksProps {
 
 export function DailyRetentionHooks({ userId, compact = false }: DailyRetentionHooksProps) {
   const [streak, setStreak] = useState(7);
-  const [dailySuggestion, setDailySuggestion] = useState<unknown>(null);
+  const [dailySuggestion, setDailySuggestion] = useState<any>(null);
   const [checkedIn, setCheckedIn] = useState(false);
   const [showCheckIn, setShowCheckIn] = useState(false);
 

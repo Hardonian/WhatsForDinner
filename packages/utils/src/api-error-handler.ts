@@ -9,9 +9,30 @@
  * - Correlation ID tracking
  */
 
-import { NextResponse } from 'next/server';
 import { createComponentLogger } from './logger';
 import { AppError, ErrorCode, getUserFriendlyMessage, isAppError } from './errors';
+
+function createJsonResponse(body: unknown, init?: ResponseInit): Response {
+  try {
+    const req = eval('require');
+    const { NextResponse } = req('next/server');
+    if (NextResponse?.json) {
+      return NextResponse.json(body, init);
+    }
+  } catch {
+    // fallback for environments without next/server (e.g. React Native / Mobile)
+  }
+  if (typeof Response !== 'undefined' && Response.json) {
+    return Response.json(body, init);
+  }
+  return new Response(JSON.stringify(body), {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...init?.headers,
+    },
+  });
+}
 
 export interface ErrorResponse {
   error: {
@@ -45,7 +66,7 @@ export interface ApiErrorHandlerOptions {
 export function handleApiError(
   error: unknown,
   options: ApiErrorHandlerOptions = {}
-): NextResponse<ErrorResponse> {
+): Response {
   const {
     component = 'api',
     includeCorrelationId = true,
@@ -96,7 +117,7 @@ export function handleApiError(
     }
   }
   
-  return NextResponse.json(errorResponse, {
+  return createJsonResponse(errorResponse, {
     status: appError.statusCode,
     headers: {
       ...(correlationId && { 'X-Correlation-ID': correlationId }),

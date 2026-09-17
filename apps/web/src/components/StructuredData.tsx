@@ -4,17 +4,20 @@
 import { Recipe } from '@whats-for-dinner/utils';
 
 interface RecipeStructuredDataProps {
-  recipe: Recipe;
+  recipe: any;
   url?: string;
 }
 
-export function RecipeStructuredData({ recipe, url }: RecipeStructuredDataProps) {
+export function RecipeStructuredData({ recipe = {}, url }: { recipe?: any; url?: string }) {
+  const prepMinutes = typeof recipe.prepTime === 'number' ? recipe.prepTime : parseInt(String(recipe.prepTime)) || 0;
+  const cookMinutes = typeof recipe.cookTime === 'number' ? recipe.cookTime : parseInt(String(recipe.cookTime)) || 0;
+
   const structuredData = {
     '@context': 'https://schema.org/',
     '@type': 'Recipe',
     name: recipe.title,
     description: recipe.description || `${recipe.title} recipe`,
-    image: recipe.image || `${typeof window !== 'undefined' ? window.location.origin : ''}/recipe-placeholder.jpg`,
+    image: recipe.imageUrl || (recipe as any).image || `${typeof window !== 'undefined' ? window.location.origin : ''}/recipe-placeholder.jpg`,
     author: {
       '@type': 'Organization',
       name: "What's for Dinner?",
@@ -24,16 +27,16 @@ export function RecipeStructuredData({ recipe, url }: RecipeStructuredDataProps)
       '@type': 'Organization',
       name: "What's for Dinner?",
       url: 'https://whatsfordinner.com',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://whatsfordinner.com/icon-512x512.png',
-      },
+    },
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://whatsfordinner.com/icon-512x512.png',
     },
     datePublished: new Date().toISOString(),
-    prepTime: recipe.prepTime ? `PT${recipe.prepTime}M` : undefined,
-    cookTime: recipe.cookTime ? `PT${recipe.cookTime}M` : undefined,
-    totalTime: recipe.cookTime && recipe.prepTime 
-      ? `PT${recipe.prepTime + recipe.cookTime}M` 
+    prepTime: recipe.prepTime ? `PT${prepMinutes}M` : undefined,
+    cookTime: recipe.cookTime ? `PT${cookMinutes}M` : undefined,
+    totalTime: (prepMinutes || cookMinutes)
+      ? `PT${prepMinutes + cookMinutes}M` 
       : undefined,
     recipeYield: recipe.servings || '4',
     recipeIngredient: recipe.ingredients || [],
@@ -47,12 +50,12 @@ export function RecipeStructuredData({ recipe, url }: RecipeStructuredDataProps)
     nutrition: recipe.nutrition ? {
       '@type': 'NutritionInformation',
       calories: recipe.nutrition.calories,
-      proteinContent: recipe.nutrition.protein ? `${recipe.nutrition.protein}g` : undefined,
-      carbohydrateContent: recipe.nutrition.carbs ? `${recipe.nutrition.carbs}g` : undefined,
-      fatContent: recipe.nutrition.fat ? `${recipe.nutrition.fat}g` : undefined,
-      fiberContent: recipe.nutrition.fiber ? `${recipe.nutrition.fiber}g` : undefined,
-      sugarContent: recipe.nutrition.sugar ? `${recipe.nutrition.sugar}g` : undefined,
-      sodiumContent: recipe.nutrition.sodium ? `${recipe.nutrition.sodium}mg` : undefined,
+      proteinContent: (recipe.nutrition as any).protein ? `${(recipe.nutrition as any).protein}g` : undefined,
+      carbohydrateContent: (recipe.nutrition as any).carbs ? `${(recipe.nutrition as any).carbs}g` : undefined,
+      fatContent: (recipe.nutrition as any).fat ? `${(recipe.nutrition as any).fat}g` : undefined,
+      fiberContent: (recipe.nutrition as any).fiber ? `${(recipe.nutrition as any).fiber}g` : undefined,
+      sugarContent: (recipe.nutrition as any).sugar ? `${(recipe.nutrition as any).sugar}g` : undefined,
+      sodiumContent: (recipe.nutrition as any).sodium ? `${(recipe.nutrition as any).sodium}mg` : undefined,
     } : undefined,
     url: url || (typeof window !== 'undefined' ? window.location.href : ''),
   };
@@ -149,3 +152,5 @@ export function BreadcrumbStructuredData({ items }: { items: Array<{ name: strin
     />
   );
 }
+
+export default RecipeStructuredData;

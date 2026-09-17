@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabaseClient';
-import { PantryItem } from '@/lib/validation';
+import { PantryItem } from '@/types/pantry';
 import { useTenant } from './useTenant';
 
 export function usePantryItems() {

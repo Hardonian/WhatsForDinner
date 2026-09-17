@@ -14,7 +14,7 @@ export default function StartCookingActivity() {
   const [cookingTime, setCookingTime] = useState("");
   const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">("easy");
   const [familyName, setFamilyName] = useState("");
-  const [currentActivity, setCurrentActivity] = useState<unknown>(null);
+  const [currentActivity, setCurrentActivity] = useState<any>(null);
 
   useEffect(() => {
     checkActiveCooking();

@@ -27,7 +27,7 @@ export declare function checkQueueHealth(): Promise<QueueHealthStatus>;
 export declare function getQueueMetrics(): Promise<{
     health: QueueHealthStatus;
     recentJobs: {
-        id: string;
+        id: string | undefined;
         name: string;
         state: "unknown" | import("bullmq").JobState;
         progress: import("bullmq").JobProgress;

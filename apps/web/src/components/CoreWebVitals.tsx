@@ -189,3 +189,5 @@ export function CoreWebVitals() {
 
   return null;
 }
+
+export default CoreWebVitals;

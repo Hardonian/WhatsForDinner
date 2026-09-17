@@ -10,7 +10,7 @@ const _logger = createComponentLogger('crooptimizer');
 import { supabase } from './supabaseClient';
 import { analytics } from './analytics';
 import { AICopywriter } from './aiCopywriter';
-// import { experiments } from './experiments'; // Commented out - experiments export doesn't exist
+import * as experiments from './experiments';
 
 export interface CTAPlacement {
   id: string;
@@ -332,7 +332,7 @@ export class CROOptimizer {
   /**
    * Optimize low-performing CTA
    */
-  private static async optimizeLowPerformingCTA(ctaId: string): Promise<void> {
+  public static async optimizeLowPerformingCTA(ctaId: string): Promise<void> {
     try {
       const { data: cta, error } = await supabase
         .from('cta_placements')

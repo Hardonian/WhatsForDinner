@@ -42,19 +42,19 @@ export declare function canPerformAction(role: AdminRole, action: string): boole
  */
 export declare function requireAdminAuth(): (req: Request & {
     adminCtx?: AdminAuthContext;
-}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>;
+}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 /**
  * Middleware to require specific role
  */
 export declare function requireRole(minRole: AdminRole): (req: Request & {
     adminCtx?: AdminAuthContext;
-}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>;
+}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 /**
  * Middleware to require specific permission
  */
 export declare function requirePermission(permission: string): (req: Request & {
     adminCtx?: AdminAuthContext;
-}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>;
+}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 /**
  * Generate TOTP secret (for 2FA setup)
  */

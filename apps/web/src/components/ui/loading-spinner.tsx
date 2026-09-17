@@ -48,3 +48,5 @@ export function LoadingOverlay({ isLoading, children, className }: LoadingOverla
     </div>
   );
 }
+
+export default LoadingSpinner;

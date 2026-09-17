@@ -36,7 +36,7 @@ export default function SpinWheelPage() {
   const [spinning, setSpinning] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
-  const [recipe, setRecipe] = useState<unknown>(null);
+  const [recipe, setRecipe] = useState<any>(null);
 
   const spinWheel = async () => {
     setSpinning(true);

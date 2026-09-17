@@ -18,7 +18,7 @@ interface ReferralStats {
 }
 
 export default function ReferralProgram() {
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<any>(null);
   const [stats, setStats] = useState<ReferralStats | null>(null);
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);

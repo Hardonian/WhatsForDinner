@@ -77,7 +77,7 @@ export default function OnboardingFlow({ userId, onComplete, onSkip }: Onboardin
       // Check pantry items
       const { data: pantry } = await supabase
         .from('pantry_items')
-        .select('id')
+        .select('*')
         .eq('user_id', userId)
         .limit(1);
 
@@ -92,7 +92,7 @@ export default function OnboardingFlow({ userId, onComplete, onSkip }: Onboardin
 
       const hasRecipe = (favorites?.length || 0) > 0;
 
-      setPantryItems(pantry || []);
+      setPantryItems((pantry as any) || []);
       setHasGeneratedRecipe(hasRecipe);
 
       // Update step completion

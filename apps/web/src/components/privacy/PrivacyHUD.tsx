@@ -149,3 +149,5 @@ export function PrivacyHUD({ className }: PrivacyHUDProps) {
     </div>
   );
 }
+
+export default PrivacyHUD;

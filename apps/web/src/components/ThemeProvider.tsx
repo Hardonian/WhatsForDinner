@@ -14,7 +14,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: { children?: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('theme') as Theme | null;
@@ -81,7 +81,7 @@ export function useTheme() {
   if (context === undefined) {
     return {
       theme: 'system' as Theme,
-      setTheme: (_t: Theme) => {},
+      setTheme: () => {},
       resolvedTheme: 'light' as const,
       isDark: false,
       isLight: true,
@@ -89,3 +89,5 @@ export function useTheme() {
   }
   return context;
 }
+
+export default ThemeProvider;

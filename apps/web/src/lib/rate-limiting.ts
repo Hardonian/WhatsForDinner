@@ -41,10 +41,10 @@ export function getIdentifier(req: NextRequest): string {
 export function rateLimit(config: RateLimitConfig) {
   const requests = config.requests || 100;
   const window = (config.window || 60) * 1000; // Convert to milliseconds
-  const getIdentifier = config.identifier || getIdentifier;
+  const identifierFn = config.identifier || getIdentifier;
 
   return async (req: NextRequest): Promise<NextResponse | null> => {
-    const identifier = getIdentifier(req);
+    const identifier = identifierFn(req);
     const now = Date.now();
     
     // Get or create rate limit entry

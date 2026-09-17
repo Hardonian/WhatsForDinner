@@ -55,7 +55,7 @@ export function ConsentGate({ onConsentComplete, store }: ConsentGateProps) {
     try {
       // Try to load IAB TCF CMP
       // In production, use a proper CMP library like @iabtcf/cmpapi
-      const CMP = await loadCMP();
+      const CMP: any = await loadCMP();
       if (CMP) {
         // Get existing consent string
         const tcfString = CMP.getConsentString();

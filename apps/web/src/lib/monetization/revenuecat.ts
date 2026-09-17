@@ -82,9 +82,10 @@ class RevenueCatManager {
   async getProducts(): Promise<Product[]> {
     // In production: await Purchases.getOfferings()
     // For now, return products from catalog
-    const catalog = await import('../../../../ops/monetization/catalog.json');
-    return Object.values(catalog.default.products).map(p => ({
-      identifier: p.ios_product_id,
+    const catalog: any = await import('../../../../ops/monetization/catalog.json');
+    const productsObj = catalog.default?.products || catalog.products || {};
+    return (Object.values(productsObj) as any[]).map(p => ({
+      identifier: p.ios_product_id || p.id || '',
       title: p.name || '',
       description: p.description || '',
       price: p.price_tiers?.usd || 0,

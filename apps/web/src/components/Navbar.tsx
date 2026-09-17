@@ -22,10 +22,10 @@ import { Separator } from './ui/separator';
 import type { AppUser } from '@/types/user';
 
 interface NavbarProps {
-  user: AppUser | null;
+  user?: AppUser | null;
 }
 
-export default function Navbar({ user }: NavbarProps) {
+export default function Navbar({ user }: NavbarProps = {}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { tenant } = useTenant();
 

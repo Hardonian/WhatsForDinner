@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { AnimatedCard } from '@/components/ui/animated-card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Navbar from '@/components/Navbar';
+import type { AppUser } from '@/types/user';
 import {
   LineChart,
   Line,
@@ -32,11 +33,15 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import {
-  ChefHat,
   Calendar,
+  ChefHat,
   TrendingUp,
   Clock,
+  Flame,
   Zap,
+  DollarSign,
+  Award,
+  Sparkles,
   Target,
   BarChart3,
   Activity,
@@ -63,7 +68,7 @@ interface DashboardData {
 const COLORS = ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444', '#EC4899'];
 
 export default function AnalyticsDashboard() {
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +78,7 @@ export default function AnalyticsDashboard() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      setUser(user);
+      setUser(user as unknown as AppUser);
       return user;
     };
 

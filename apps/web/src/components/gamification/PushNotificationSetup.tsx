@@ -37,7 +37,7 @@ export function usePushNotifications() {
       const sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
-          ? urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
+          ? (urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) as unknown as BufferSource)
           : undefined,
       });
 
@@ -49,8 +49,8 @@ export function usePushNotifications() {
         await supabase.from("push_subscriptions").insert({
           user_id: user.id,
           endpoint: sub.endpoint,
-          p256dh: arrayBufferToBase64(key?.arrayBuffer() || new ArrayBuffer(0)),
-          auth: arrayBufferToBase64(auth?.arrayBuffer() || new ArrayBuffer(0)),
+          p256dh: arrayBufferToBase64(key),
+          auth: arrayBufferToBase64(auth),
         });
 
         setIsSubscribed(true);
@@ -98,7 +98,8 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return outputArray;
 }
 
-function arrayBufferToBase64(buffer: ArrayBuffer): string {
+function arrayBufferToBase64(buffer: ArrayBuffer | null | undefined): string {
+  if (!buffer) return "";
   const bytes = new Uint8Array(buffer);
   let binary = "";
   for (let i = 0; i < bytes.byteLength; i++) {

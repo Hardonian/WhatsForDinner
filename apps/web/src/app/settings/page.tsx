@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { AnimatedCard } from '@/components/ui/animated-card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Navbar from '@/components/Navbar';
+import type { AppUser } from '@/types/user';
 import {
   User,
   Trash2,
@@ -30,7 +31,7 @@ import {
 
 export default function SettingsPage() {
   const router = useRouter();
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -40,7 +41,7 @@ export default function SettingsPage() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      setUser(user);
+      setUser(user as unknown as AppUser);
       
       // Load user preferences
       if (user) {

@@ -9,7 +9,7 @@ import type { RecipeFeedback } from '@/types/recipe';
 interface RecipeFeedbackProps {
   recipeId: number;
   userId?: string;
-  onFeedbackSubmitted?: (feedback: RecipeFeedback) => void;
+  onFeedbackSubmitted?: (feedback: { type: string; score?: number; text?: string; [key: string]: any }) => void;
 }
 
 export default function RecipeFeedback({

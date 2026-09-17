@@ -407,3 +407,5 @@ export function ConsentOnboardingWizard({ onComplete }: ConsentWizardProps) {
     </div>
   );
 }
+
+export default ConsentOnboardingWizard;

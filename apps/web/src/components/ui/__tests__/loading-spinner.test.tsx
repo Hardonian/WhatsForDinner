@@ -10,7 +10,7 @@ describe('loading-spinner', () => {
 
   it('renders with required props', () => {
     const props = {};
-    render(<loading-spinner {...props} />);
+    render(<LoadingSpinner {...props} />);
     expect(screen.getByRole('main') || screen.getByTestId('loading-spinner')).toBeDefined();
   });
 });

@@ -19,7 +19,9 @@ interface Recipe {
   instructions: string[];
   cookTime?: string;
   servings?: number;
-  [key: string]: unknown;
+  description?: string;
+  difficulty?: string;
+  [key: string]: any;
 }
 
 export default function SurpriseMePage() {

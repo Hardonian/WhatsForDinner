@@ -97,7 +97,7 @@ export function VoiceInput({ onTranscript, placeholder = 'Say ingredients...', d
         setIsListening(false);
       };
 
-      recognition.onend = () => {
+      (recognition as any).onend = () => {
         setIsListening(false);
       };
 

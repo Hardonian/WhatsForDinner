@@ -26,7 +26,6 @@ function getRedisConnection() {
                 return false;
             },
             enableReadyCheck: true,
-            maxRetriesPerRequest: 3,
         });
         // Handle connection events
         redisConnection.on('connect', () => {
@@ -58,7 +57,13 @@ export const queue = new Queue('nomad-jobs', {
         },
     },
 });
+queue.on('error', (err) => {
+    logger.error({ error: err.message }, 'Queue error');
+});
 const queueEvents = new QueueEvents('nomad-jobs', { connection });
+queueEvents.on('error', (err) => {
+    logger.error({ error: err.message }, 'QueueEvents error');
+});
 // Worker setup
 export let worker = null;
 export async function startWorker() {

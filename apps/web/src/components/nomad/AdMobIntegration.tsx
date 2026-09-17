@@ -97,3 +97,5 @@ export async function showInterstitialAd(adUnitId: string): Promise<boolean> {
   // For web, return false or show custom modal
   return false;
 }
+
+export default AdMobIntegration;

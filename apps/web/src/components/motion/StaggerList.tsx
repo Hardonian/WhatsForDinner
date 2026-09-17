@@ -6,9 +6,10 @@ interface StaggerListProps {
   children: React.ReactNode;
   delay?: number;
   staggerDelay?: number;
+  className?: string;
 }
 
-export default function StaggerList({ children, delay = 0, staggerDelay = 0.1 }: StaggerListProps) {
+export default function StaggerList({ children, delay = 0, staggerDelay = 0.1, className }: StaggerListProps) {
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -34,7 +35,7 @@ export default function StaggerList({ children, delay = 0, staggerDelay = 0.1 }:
   };
 
   return (
-    <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }}>
+    <motion.div className={className} variants={container} initial="hidden" whileInView="show" viewport={{ once: true }}>
       {Array.isArray(children)
         ? children.map((child, index) => (
             <motion.div key={index} variants={item}>

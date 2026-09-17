@@ -35,32 +35,26 @@ export async function initializeCapacitor() {
     await StatusBar.setBackgroundColor({ color: '#10B981' });
 
     // Initialize Keyboard
-    await Keyboard.setStyle({ style: 'dark' });
-    await Keyboard.setResize({ resize: 'body' });
+    await (Keyboard as any).setStyle?.({ style: 'dark' });
+    await (Keyboard as any).setResize?.({ resize: 'body' });
 
     // Hide splash screen after app is ready
     await SplashScreen.hide();
 
     // Initialize Deep Links
     initDeepLinks((data) => {
-            // Navigate to path
+      // Navigate to path
       if (typeof window !== 'undefined') {
         window.location.href = data.path;
       }
     });
 
     // Initialize Push Notifications
-    const hasPermission = await initPushNotifications(
-      (token) => {
-              },
-      (notification) => {
-              },
-      (action) => {
-              }
+    await initPushNotifications(
+      (_token) => {},
+      (_notification) => {},
+      (_action) => {}
     );
-
-    if (hasPermission) {
-          }
 
     // Initialize Background Refresh
     await backgroundRefresh.initialize();

@@ -204,3 +204,4 @@ function Toaster() {
 }
 
 export { useToast, toast, Toaster };
+export default Toaster;

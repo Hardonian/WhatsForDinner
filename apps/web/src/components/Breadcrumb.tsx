@@ -13,7 +13,7 @@ interface BreadcrumbProps {
   items: BreadcrumbItem[];
 }
 
-export function Breadcrumb({ items }: BreadcrumbProps) {
+export function Breadcrumb({ items = [] }: { items?: BreadcrumbItem[] }) {
   const breadcrumbItems = [
     { name: 'Home', url: '/' },
     ...items,
@@ -54,3 +54,5 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
     </>
   );
 }
+
+export default Breadcrumb;

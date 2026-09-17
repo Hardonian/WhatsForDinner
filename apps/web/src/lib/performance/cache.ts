@@ -22,7 +22,7 @@ class CacheManager {
     if (process.env.REDIS_URL) {
       try {
         // Lazy load Redis to avoid blocking startup
-        import('ioredis').then((Redis) => {
+        (Function('return import("ioredis")')() as Promise<any>).then((Redis: any) => {
           this.redisClient = new Redis.default(process.env.REDIS_URL);
         }).catch(() => {
           _logger.warn('Redis not available, using memory cache');
@@ -182,6 +182,6 @@ export function cached<T extends (...args: unknown[]) => Promise<unknown>>(
     // Cache result
     await cache.set(key, result, options);
     
-    return result;
+    return result as any;
   }) as T;
 }

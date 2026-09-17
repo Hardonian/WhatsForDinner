@@ -42,8 +42,11 @@ async function getRedisClient() {
     }
 
     // Dynamic import to avoid bundling Redis in client-side code
-    const { createClient } = await import('redis');
-    const client = createClient({ url: redisUrl });
+    const redisModule = await (Function('return import("redis")')() as Promise<any>).catch(() => null);
+    if (!redisModule?.createClient) {
+      return null;
+    }
+    const client = redisModule.createClient({ url: redisUrl });
     
     if (!client.isOpen) {
       await client.connect();

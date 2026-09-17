@@ -167,7 +167,6 @@ function normalizeQuantity(
     g: {
       lb: 1 / 453.592,
       oz: 1 / 28.3495,
-      oz: 1 / 28.3495,
       kg: 0.001,
     },
     cup: {

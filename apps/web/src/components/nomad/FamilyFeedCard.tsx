@@ -120,3 +120,5 @@ export function FamilyFeedCard() {
     </Card>
   );
 }
+
+export default FamilyFeedCard;

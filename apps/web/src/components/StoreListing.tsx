@@ -6,7 +6,7 @@ interface AppStoreListingProps {
   platform: 'ios' | 'android' | 'web';
 }
 
-export function AppStoreListing({ platform }: AppStoreListingProps) {
+export function AppStoreListing({ platform = 'web' }: { platform?: 'ios' | 'android' | 'web' }) {
   const storeLinks = {
     ios: 'https://apps.apple.com/app/whats-for-dinner',
     android: 'https://play.google.com/store/apps/details?id=com.hardonia.whatsfordinner',
@@ -87,3 +87,5 @@ export function generateAppStoreMetadata() {
     },
   };
 }
+
+export default AppStoreListing;

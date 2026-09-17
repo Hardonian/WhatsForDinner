@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Heart,
@@ -59,7 +60,7 @@ const SAMPLE_FAVORITES: FallbackRecipe[] = [
   },
 ];
 
-export default function FavoritesPage() {
+function FavoritesContent() {
   const { data: remoteFavorites, isLoading } = useFavorites();
   const removeMutation = useRemoveFavorite();
   const [localFallback, setLocalFallback] = useState<FallbackRecipe[]>(SAMPLE_FAVORITES);
@@ -281,5 +282,22 @@ export default function FavoritesPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function FavoritesPage() {
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnWindowFocus: false,
+      },
+    },
+  }));
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <FavoritesContent />
+    </QueryClientProvider>
   );
 }

@@ -243,3 +243,5 @@ export function PerformanceDashboard({ showOnly = false, compact = false }: Perf
     </div>
   );
 }
+
+export default PerformanceDashboard;

@@ -10,15 +10,12 @@ import {
   Utensils,
   ShoppingCart,
   Activity,
-  GitFork,
   Refrigerator,
-  Compass,
   CreditCard,
   Moon,
   Sun,
   X,
   ArrowRight,
-  Flame,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useTheme } from '@/components/ThemeProvider';
@@ -210,7 +207,7 @@ export function CommandPalette() {
               <div className="max-h-[60vh] overflow-y-auto p-2 space-y-1">
                 {filteredCommands.length === 0 ? (
                   <div className="p-8 text-center text-sm text-muted-foreground">
-                    No culinary commands found for "{query}"
+                    No culinary commands found for &quot;{query}&quot;
                   </div>
                 ) : (
                   filteredCommands.map((cmd, idx) => {

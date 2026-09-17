@@ -170,3 +170,5 @@ export function GDPRConsent() {
     </div>
   );
 }
+
+export default GDPRConsent;

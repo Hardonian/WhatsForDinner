@@ -11,8 +11,8 @@ type Reco = {
 
 export async function makeRecommendations(userId: string) {
   const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
   );
 
   const { data: signals } = await supabase
@@ -64,8 +64,8 @@ export async function makeRecommendations(userId: string) {
 
 export async function persistRecommendations(userId: string, recs: Reco[]) {
   const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
   );
   if (!recs.length) return;
   const rows = recs.map(r => ({ user_id: userId, ...r }));

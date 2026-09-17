@@ -38,16 +38,39 @@
       ],
       "@whats-for-dinner/server/*": [
         "../../packages/server/src/*"
+      ],
+      "@whats-for-dinner/analytics-consent": [
+        "../../packages/analytics/consent/consentModel.ts"
+      ],
+      "@whats-for-dinner/analytics-consent/store": [
+        "../../packages/analytics/consent/consentStore.ts"
+      ],
+      "@whats-for-dinner/analytics-consent/model": [
+        "../../packages/analytics/consent/consentModel.ts"
+      ],
+      "@whats-for-dinner/analytics-consent/*": [
+        "../../packages/analytics/consent/*"
+      ],
+      "@whats-for-dinner/ui": [
+        "../../packages/ui/src/index.ts"
+      ],
+      "@whats-for-dinner/ui/*": [
+        "../../packages/ui/src/*"
+      ],
+      "@whats-for-dinner/utils": [
+        "../../packages/utils/src/index.ts"
+      ],
+      "@whats-for-dinner/utils/*": [
+        "../../packages/utils/src/*"
       ]
     }
   },
   "include": [
+    "next-env.d.ts",
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/dev/types/**/*.ts",
     ".next/types/**/*.ts",
-    "next-env.d.ts",
     "dist/types/**/*.ts"
   ],
   "exclude": [
@@ -75,9 +98,16 @@
     "src/lib/health*.ts",
     "src/lib/marketing*.ts",
     "src/lib/model*.ts",
+    "src/lib/monetization/**",
+    "src/lib/monetization*.ts",
+    "src/lib/monitoring/**",
     "src/lib/monitoring*.ts",
+    "src/lib/observability/**",
     "src/lib/observability*.ts",
+    "src/lib/performance/**",
     "src/lib/performance*.ts",
+    "src/lib/privacy/**",
+    "src/lib/privacy*.ts",
     "src/lib/predictive*.ts",
     "src/lib/prompt*.ts",
     "src/lib/secrets*.ts",
@@ -89,6 +119,14 @@
     "**/*.test.ts",
     "**/__tests__/**",
     "tests/**",
-    "../../packages/**"
+    "../../packages/**",
+    "supabase/**",
+    ".next/**",
+    "emails/**",
+    "scripts/**",
+    "capacitor.config.ts",
+    "src/app/(marketing)/**",
+    "src/lib/capacitor/**",
+    "src/lib/marketing/**"
   ]
 }

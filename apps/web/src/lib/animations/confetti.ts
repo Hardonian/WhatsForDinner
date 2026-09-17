@@ -44,3 +44,7 @@ export function celebrateBadge() {
 export function celebrateStreak() {
   celebrateSuccess('streak_milestone');
 }
+
+export function triggerConfetti(options?: any) {
+  confetti(options);
+}

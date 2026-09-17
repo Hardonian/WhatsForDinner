@@ -28,7 +28,7 @@ export default function ShareableMealCard({
   onShare,
 }: ShareableMealCardProps) {
   const [mealCard, setMealCard] = useState<MealCard | null>(null);
-  const [shareSuggestions, setShareSuggestions] = useState<unknown>(null);
+  const [shareSuggestions, setShareSuggestions] = useState<any>(null);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [customMessage, setCustomMessage] = useState('');
   const [isSharing, setIsSharing] = useState(false);

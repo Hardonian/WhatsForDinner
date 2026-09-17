@@ -10,7 +10,6 @@ const _logger = createComponentLogger('autonomousinfrastructure');
 import { supabase } from './supabaseClient';
 import { logger } from './logger';
 import { analytics } from './analytics';
-import AISelfDiagnose from '../../ai/self_diagnose';
 
 export interface InfrastructureHealth {
   status: 'healthy' | 'degraded' | 'critical';
@@ -573,9 +572,7 @@ export class AutonomousInfrastructure {
       await supabase.from('self_healing_actions').insert(action);
       await _logger.info(
         `Self-healing action: ${action.action_type}`,
-        action,
-        'infrastructure',
-        'self_healing'
+        { ...action } as Record<string, any>
       );
     } catch (error) {
       // Error handled: Error logging self-healing action:

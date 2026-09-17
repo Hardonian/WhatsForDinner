@@ -129,3 +129,5 @@ export function AdPlacement({ tier = 'free', type = 'feed-tile' }: AdPlacementPr
     </Card>
   );
 }
+
+export default AdPlacement;

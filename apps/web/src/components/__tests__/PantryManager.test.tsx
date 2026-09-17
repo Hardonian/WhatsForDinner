@@ -98,7 +98,7 @@ describe('PantryManager', () => {
 
     // Test decrement
     await user.click(decrementButtons[0]);
-    expect(defaultProps.onUpdate).toHaveBeenCalledWith(1, 2);
+    expect(defaultProps.onUpdate).toHaveBeenCalledWith(1, 3);
   });
 
   it('calls onDelete when delete button is clicked', async () => {

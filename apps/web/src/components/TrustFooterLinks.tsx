@@ -4,6 +4,8 @@
 import { useTrustFlags } from "@/hooks/useTrustFlags";
 import { useEffect, useState } from "react";
 
+const TRUST_FLAG_NAMES = ["privacy_center", "help_center", "export_portability", "audit_log"] as const;
+
 /**
  * Footer links component that shows trust-related links based on feature flags
  */
@@ -25,7 +27,7 @@ export function TrustFooterLinks() {
 
   // Check flags
   const flags = useTrustFlags(
-    ["privacy_center", "help_center", "export_portability", "audit_log"],
+    TRUST_FLAG_NAMES as unknown as Parameters<typeof useTrustFlags>[0],
     userId
   );
 
@@ -71,3 +73,5 @@ export function TrustFooterLinks() {
   );
 }
 // [STAKE+TRUST:END:trust_footer_links]
+
+export default TrustFooterLinks;

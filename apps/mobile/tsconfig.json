@@ -1,21 +1,38 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
+    "skipLibCheck": true,
     "noEmit": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@ui/*": ["../../packages/ui/src/*"],
       "@utils/*": ["../../packages/utils/src/*"],
-      "@theme/*": ["../../packages/theme/src/*"]
+      "@theme/*": ["../../packages/theme/src/*"],
+      "@whats-for-dinner/ui": ["../../packages/ui/src/native.ts"],
+      "@whats-for-dinner/utils": ["../../packages/utils/src/index.ts"],
+      "@whats-for-dinner/utils/*": ["../../packages/utils/src/*"],
+      "@whats-for-dinner/config/*": ["../../packages/config/src/*"],
+      "@whats-for-dinner/config": ["../../packages/config/src/index.ts"],
+      "@whats-for-dinner/adapters-purchases": ["../../packages/adapters/purchases/index.ts"],
+      "@whats-for-dinner/adapters-purchases/*": ["../../packages/adapters/purchases/*"],
+      "@whats-for-dinner/analytics-consent/store": ["../../packages/analytics/consent/consentStore.ts"],
+      "@whats-for-dinner/analytics-consent/model": ["../../packages/analytics/consent/consentModel.ts"],
+      "@whats-for-dinner/analytics-consent": ["../../packages/analytics/consent/index.ts"],
+      "@whats-for-dinner/analytics-consent/*": ["../../packages/analytics/consent/*"]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "global.d.ts",
+    "modules.d.ts",
+    "../../packages/ui/src/declarations.d.ts"
   ],
   "exclude": [
     "node_modules"

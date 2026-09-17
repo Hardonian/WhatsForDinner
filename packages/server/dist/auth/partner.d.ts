@@ -41,11 +41,11 @@ export declare function getPartnerAuth(req: Request | NextRequest): Promise<Part
  */
 export declare function requirePartnerAuth(): (req: Request & {
     partnerCtx?: PartnerAuthContext;
-}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>;
+}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 /**
  * Middleware to require specific scope
  */
 export declare function requireScope(requiredScope: string): (req: Request & {
     partnerCtx?: PartnerAuthContext;
-}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>;
+}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 //# sourceMappingURL=partner.d.ts.map

@@ -33,3 +33,5 @@ export function MicrosoftClarityIntegration() {
     </ConsentGate>
   );
 }
+
+export default MicrosoftClarityIntegration;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ExperimentationService from '../utils/experimentation-service';
+import ExperimentationService from '@whats-for-dinner/utils/experimentation-service';
 
 interface ABTestProps {
   experimentId: string;

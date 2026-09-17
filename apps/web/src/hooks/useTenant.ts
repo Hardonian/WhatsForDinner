@@ -20,7 +20,8 @@ type UsageSummary = {
 };
 
 export function useTenant() {
-  const userResult = useUser(); const user = userResult?.user ?? null;
+  const userResult = useUser();
+  const user = (userResult as any)?.user ?? userResult ?? null;
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [memberships, setMemberships] = useState<TenantMembership[]>([]);
   const [usage, setUsage] = useState<UsageSummary | null>(null);

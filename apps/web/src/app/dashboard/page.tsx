@@ -107,8 +107,8 @@ export default function DashboardPage() {
           <h2 className="text-xl font-semibold mb-4">Autonomous Culinary Suite</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {/* Action 1: OmniChef Voice HUD */}
-            <Card className="cursor-pointer hover:border-primary transition-colors border-2" asChild>
-              <Link href="/cook/demo">
+            <Link href="/cook/demo" className="block">
+              <Card className="cursor-pointer hover:border-primary transition-colors border-2 h-full">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center">
                     <UtensilsCrossed className="w-6 h-6 text-white" />
@@ -116,12 +116,12 @@ export default function DashboardPage() {
                   <div className="font-semibold text-sm">OmniChef™ HUD</div>
                   <div className="text-xs text-muted-foreground mt-1">Voice cooking mode</div>
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
 
             {/* Action 2: Vision Scanner */}
-            <Card className="cursor-pointer hover:border-primary transition-colors border-2" asChild>
-              <Link href="/onboarding">
+            <Link href="/onboarding" className="block">
+              <Card className="cursor-pointer hover:border-primary transition-colors border-2 h-full">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center">
                     <Sparkles className="w-6 h-6 text-white" />
@@ -129,12 +129,12 @@ export default function DashboardPage() {
                   <div className="font-semibold text-sm">Vision Scanner</div>
                   <div className="text-xs text-muted-foreground mt-1">Photo fridge scan</div>
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
 
             {/* Action 3: OmniCart Arbitrage */}
-            <Card className="cursor-pointer hover:border-primary transition-colors border-2" asChild>
-              <Link href="/grocery">
+            <Link href="/grocery" className="block">
+              <Card className="cursor-pointer hover:border-primary transition-colors border-2 h-full">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center">
                     <ShoppingCart className="w-6 h-6 text-white" />
@@ -142,12 +142,12 @@ export default function DashboardPage() {
                   <div className="font-semibold text-sm">OmniCart™</div>
                   <div className="text-xs text-muted-foreground mt-1">Price arbitrage</div>
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
 
             {/* Action 4: Metabolic Index */}
-            <Card className="cursor-pointer hover:border-primary transition-colors border-2" asChild>
-              <Link href="/nutrition">
+            <Link href="/nutrition" className="block">
+              <Card className="cursor-pointer hover:border-primary transition-colors border-2 h-full">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
                     <Play className="w-6 h-6 text-white" />
@@ -155,8 +155,8 @@ export default function DashboardPage() {
                   <div className="font-semibold text-sm">Metabolic CGM</div>
                   <div className="text-xs text-muted-foreground mt-1">Glycemic & satiety</div>
                 </CardContent>
-              </Link>
-            </Card>
+              </Card>
+            </Link>
           </div>
         </div>
 

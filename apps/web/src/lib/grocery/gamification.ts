@@ -55,14 +55,11 @@ export class GroceryGamification {
   async awardPoints(userId: string, action: keyof typeof this.POINTS_PER_ACTION): Promise<GroceryPoints> {
     const points = this.POINTS_PER_ACTION[action];
     
-    // Award points via gamification system
-    // TODO: Implement when gamification system has awardPoints method
-    // For now, use a simple implementation
     try {
-      // await gamificationSystem.awardPoints(userId, points, {
-      //   source: 'grocery',
-      //   action,
-      // });
+      await gamificationSystem.awardPoints(userId, points, {
+        source: 'grocery',
+        action,
+      });
     } catch (error) {
       _logger.warn('Failed to award points:', { error });
     }
@@ -71,18 +68,20 @@ export class GroceryGamification {
   }
 
   async getUserPoints(userId: string): Promise<GroceryPoints> {
-    // Get points from gamification system
-    // TODO: Implement when gamification system has getUserPoints method
-    // For now, return mock data
-    const mockTotal = 0; // Would come from database
-    const level = this.calculateLevel(mockTotal);
+    let totalEarned = 0;
+    try {
+      totalEarned = await gamificationSystem.getUserPoints(userId);
+    } catch (error) {
+      _logger.warn('Failed to get user points:', { error });
+    }
+    const level = this.calculateLevel(totalEarned);
     const nextLevelPoints = this.LEVEL_THRESHOLDS[level + 1] || Infinity;
 
     return {
-      points: mockTotal % 100, // Current points in level
+      points: totalEarned % 100, // Current points in level
       level,
       nextLevelPoints,
-      totalEarned: mockTotal,
+      totalEarned,
     };
   }
 

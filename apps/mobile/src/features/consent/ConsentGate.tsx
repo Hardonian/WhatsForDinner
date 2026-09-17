@@ -425,7 +425,10 @@ async function requestTrackingPermission(): Promise<'authorized' | 'denied' | 'r
     
     // Request permission
     const result = await requestTrackingPermissionsAsync();
-    return result.status === 'granted' ? 'authorized' : result.status;
+    if (result.status === 'granted') return 'authorized';
+    if (result.status === 'denied') return 'denied';
+    if (result.status === 'restricted') return 'restricted';
+    return 'not_determined';
   } catch (error) {
     // Fallback if module not available
     logger.warn('expo-tracking-transparency not available:', { error });

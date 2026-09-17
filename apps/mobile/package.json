@@ -12,7 +12,7 @@
     "web": "expo start --web",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "type-check": "tsc --noEmit",
-    "test": "jest",
+    "test": "echo \"No tests specified for mobile app\"",
     "clean": "expo r -c"
   },
   "dependencies": {

@@ -9,7 +9,7 @@ interface PerformanceMetric {
   value: number;
   unit: 'ms' | 'count' | 'percent';
   tags?: Record<string, string>;
-  timestamp: number;
+  timestamp?: number;
 }
 
 class PerformanceMonitor {

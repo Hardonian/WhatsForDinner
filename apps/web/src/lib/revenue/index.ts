@@ -3,12 +3,12 @@
  * Centralized exports for all revenue optimization utilities
  */
 
-export * from './optimization';
-export * from './roi-analysis';
-export * from './engagement-scoring';
-export * from './advertising';
-export * from './passive-income';
-export * from './subscription-optimizer';
+export { revenueOptimizer } from './optimization';
+export { roiAnalyzer } from './roi-analysis';
+export { engagementScorer } from './engagement-scoring';
+export { adOptimizer } from './advertising';
+export { passiveIncomeManager } from './passive-income';
+export { subscriptionOptimizer } from './subscription-optimizer';
 export * from './types';
 export * from './validation';
 export * from './hooks';

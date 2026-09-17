@@ -15,7 +15,7 @@ interface SubscriptionManagerProps {
   userId: string;
 }
 
-export function SubscriptionManager({ userId }: SubscriptionManagerProps) {
+export function SubscriptionManager({ userId = 'anonymous' }: { userId?: string }) {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -185,3 +185,5 @@ export function SubscriptionManager({ userId }: SubscriptionManagerProps) {
     </div>
   );
 }
+
+export default SubscriptionManager;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ChaosService from '../utils/chaos-service';
+import ChaosService from '@whats-for-dinner/utils/chaos-service';
 
 export const ChaosDashboard: React.FC = () => {
   const [experiments, setExperiments] = useState<any[]>([]);

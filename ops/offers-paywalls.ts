@@ -9,8 +9,8 @@ import { secretsManager } from './secrets-manager-unified.mjs';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const logger = createComponentLogger('offers-paywalls-ts');
-const SUPABASE_URL = (await secretsManager.getSecret('NEXT_PUBLIC_SUPABASE_URL')) || process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_SERVICE_ROLE_KEY = (await secretsManager.getSecret('SUPABASE_SERVICE_ROLE_KEY')) || process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const SUPABASE_URL = (await secretsManager.getSecret('NEXT_PUBLIC_SUPABASE_URL')) || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const SUPABASE_SERVICE_ROLE_KEY = (await secretsManager.getSecret('SUPABASE_SERVICE_ROLE_KEY')) || process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key';
 
 interface PricingOffer {
   id: string;

@@ -14,8 +14,8 @@ export declare function extractToken(req: Request | NextRequest): string | null;
 export declare function getAuthContext(req: NextRequest): Promise<RequestContext | null>;
 export declare function requireAuth(): (req: Request & {
     ctx?: RequestContext;
-}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>;
+}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 export declare function requirePlan(requiredPlan: 'premium' | 'partner'): (req: Request & {
     ctx?: RequestContext;
-}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>>>;
+}, res: Response, next: NextFunction) => Promise<Response<any, Record<string, any>> | undefined>;
 //# sourceMappingURL=index.d.ts.map

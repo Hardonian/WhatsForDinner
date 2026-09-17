@@ -58,13 +58,15 @@ export default function RecipeCard({
           <h4 className="mb-2 sm:mb-3 text-sm sm:text-base font-medium text-card-foreground">
             Ingredients:
           </h4>
-          <div className="flex flex-wrap gap-1.5 sm:gap-2">
+          <ul className="flex flex-wrap gap-1.5 sm:gap-2 list-none p-0 m-0">
             {recipe.ingredients.map((ingredient, index) => (
-              <Badge key={index} variant="secondary" className="text-xs px-2 py-1">
-                {ingredient}
-              </Badge>
+              <li key={index}>
+                <Badge variant="secondary" className="text-xs px-2 py-1">
+                  {ingredient}
+                </Badge>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         <Button

@@ -142,15 +142,15 @@ export function Celebration({ type, onComplete }: CelebrationProps) {
   );
 }
 
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import type { HTMLMotionProps } from 'framer-motion';
 
 /**
  * Micro-interaction: Button press animation
  */
 
-interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface AnimatedButtonProps extends HTMLMotionProps<'button'> {
   children: ReactNode;
-  onClick?: () => void;
 }
 
 export function AnimatedButton({ children, onClick, ...props }: AnimatedButtonProps) {

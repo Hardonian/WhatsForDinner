@@ -61,11 +61,16 @@ export const STRIPE_CONFIG = {
 export type PlanType = keyof typeof STRIPE_CONFIG.plans;
 
 export interface CreateCheckoutSessionParams {
-  tenantId: string;
-  userId: string;
-  plan: PlanType;
+  tenantId?: string;
+  userId?: string;
+  customerId?: string;
+  plan?: PlanType;
+  price?: number;
+  currency?: string;
+  billingPeriod?: string;
+  metadata?: Record<string, any>;
   successUrl: string;
-  cancelUrl: string;
+  cancelUrl?: string;
 }
 
 export interface CreateCustomerPortalSessionParams {
@@ -76,44 +81,72 @@ export interface CreateCustomerPortalSessionParams {
 
 export class StripeService {
   /**
-   * Create a Stripe checkout session for subscription
+   * Create a Stripe checkout session for subscription or one-time payment
    */
-  static async createCheckoutSession({
-    tenantId,
-    userId,
-    plan,
-    successUrl,
-    cancelUrl,
-  }: CreateCheckoutSessionParams) {
-    const planConfig = STRIPE_CONFIG.plans[plan];
+  static async createCheckoutSession(params: CreateCheckoutSessionParams) {
+    const {
+      tenantId = '',
+      userId = '',
+      customerId,
+      plan,
+      price,
+      currency = 'usd',
+      billingPeriod,
+      metadata = {},
+      successUrl,
+      cancelUrl = successUrl,
+    } = params;
 
-    if (!planConfig.priceId) {
-      throw new Error(`Price ID not configured for plan: ${plan}`);
-    }
+    const planConfig = plan ? STRIPE_CONFIG.plans[plan] : undefined;
+
+    const lineItems: any[] = planConfig?.priceId
+      ? [
+          {
+            price: planConfig.priceId,
+            quantity: 1,
+          },
+        ]
+      : [
+          {
+            price_data: {
+              currency: currency || 'usd',
+              product_data: {
+                name: (metadata?.type as string) || 'What\'s For Dinner Purchase',
+              },
+              unit_amount: Math.round((price || 0) * 100),
+              ...(billingPeriod ? { recurring: { interval: billingPeriod === 'year' ? 'year' : 'month' } } : {}),
+            },
+            quantity: 1,
+          },
+        ];
+
+    const isSubscription = Boolean(plan || billingPeriod);
 
     const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
+      mode: isSubscription ? 'subscription' : 'payment',
       payment_method_types: ['card'],
-      line_items: [
-        {
-          price: planConfig.priceId,
-          quantity: 1,
-        },
-      ],
+      line_items: lineItems,
       success_url: successUrl,
       cancel_url: cancelUrl,
+      ...(customerId ? { customer: customerId } : {}),
       metadata: {
         tenantId,
-        userId,
-        plan,
+        userId: userId || customerId || '',
+        ...(plan ? { plan } : {}),
+        ...metadata,
       },
-      subscription_data: {
-        metadata: {
-          tenantId,
-          userId,
-          plan,
-        },
-      },
+      ...(isSubscription
+        ? {
+            subscription_data: {
+              metadata: {
+                tenantId,
+                userId: userId || customerId || '',
+                ...(plan ? { plan } : {}),
+                ...metadata,
+              },
+            },
+          }
+        : {}),
     });
 
     return session;

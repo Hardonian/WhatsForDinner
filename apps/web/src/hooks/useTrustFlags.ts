@@ -32,7 +32,16 @@ export function useTrustFlags(
   flagNames: Parameters<typeof isTrustFlagEnabled>[0][],
   userId?: string
 ): Record<string, boolean> {
-  const [flags, setFlags] = useState<Record<string, boolean>>({});
+  const [flags, setFlags] = useState<Record<string, boolean>>(() => {
+    const storedUserId = userId || (typeof window !== "undefined" ? localStorage.getItem("userId") || undefined : undefined);
+    const initial: Record<string, boolean> = {};
+    flagNames.forEach((name) => {
+      initial[name] = isTrustFlagEnabled(name, storedUserId);
+    });
+    return initial;
+  });
+
+  const flagsKey = flagNames.join(',');
 
   useEffect(() => {
     const storedUserId = userId || (typeof window !== "undefined" ? localStorage.getItem("userId") || undefined : undefined);
@@ -41,7 +50,8 @@ export function useTrustFlags(
       result[name] = isTrustFlagEnabled(name, storedUserId);
     });
     setFlags(result);
-  }, [flagNames, userId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flagsKey, userId]);
 
   return flags;
 }

@@ -594,23 +594,23 @@ export class SelfLearningSystem {
   }
 
   // Helper methods
-  private calculateAverage(data: unknown[], field: string): number {
+  private calculateAverage(data: any[], field: string): number {
     if (data.length === 0) return 0;
-    const sum = data.reduce((acc, item) => acc + (item[field] || 0), 0);
+    const sum = data.reduce((acc: number, item: any) => acc + (Number(item?.[field]) || 0), 0);
     return sum / data.length;
   }
 
-  private calculatePercentile(data: unknown[], field: string, percentile: number): number {
+  private calculatePercentile(data: any[], field: string, percentile: number): number {
     if (data.length === 0) return 0;
-    const values = data.map(item => item[field] || 0).sort((a, b) => a - b);
+    const values = data.map((item: any) => Number(item?.[field]) || 0).sort((a, b) => a - b);
     const index = Math.ceil((percentile / 100) * values.length) - 1;
-    return values[Math.max(0, index)];
+    return values[Math.max(0, index)] || 0;
   }
 
-  private analyzePopularActions(events: unknown[]): string[] {
+  private analyzePopularActions(events: any[]): string[] {
     const actionCounts: Record<string, number> = {};
     events.forEach(e => {
-      const action = e.event_name || 'unknown';
+      const action = e?.event_name || 'unknown';
       actionCounts[action] = (actionCounts[action] || 0) + 1;
     });
     return Object.entries(actionCounts)
@@ -619,15 +619,15 @@ export class SelfLearningSystem {
       .map(([action]) => action);
   }
 
-  private analyzeDropOffs(events: unknown[]): Array<{ location: string; count: number }> {
+  private analyzeDropOffs(events: any[]): Array<{ location: string; count: number }> {
     // Simplified drop-off analysis
     return [];
   }
 
-  private calculateErrorFrequency(errors: unknown[]): Record<string, number> {
+  private calculateErrorFrequency(errors: any[]): Record<string, number> {
     const frequency: Record<string, number> = {};
     errors.forEach(e => {
-      const type = e.error_type || 'unknown';
+      const type = e?.error_type || 'unknown';
       frequency[type] = (frequency[type] || 0) + 1;
     });
     return frequency;

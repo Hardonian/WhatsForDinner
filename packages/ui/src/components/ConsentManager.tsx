@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PrivacyService from '../utils/privacy-service';
+import PrivacyService from '@whats-for-dinner/utils/privacy-service';
 
 interface ConsentManagerProps {
   userId: string;

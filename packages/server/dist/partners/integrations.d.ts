@@ -8,15 +8,15 @@ export declare const PartnerWebhookSchema: z.ZodObject<{
     timestamp: z.ZodString;
     data: z.ZodRecord<z.ZodString, z.ZodAny>;
 }, "strip", z.ZodTypeAny, {
-    partner?: "meta" | "tiktok" | "stripe";
-    data?: Record<string, any>;
-    timestamp?: string;
-    event?: string;
+    partner: "meta" | "tiktok" | "stripe";
+    data: Record<string, any>;
+    event: string;
+    timestamp: string;
 }, {
-    partner?: "meta" | "tiktok" | "stripe";
-    data?: Record<string, any>;
-    timestamp?: string;
-    event?: string;
+    partner: "meta" | "tiktok" | "stripe";
+    data: Record<string, any>;
+    event: string;
+    timestamp: string;
 }>;
 export type PartnerWebhook = z.infer<typeof PartnerWebhookSchema>;
 export declare function validatePartnerWebhook(payload: unknown): Promise<PartnerWebhook>;

@@ -46,7 +46,7 @@ export declare function getExperimentStats(experimentKey: string): Promise<{
     experiment: any;
     variants: any;
     assignments: any;
-}>;
+} | null>;
 /**
  * Minimum sample size calculator (for power analysis)
  */

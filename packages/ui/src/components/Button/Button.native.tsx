@@ -5,12 +5,15 @@ import { cn } from '@whats-for-dinner/utils';
 export interface ButtonProps {
   children: React.ReactNode;
   onPress?: () => void;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'brand' | 'accent' | 'destructive';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'brand' | 'accent' | 'destructive' | 'default';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   disabled?: boolean;
   loading?: boolean;
   className?: string;
   testID?: string;
+  accessibilityLabel?: string;
+  accessibilityState?: { disabled?: boolean; [key: string]: any };
+  accessibilityRole?: any;
 }
 
 export function Button({
@@ -22,11 +25,15 @@ export function Button({
   loading = false,
   className,
   testID,
+  accessibilityLabel,
+  accessibilityState,
+  accessibilityRole,
   ...props
 }: ButtonProps) {
   const baseClasses = 'flex-row items-center justify-center rounded-lg font-medium transition-colors';
   
   const variantClasses = {
+    default: 'bg-primary-500 active:bg-primary-600',
     primary: 'bg-primary-500 active:bg-primary-600',
     secondary: 'bg-secondary-500 active:bg-secondary-600',
     brand: 'bg-brand-500 active:bg-brand-600',
@@ -35,7 +42,7 @@ export function Button({
     ghost: 'bg-transparent active:bg-primary-50',
     destructive: 'bg-error-500 active:bg-error-600',
   };
-  
+
   const sizeClasses = {
     sm: 'h-8 px-3 text-sm',
     md: 'h-10 px-4 py-2 text-base',
@@ -54,7 +61,7 @@ export function Button({
     <TouchableOpacity
       className={cn(
         baseClasses,
-        variantClasses[variant],
+        variantClasses[variant || 'primary'],
         sizeClasses[size],
         (disabled || loading) && 'opacity-50',
         className
@@ -62,6 +69,9 @@ export function Button({
       onPress={onPress}
       disabled={disabled || loading}
       testID={testID}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityState={accessibilityState}
+      accessibilityRole={accessibilityRole}
       activeOpacity={0.7}
       {...props}
     >

@@ -10,7 +10,7 @@ describe('animated-card', () => {
 
   it('renders with required props', () => {
     const props = {};
-    render(<animated-card {...props} />);
+    render(<AnimatedCard {...props} />);
     expect(screen.getByRole('main') || screen.getByTestId('animated-card')).toBeDefined();
   });
 });
