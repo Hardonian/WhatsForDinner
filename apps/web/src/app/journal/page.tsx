@@ -1,6 +1,4 @@
-export const dynamic = 'force-dynamic';
-
-"use client";
+'use client';
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/client";
 import Confetti from "@/components/gamification/Confetti";

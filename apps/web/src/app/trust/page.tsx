@@ -1,8 +1,6 @@
-export const dynamic = 'force-dynamic';
+'use client';
 
 // [STAKE+TRUST:BEGIN:trust_page]
-"use client";
-
 import Link from "next/link";
 import { Metadata } from "next";
 

@@ -1,8 +1,6 @@
-export const dynamic = 'force-dynamic';
+'use client';
 
 // [STAKE+TRUST:BEGIN:help_page]
-"use client";
-
 import Link from "next/link";
 
 export default function HelpPage() {

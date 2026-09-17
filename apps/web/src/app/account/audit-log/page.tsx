@@ -1,8 +1,6 @@
-export const dynamic = 'force-dynamic';
+'use client';
 
 // [STAKE+TRUST:BEGIN:audit_page]
-"use client";
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
 

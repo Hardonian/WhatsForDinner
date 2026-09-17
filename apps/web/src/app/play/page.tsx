@@ -1,6 +1,4 @@
-export const dynamic = 'force-dynamic';
-
-"use client";
+'use client';
 import { useEffect, useState } from "react";
 import { GamificationProvider, useGamify } from "@/components/gamification/GamificationProvider";
 import ProgressRing from "@/components/gamification/ProgressRing";
