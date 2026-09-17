@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Copy, Check, Sparkles, ChefHat, Trophy, ArrowRight, Share2, Clock, Award } from 'lucide-react';
+import { Users, Copy, Check, ChefHat, Trophy, ArrowRight, Award } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

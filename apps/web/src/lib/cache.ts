@@ -1,3 +1,4 @@
+/* eslint-disable no-console, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 /**
  * Caching Strategy
  * 
@@ -245,6 +246,6 @@ export function withCache<T extends (...args: any[]) => Promise<any>>(
 }
 
 export const suggestionCache = {
-  get: (key: any): any => null,
-  set: (key: any, val: any): void => {},
+  get: (_key?: unknown): any => null,
+  set: (_key?: unknown, _val?: unknown): void => {},
 };
