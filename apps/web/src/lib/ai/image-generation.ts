@@ -50,11 +50,50 @@ export async function generateRecipeImage(
 }
 
 /**
- * Fallback to Unsplash
+ * Reliable high-resolution culinary photography CDN fallback
+ * Replaces deprecated source.unsplash.com with verified Unsplash CDN photo IDs & local fallback
  */
+const CULINARY_PHOTO_MAP: Array<{ keywords: string[]; url: string }> = [
+  {
+    keywords: ['salmon', 'trout', 'fish', 'seafood', 'shrimp', 'halibut'],
+    url: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['chicken', 'poulet', 'poultry', 'turkey', 'wings'],
+    url: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['pasta', 'spaghetti', 'noodle', 'lasagna', 'fettuccine', 'italian'],
+    url: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['steak', 'beef', 'burger', 'brisket', 'meat', 'pork'],
+    url: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['salad', 'vegetarian', 'vegan', 'greens', 'bowl', 'quinoa', 'mediterranean'],
+    url: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['curry', 'asian', 'stir-fry', 'thai', 'indian', 'rice', 'wok'],
+    url: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&w=1024&q=80',
+  },
+  {
+    keywords: ['soup', 'stew', 'broth', 'chili', 'chowder'],
+    url: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1024&q=80',
+  },
+];
+
+export function getRecipeFallbackImage(recipeTitle: string, cuisine?: string): string {
+  const text = `${recipeTitle} ${cuisine || ''}`.toLowerCase();
+  const match = CULINARY_PHOTO_MAP.find(entry =>
+    entry.keywords.some(kw => text.includes(kw))
+  );
+  return match ? match.url : '/recipe-placeholder.jpg';
+}
+
 async function getUnsplashFallback(recipeTitle: string, cuisine?: string): Promise<string> {
-  const query = encodeURIComponent(`${recipeTitle} ${cuisine || 'food'}`);
-  return `https://source.unsplash.com/1024x1024/?${query}`;
+  return getRecipeFallbackImage(recipeTitle, cuisine);
 }
 
 /**
