@@ -113,6 +113,11 @@ const nextConfig = {
       };
       config.optimization.minimize = true;
     }
+    // Alias auth helpers to safe stubs during build
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@supabase/auth-helpers-react': new URL('./stubs/auth-helpers-react.mjs', import.meta.url).pathname,
+    };
     return config;
   },
   
