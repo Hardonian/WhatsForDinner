@@ -16,9 +16,9 @@ import ProgressChart from "@/components/gamification/ProgressChart";
 import BadgeCollection from "@/components/gamification/BadgeCollection";
 import { AIPersonality } from "@/components/AIPersonality";
 import { CTAOptimizer } from "@/components/CTAOptimizer";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 
-const LiveVisitors = dynamic(()=>import("@/components/integrations/LiveVisitors").then(m=>m.default), { ssr:false });
+const LiveVisitors = dynamicImport(()=>import("@/components/integrations/LiveVisitors").then(m=>m.default), { ssr:false });
 
 function HubInner(){
   const { level, xp, dailyGoal, streak } = useGamify();
