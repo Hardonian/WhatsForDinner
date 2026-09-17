@@ -12,6 +12,7 @@ import { AIPersonality } from '@/components/AIPersonality';
 import { Celebration } from '@/components/AdvancedAnimations';
 import { awardXp } from '@/components/gamification/GamificationProvider';
 import { useRouter } from 'next/navigation';
+import { soundEffects } from '@/lib/audio/sound-effects';
 
 interface CategoryItem {
   id: string;
@@ -69,6 +70,14 @@ export default function SpinWheelPage() {
     const targetAngle = extraSpins + (360 - (targetIndex * segmentAngle + segmentAngle / 2));
     setRotation(prev => prev + targetAngle);
 
+    // Audio clicks during wheel deceleration
+    let ticks = 0;
+    const tickInterval = setInterval(() => {
+      ticks++;
+      soundEffects.playClick();
+      if (ticks >= 20) clearInterval(tickInterval);
+    }, 120);
+
     try {
       const response = await fetch('/api/games/spin-wheel', {
         method: 'POST',
@@ -86,15 +95,19 @@ export default function SpinWheelPage() {
         awardXp(25);
         setXpGained(25);
         setShowCelebration(true);
+        soundEffects.playVictory();
       } else {
         setSelectedCategory(chosen);
         awardXp(15);
         setXpGained(15);
+        soundEffects.playVictory();
       }
     } catch {
       await new Promise(resolve => setTimeout(resolve, 2500));
       setSelectedCategory(chosen);
+      soundEffects.playVictory();
     } finally {
+      clearInterval(tickInterval);
       setSpinning(false);
     }
   };

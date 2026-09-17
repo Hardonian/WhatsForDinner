@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Celebration } from '@/components/AdvancedAnimations';
 import { awardXp } from '@/components/gamification/GamificationProvider';
 import { useRouter } from 'next/navigation';
+import { soundEffects } from '@/lib/audio/sound-effects';
 
 interface DuelCandidate {
   id: string;
@@ -80,6 +81,7 @@ export default function DinnerDuelPage() {
   const handleVote = async (chosenOption: DuelCandidate) => {
     if (voting) return;
     setVoting(true);
+    soundEffects.playClick();
 
     const isFinal = round >= totalRounds;
 
@@ -99,6 +101,7 @@ export default function DinnerDuelPage() {
       setChampion(chosenOption);
       awardXp(35);
       setShowCelebration(true);
+      soundEffects.playVictory();
       setVoting(false);
     } else {
       awardXp(10);

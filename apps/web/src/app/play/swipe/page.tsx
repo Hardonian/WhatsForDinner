@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Celebration } from '@/components/AdvancedAnimations';
 import { awardXp } from '@/components/gamification/GamificationProvider';
 import { useRouter } from 'next/navigation';
+import { soundEffects } from '@/lib/audio/sound-effects';
 
 interface SwipeCardItem {
   id: string;
@@ -132,6 +133,9 @@ export default function SwipeGamePage() {
     if (currentIndex >= deck.length) return;
     const currentCard = deck[currentIndex];
 
+    // Play procedural card flick/swipe sound
+    soundEffects.playSwipe(direction);
+
     const action = direction === 'right' ? 'like' : direction === 'up' ? 'superlike' : 'pass';
 
     if (action === 'like' || action === 'superlike') {
@@ -151,6 +155,7 @@ export default function SwipeGamePage() {
           setMatchResult(data.matchedMeal || currentCard);
           awardXp(data.xpEarned || 25);
           setShowCelebration(true);
+          soundEffects.playVictory();
           return;
         }
       }

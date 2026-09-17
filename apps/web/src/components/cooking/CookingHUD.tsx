@@ -22,11 +22,22 @@ import {
   Maximize2,
   Minimize2,
   AlertCircle,
+  Thermometer,
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { soundEffects } from '@/lib/audio/sound-effects';
+
+export const USDA_TEMPERATURE_GUIDE = [
+  { item: 'Poultry (Whole, Ground, Breasts)', tempF: 165, tempC: 74, rest: '0 min' },
+  { item: 'Ground Meats (Beef, Pork, Lamb)', tempF: 160, tempC: 71, rest: '0 min' },
+  { item: 'Beef, Pork, Veal, Lamb (Steaks, Chops)', tempF: 145, tempC: 63, rest: '3 min rest' },
+  { item: 'Fish & Shellfish (Salmon, Shrimp)', tempF: 145, tempC: 63, rest: '0 min' },
+  { item: 'Leftovers & Casseroles', tempF: 165, tempC: 74, rest: '0 min' },
+];
 
 export interface CookingRecipe {
   id: string;
@@ -77,9 +88,39 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
   const [activeTimers, setActiveTimers] = useState<ActiveTimer[]>([]);
   const [isSubstitutionsOpen, setIsSubstitutionsOpen] = useState(false);
   const [selectedSubIngredient, setSelectedSubIngredient] = useState<string | null>(null);
+  const [isTempsGuideOpen, setIsTempsGuideOpen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<unknown>(null);
+  const wakeLockRef = useRef<any>(null);
+
+  // Screen Wake Lock API to prevent phone/tablet sleep in the kitchen
+  useEffect(() => {
+    async function requestWakeLock() {
+      if (typeof navigator !== 'undefined' && 'wakeLock' in navigator) {
+        try {
+          wakeLockRef.current = await (navigator as any).wakeLock.request('screen');
+        } catch {
+          // Ignore wake lock rejection
+        }
+      }
+    }
+    requestWakeLock();
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        requestWakeLock();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility);
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release().catch(() => {});
+      }
+    };
+  }, []);
 
   // Speech Recognition setup (hands-free kitchen voice mode)
   useEffect(() => {
@@ -108,8 +149,13 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
     }
   }, [currentStepIndex]);
 
-  // Voice Command Dispatcher
+  // Voice Command Dispatcher with kitchen sizzle noise filtering
   const handleVoiceCommand = (command: string) => {
+    // Sizzle & background noise gate: ignore tiny or non-speech phonetics
+    if (!command || command.length < 3 || ['uh', 'um', 'ah', 'oh', 'shh'].includes(command)) {
+      return;
+    }
+
     toast.info(`Voice command heard: "${command}"`, { duration: 2000 });
 
     if (command.includes('next') || command.includes('continue') || command.includes('done')) {
@@ -124,6 +170,8 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
       addTimer(`${minutes}m Cook Timer`, minutes * 60);
     } else if (command.includes('substitute') || command.includes('replacement')) {
       setIsSubstitutionsOpen(true);
+    } else if (command.includes('temp') || command.includes('temperature') || command.includes('doneness')) {
+      setIsTempsGuideOpen(true);
     }
   };
 
@@ -212,7 +260,8 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
           if (!timer.isRunning || timer.remainingSeconds <= 0) return timer;
           const next = timer.remainingSeconds - 1;
           if (next === 0) {
-            // Beep alert
+            // Audio synthesizer chime and speech alert
+            soundEffects.playTimerAlarm();
             toast.success(`⏰ Timer Finished: ${timer.label}!`, { duration: 6000 });
             if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
               const utter = new SpeechSynthesisUtterance(`Timer finished for ${timer.label}`);
@@ -330,6 +379,17 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
           >
             <HelpCircle className="w-4 h-4 mr-1.5 text-yellow-400" />
             <span>Substitutions</span>
+          </Button>
+
+          {/* USDA Safe Temperatures Guide */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsTempsGuideOpen(true)}
+            className="border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs h-9"
+          >
+            <Thermometer className="w-4 h-4 mr-1.5 text-emerald-400" />
+            <span>Safe Temps</span>
           </Button>
 
           {/* Fullscreen Toggle */}
@@ -547,6 +607,60 @@ export function CookingHUD({ recipe, onFinish }: CookingHUDProps) {
                       </div>
                     )
                   )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* USDA Safe Internal Cooking Temperatures Modal */}
+      <AnimatePresence>
+        {isTempsGuideOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          >
+            <Card className="max-w-lg w-full bg-slate-900 border-slate-800 text-slate-100 shadow-2xl rounded-3xl overflow-hidden">
+              <CardHeader className="flex flex-row items-center justify-between pb-3 border-b border-slate-800">
+                <CardTitle className="text-lg font-bold flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  <span>USDA Safe Internal Cooking Temperatures</span>
+                </CardTitle>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsTempsGuideOpen(false)}
+                  className="text-slate-400 hover:text-white h-8 w-8"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              </CardHeader>
+
+              <CardContent className="p-6 space-y-4">
+                <p className="text-xs text-slate-400">
+                  Always insert an instant-read meat thermometer into the thickest part of the food to verify these food safety standards:
+                </p>
+
+                <div className="space-y-2.5">
+                  {USDA_TEMPERATURE_GUIDE.map((guide) => (
+                    <div
+                      key={guide.item}
+                      className="p-3.5 rounded-2xl border border-slate-800 bg-slate-950/60 flex items-center justify-between"
+                    >
+                      <div>
+                        <p className="font-bold text-sm text-white">{guide.item}</p>
+                        <p className="text-xs text-slate-400 mt-0.5">Rest requirement: {guide.rest}</p>
+                      </div>
+                      <div className="text-right">
+                        <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-sm font-mono font-bold px-2.5 py-0.5">
+                          {guide.tempF}°F ({guide.tempC}°C)
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
