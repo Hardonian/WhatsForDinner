@@ -1,5 +1,5 @@
 'use client';
-import DecisionGames from '@/components/DecisionGames';
+import { DecisionGames } from '@/components/DecisionGames';
 
 export const dynamic = 'force-dynamic';
 import { useEffect, useState } from "react";
