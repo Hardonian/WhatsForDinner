@@ -173,19 +173,33 @@ export function VectorRecipeExplorer() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.08 }}
-                className="p-5 rounded-2xl border bg-muted/20 hover:border-blue-500/40 transition-all space-y-3.5 flex flex-col justify-between"
+                className="p-4 sm:p-5 rounded-2xl border bg-card/60 backdrop-blur hover:border-blue-500/40 shadow-sm hover:shadow-lg transition-all space-y-3.5 flex flex-col justify-between group overflow-hidden"
               >
                 <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <Badge variant="secondary" className="text-[10px] font-mono">
-                      {recipe.source}
-                    </Badge>
-                    <Badge className="bg-blue-600 text-white font-mono text-xs font-bold px-2 py-0.5">
-                      {(similarityScore * 100).toFixed(0)}% Vector Match
-                    </Badge>
+                  {/* Recipe Image Thumbnail */}
+                  <div className="relative w-full h-44 rounded-xl overflow-hidden mb-3 bg-muted">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={recipe.imageUrl || '/recipe-placeholder.jpg'}
+                      alt={recipe.title}
+                      loading="lazy"
+                      onError={e => {
+                        (e.target as HTMLImageElement).src = '/recipe-placeholder.jpg';
+                      }}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+                    <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between gap-1.5">
+                      <Badge variant="secondary" className="text-[10px] font-mono bg-black/60 text-white border-0 backdrop-blur-md">
+                        {recipe.source}
+                      </Badge>
+                      <Badge className="bg-blue-600 text-white font-mono text-xs font-bold px-2 py-0.5 shadow-md">
+                        {(similarityScore * 100).toFixed(0)}% Vector Match
+                      </Badge>
+                    </div>
                   </div>
 
-                  <h3 className="text-base font-black text-foreground mt-2 leading-snug">
+                  <h3 className="text-base font-black text-foreground mt-1 leading-snug">
                     {recipe.title}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-1">

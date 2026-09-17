@@ -18,6 +18,7 @@ export interface DynamicRecipe {
   substitutions: Record<string, string>;
   activeSwaps?: Array<{ original: string; replacement: string }>;
   variationName?: string;
+  imageUrl?: string;
   macros?: {
     calories: number;
     protein: number;

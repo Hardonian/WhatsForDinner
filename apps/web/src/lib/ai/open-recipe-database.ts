@@ -32,12 +32,14 @@ export interface OpenRecipe {
   pantryIngredients: string[];
   steps: string[];
   culinaryTechnique: 'Sear & Baste' | 'Wok-Char' | 'Braise' | 'Convective Roast' | 'Simmer & Emulsify' | 'Quick-Toss';
+  imageUrl?: string;
   vector?: number[];
 }
 
 export const OPEN_SOURCE_RECIPES: OpenRecipe[] = [
   {
     id: 'os-escoffier-01',
+    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80',
     source: 'Escoffier Classical',
     title: 'Poulet Sauté Chasseur (Hunter\'s Chicken)',
     cuisine: 'French Classical',
@@ -72,6 +74,7 @@ export const OPEN_SOURCE_RECIPES: OpenRecipe[] = [
   },
   {
     id: 'os-mealdb-salmon',
+    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80',
     source: 'TheMealDB',
     title: 'Baked Salmon with Garlic Herb Crust & Roasted Greens',
     cuisine: 'Mediterranean',
@@ -103,6 +106,7 @@ export const OPEN_SOURCE_RECIPES: OpenRecipe[] = [
   },
   {
     id: 'os-sichuan-mapo',
+    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
     source: 'Global Gastronomy Archive',
     title: 'Authentic Sichuan Mapo Tofu with Crispy Shiitakes',
     cuisine: 'Sichuan Chinese',
@@ -138,6 +142,7 @@ export const OPEN_SOURCE_RECIPES: OpenRecipe[] = [
   },
   {
     id: 'os-bluezones-bowl',
+    imageUrl: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=800&q=80',
     source: 'Blue Zones Mediterranean',
     title: 'Ikarian Braised White Beans & Wild Greens (Gigantes Plaki)',
     cuisine: 'Greek Island (Blue Zone)',
@@ -170,6 +175,7 @@ export const OPEN_SOURCE_RECIPES: OpenRecipe[] = [
   },
   {
     id: 'os-mexican-carnitas',
+    imageUrl: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80',
     source: 'Global Gastronomy Archive',
     title: 'Michoacán Citrus & Garlic Crispy Pulled Carnitas',
     cuisine: 'Mexican Traditional',
@@ -203,6 +209,7 @@ export const OPEN_SOURCE_RECIPES: OpenRecipe[] = [
   },
   {
     id: 'os-tuscan-ragu',
+    imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80',
     source: 'TheMealDB',
     title: 'Slow-Simmered Bolognese Ragù with Fresh Tagliatelle',
     cuisine: 'Emilia-Romagna Italian',
@@ -237,6 +244,7 @@ export const OPEN_SOURCE_RECIPES: OpenRecipe[] = [
   },
   {
     id: 'os-thai-curry',
+    imageUrl: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&w=800&q=80',
     source: 'Global Gastronomy Archive',
     title: 'Bangkok Coconut Green Curry with Crispy Tofu & Bamboo',
     cuisine: 'Thai Authentic',
@@ -271,6 +279,7 @@ export const OPEN_SOURCE_RECIPES: OpenRecipe[] = [
   },
   {
     id: 'os-japanese-teriyaki',
+    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
     source: 'Global Gastronomy Archive',
     title: 'Tokyo Skillet Chicken Teriyaki with Charred Scallions',
     cuisine: 'Japanese Classic',

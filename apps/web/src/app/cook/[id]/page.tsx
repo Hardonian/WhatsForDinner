@@ -42,28 +42,53 @@ const DEMO_RECIPE: CookingRecipe = {
   },
 };
 
+import { OPEN_SOURCE_RECIPES } from '@/lib/ai/open-recipe-database';
+
 export default function CookPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const router = useRouter();
-  const [recipe, setRecipe] = useState<CookingRecipe>(DEMO_RECIPE);
+
+  // Find if requested ID matches a known open source or vector recipe
+  const matchingOpenRecipe = OPEN_SOURCE_RECIPES.find(r => r.id === resolvedParams.id);
+  const initialRecipe: CookingRecipe = matchingOpenRecipe
+    ? {
+        id: matchingOpenRecipe.id,
+        title: matchingOpenRecipe.title,
+        cookTime: matchingOpenRecipe.cookTime,
+        calories: matchingOpenRecipe.calories,
+        servings: 2,
+        difficulty: matchingOpenRecipe.difficulty,
+        pantryIngredientsUsed: matchingOpenRecipe.pantryIngredients,
+        steps: matchingOpenRecipe.steps,
+        proTips: {
+          0: `Technique: ${matchingOpenRecipe.culinaryTechnique}. Prep all ingredients before heating.`,
+          1: `Flavor Profile: Umami ${Math.round(matchingOpenRecipe.flavorProfile.umami * 100)}%, Acidity ${Math.round(matchingOpenRecipe.flavorProfile.acid * 100)}%, Richness ${Math.round(matchingOpenRecipe.flavorProfile.richness * 100)}%.`,
+        },
+        substitutions: {
+          butter: 'Olive oil or ghee',
+          wine: 'Chicken stock with 1 tsp fresh lemon juice',
+        },
+      }
+    : DEMO_RECIPE;
+
+  const [recipe, setRecipe] = useState<CookingRecipe>(initialRecipe);
 
   useEffect(() => {
-    // In production, fetch recipe by resolvedParams.id from Supabase or local cache
-    // If dynamic recipe is cached in sessionStorage (from onboarding), load it
+    // If dynamic recipe is cached in sessionStorage (e.g. from RAG generation or forks), load it
     if (typeof window !== 'undefined') {
       try {
         const cached = sessionStorage.getItem('active_cooking_recipe');
         if (cached) {
           const parsed = JSON.parse(cached);
-          if (parsed && parsed.title && Array.isArray(parsed.steps)) {
+          if (parsed && parsed.title && Array.isArray(parsed.steps) && (!resolvedParams.id || parsed.id === resolvedParams.id)) {
             setRecipe({
-              ...DEMO_RECIPE,
+              ...initialRecipe,
               ...parsed,
             });
           }
         }
       } catch {
-        // Fallback to demo recipe
+        // Fallback to initial resolved recipe
       }
     }
   }, [resolvedParams.id]);

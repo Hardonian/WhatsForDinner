@@ -76,10 +76,19 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  icons: {
+    icon: '/icon-192x192.png',
+    shortcut: '/icon-192x192.png',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/manifest.json',
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION,
   },
 };
+
+import { Toaster } from 'sonner';
+import { KitchenConnectionHUD } from '@/components/pwa/KitchenConnectionHUD';
 
 export default function RootLayout({
   children,
@@ -91,6 +100,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <AnalyticsInitializer />
         <CommandPalette />
+        <KitchenConnectionHUD />
+        <Toaster richColors position="top-right" closeButton />
         {children}
       </body>
     </html>
