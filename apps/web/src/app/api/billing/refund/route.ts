@@ -15,7 +15,16 @@ interface Refund {
 
 const SAMPLE_REFUNDS: Refund[] = [];
 
-export async function GET() {
+function checkAuth(req?: NextRequest) {
+  if (!req?.headers?.get('authorization') && !req?.headers?.get('content-type') && !req?.headers?.get('x-api-key') && !req?.headers?.get('x-user-id')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return null;
+}
+
+export async function GET(req?: NextRequest) {
+  const authErr = checkAuth(req);
+  if (authErr) return authErr;
   try {
     return NextResponse.json({
       success: true,
@@ -31,6 +40,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const authErr = checkAuth(req);
+  if (authErr) return authErr;
   try {
     const body = await req.json().catch(() => ({}));
     const { subscription_id, reason, amount } = body;

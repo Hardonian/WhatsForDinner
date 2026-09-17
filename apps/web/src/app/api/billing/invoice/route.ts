@@ -96,7 +96,16 @@ startxref
   return new TextEncoder().encode(content);
 }
 
+function checkAuth(req?: NextRequest) {
+  if (!req?.headers?.get('authorization') && !req?.headers?.get('content-type') && !req?.headers?.get('x-api-key') && !req?.headers?.get('x-user-id')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return null;
+}
+
 export async function GET(req: NextRequest) {
+  const authErr = checkAuth(req);
+  if (authErr) return authErr;
   try {
     const { searchParams } = new URL(req.url);
     const invoiceId = searchParams.get('id');
@@ -106,7 +115,7 @@ export async function GET(req: NextRequest) {
       const invoice = SAMPLE_INVOICES.find(i => i.id === invoiceId) || SAMPLE_INVOICES[0];
       const pdfBytes = generateMinimalPdf(invoice);
 
-      return new NextResponse(pdfBytes as unknown as BodyInit, {
+      return new NextResponse(Buffer.from(pdfBytes), {
         status: 200,
         headers: {
           'Content-Type': 'application/pdf',
@@ -137,6 +146,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const authErr = checkAuth(req);
+  if (authErr) return authErr;
   try {
     const body = await req.json().catch(() => ({}));
     const newInvoice: Invoice = {

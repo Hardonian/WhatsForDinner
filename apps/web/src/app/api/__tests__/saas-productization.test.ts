@@ -49,7 +49,9 @@ describe('SaaS Platform Productization API Routes', () => {
 
   describe('Billing Invoices API (/api/billing/invoice)', () => {
     it('returns list of invoices on GET', async () => {
-      const req = new Request('http://localhost:3000/api/billing/invoice');
+      const req = new Request('http://localhost:3000/api/billing/invoice', {
+        headers: { 'Content-Type': 'application/json' },
+      });
       const res = await invoiceGet(req);
       expect(res.status).toBe(200);
       const data = await res.json();
@@ -59,7 +61,9 @@ describe('SaaS Platform Productization API Routes', () => {
     });
 
     it('downloads PDF receipt when format=pdf', async () => {
-      const req = new Request('http://localhost:3000/api/billing/invoice?format=pdf');
+      const req = new Request('http://localhost:3000/api/billing/invoice?format=pdf', {
+        headers: { 'Content-Type': 'application/json' },
+      });
       const res = await invoiceGet(req);
       expect(res.status).toBe(200);
       expect(res.headers.get('Content-Type')).toBe('application/pdf');
@@ -86,7 +90,10 @@ describe('SaaS Platform Productization API Routes', () => {
 
   describe('Billing Refunds API (/api/billing/refund)', () => {
     it('returns refund history on GET', async () => {
-      const res = await refundGet();
+      const req = new Request('http://localhost:3000/api/billing/refund', {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const res = await refundGet(req);
       expect(res.status).toBe(200);
       const data = await res.json();
       expect(data.success).toBe(true);
