@@ -56,8 +56,8 @@ class SoundEffectsEngine {
   /**
    * Swoosh sound for card swipe (Food Tinder)
    */
-  playSwipe(direction: 'left' | 'right') {
-    this.triggerHaptic(direction === 'right' ? [12, 30, 20] : 15);
+  playSwipe(direction: 'left' | 'right' | 'up' = 'right') {
+    this.triggerHaptic(direction === 'up' ? [20, 40, 30] : direction === 'right' ? [12, 30, 20] : 15);
     const ctx = this.getContext();
     if (!ctx) return;
 
@@ -65,16 +65,21 @@ class SoundEffectsEngine {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
-      const startFreq = direction === 'right' ? 350 : 500;
-      const endFreq = direction === 'right' ? 700 : 250;
-      osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + 0.12);
+      if (direction === 'up') {
+        osc.frequency.setValueAtTime(440, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12);
+      } else {
+        const startFreq = direction === 'right' ? 350 : 250;
+        const endFreq = direction === 'right' ? 600 : 150;
+        osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + 0.08);
+      }
       gain.gain.setValueAtTime(0.2, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start();
-      osc.stop(ctx.currentTime + 0.12);
+      osc.stop(ctx.currentTime + 0.1);
     } catch {}
   }
 
