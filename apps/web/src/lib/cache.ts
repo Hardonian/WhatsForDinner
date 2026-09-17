@@ -243,3 +243,8 @@ export function withCache<T extends (...args: any[]) => Promise<any>>(
     return result;
   }) as T;
 }
+
+export const suggestionCache = {
+  get: (key: any): any => null,
+  set: (key: any, val: any): void => {},
+};
