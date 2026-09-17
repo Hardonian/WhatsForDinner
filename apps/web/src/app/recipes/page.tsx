@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic';
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import { ForkableRecipeTree } from '@/components/recipes/ForkableRecipeTree';
+import { VectorRecipeExplorer } from '@/components/recipes/VectorRecipeExplorer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -77,6 +78,11 @@ export default function RecipesExplorerPage() {
             baseRecipeTitle="Pan-Seared Garlic Herb Salmon"
             baseRecipeId="recipe-salmon-01"
           />
+        </div>
+
+        {/* Neural Vector Search & Open-Source Recipe Corpus */}
+        <div className="space-y-4 pt-4">
+          <VectorRecipeExplorer />
         </div>
       </main>
     </div>

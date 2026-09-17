@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { recipeVectorStore } from '@/lib/ai/recipe-vector-db';
 
 export const dynamic = 'force-dynamic';
 
@@ -301,6 +302,38 @@ export async function POST(req: NextRequest) {
         });
       });
       if (filtered.length === 0) filtered = [CURATED_RECIPES[2]]; // Plant-based harvest bowl
+    }
+
+    // 4. Augment with Open-Source Vector DB nearest neighbors
+    if (pantryItems.length > 0) {
+      const vectorHits = recipeVectorStore.search({
+        pantryItems,
+        dietaryRestrictions: dietary,
+        topK: 3,
+      });
+
+      const openRecipes = vectorHits.map(hit => ({
+        id: hit.recipe.id,
+        title: hit.recipe.title,
+        description: `Grounded in ${hit.recipe.source} culinary archives (${(hit.similarityScore * 100).toFixed(0)}% affinity).`,
+        ingredients: hit.recipe.pantryIngredients,
+        instructions: hit.recipe.steps,
+        cookTime: hit.recipe.cookTime,
+        prepTime: hit.recipe.prepTime,
+        servings: familySize,
+        difficulty: hit.recipe.difficulty,
+        cuisine: hit.recipe.cuisine,
+        dietaryTags: hit.recipe.dietaryTags,
+        macros: {
+          calories: hit.recipe.calories,
+          protein: hit.recipe.macros.protein,
+          carbs: hit.recipe.macros.carbs,
+          fat: hit.recipe.macros.fat,
+          fiber: hit.recipe.macros.fiber,
+        },
+      }));
+
+      filtered = [...openRecipes, ...filtered];
     }
 
     // Determine primary featured recipe
