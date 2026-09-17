@@ -84,36 +84,41 @@ export default function BillingSettingsPage() {
   }, []);
 
   const loadData = useCallback(async () => {
-    const { data: { user: authUser } } = await supabase.auth.getUser();
-    setUser(authUser);
+    try {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      setUser(authUser);
 
-    if (!authUser) return;
+      if (authUser) {
+        const { data: sub } = await supabase
+          .from('subscriptions')
+          .select('*')
+          .eq('user_id', authUser.id)
+          .eq('status', 'active')
+          .single();
 
-    // Load subscription
-    const { data: sub } = await supabase
-      .from('subscriptions')
-      .select('*')
-      .eq('user_id', authUser.id)
-      .eq('status', 'active')
-      .single();
-
-    if (sub) {
-      setSubscription(sub);
+        if (sub) {
+          setSubscription(sub);
+        }
+      }
+    } catch (e) {
+      // Fallback
     }
 
-    // Load invoices
-    const invoicesRes = await fetch(`/api/billing/invoice`);
-    const invoicesData = await invoicesRes.json();
-    if (invoicesData.invoices) {
-      setInvoices(invoicesData.invoices);
-    }
+    try {
+      const invoicesRes = await fetch(`/api/billing/invoice`);
+      const invoicesData = await invoicesRes.json();
+      if (invoicesData.invoices) {
+        setInvoices(invoicesData.invoices);
+      }
+    } catch (e) {}
 
-    // Load refunds
-    const refundsRes = await fetch(`/api/billing/refund`);
-    const refundsData = await refundsRes.json();
-    if (refundsData.refunds) {
-      setRefunds(refundsData.refunds);
-    }
+    try {
+      const refundsRes = await fetch(`/api/billing/refund`);
+      const refundsData = await refundsRes.json();
+      if (refundsData.refunds) {
+        setRefunds(refundsData.refunds);
+      }
+    } catch (e) {}
   }, [supabase]);
 
   const handleCancelSubscription = async () => {

@@ -79,6 +79,37 @@ const plans: PricingPlan[] = [
 
 export default function PricingPage() {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  const handlePlanSelect = async (plan: PricingPlan) => {
+    if (plan.price === 0) {
+      window.location.href = '/signup?plan=free';
+      return;
+    }
+
+    setLoadingPlan(plan.name);
+    try {
+      const res = await fetch('/api/subscriptions/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          plan: plan.name.toLowerCase(),
+          interval: billingCycle,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+      } else {
+        window.location.href = `/signup?plan=${plan.name.toLowerCase()}`;
+      }
+    } catch {
+      window.location.href = `/signup?plan=${plan.name.toLowerCase()}`;
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-7xl">
@@ -169,15 +200,14 @@ export default function PricingPage() {
                 ))}
               </ul>
               <Button
-                className="w-full"
+                className="w-full font-bold"
                 variant={plan.popular ? 'default' : 'outline'}
                 size="lg"
-                asChild
+                disabled={loadingPlan === plan.name}
+                onClick={() => handlePlanSelect(plan)}
               >
-                <Link href={`/signup?plan=${plan.name.toLowerCase()}`}>
-                  {plan.cta}
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
+                {loadingPlan === plan.name ? 'Connecting to Checkout...' : plan.cta}
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </CardContent>
           </Card>

@@ -16,9 +16,10 @@ import { CTAOptimizer } from '@/components/CTAOptimizer';
 import { AIPersonality } from '@/components/AIPersonality';
 import { SocialProofWidget } from '@/components/SocialProofWidget';
 import SmartUpsell from '@/components/monetization/SmartUpsell';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Sparkles, Play, ShoppingCart, UtensilsCrossed } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Sparkles, Play, ShoppingCart, UtensilsCrossed, Dices, Flame, Clock, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -27,13 +28,13 @@ export default function DashboardPage() {
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [tenantId, setTenantId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
 
   useEffect(() => {
     const loadUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setUser(user as { id: string });
-        // Get tenant_id from profile
         const { data: profile } = await supabase
           .from('profiles')
           .select('tenant_id')
@@ -46,6 +47,21 @@ export default function DashboardPage() {
       setLoading(false);
     };
     loadUser();
+
+    const loadRecipes = async () => {
+      try {
+        const res = await fetch('/api/recipes?limit=3');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.recipes && data.recipes.length > 0) {
+            setRecentRecipes(data.recipes);
+          }
+        }
+      } catch {
+        // Fallback handled
+      }
+    };
+    loadRecipes();
   }, [supabase]);
 
   if (loading) {
@@ -71,7 +87,7 @@ export default function DashboardPage() {
               Welcome back! 👋
             </h1>
             <p className="text-muted-foreground">
-              Let's find something delicious for dinner
+              Let&apos;s find something delicious for dinner
             </p>
           </div>
 
@@ -87,7 +103,7 @@ export default function DashboardPage() {
               </div>
               <Button size="sm" variant="outline" className="text-xs h-8 border-primary/40 font-semibold" asChild>
                 <Link href="/onboarding">
-                  Sync & Create Account
+                  Sync &amp; Create Account
                 </Link>
               </Button>
             </div>
@@ -101,6 +117,39 @@ export default function DashboardPage() {
             <SmartUpsell userId={effectiveUserId} tenantId={tenantId} />
           )}
         </div>
+
+        {/* Featured Decision Games Showcase Banner */}
+        <Link href="/play" className="block">
+          <Card className="border-2 border-primary/40 bg-gradient-to-r from-primary/15 via-accent/10 to-primary/5 hover:border-primary transition-all shadow-md group cursor-pointer">
+            <CardContent className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary to-accent flex items-center justify-center text-white shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <Dices className="w-6 h-6 animate-pulse" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge className="bg-primary text-white text-xs font-bold px-2 py-0.5">
+                      Interactive Decision Engine
+                    </Badge>
+                    <Badge variant="outline" className="text-xs font-semibold text-emerald-600 border-emerald-500/30">
+                      +150 XP Available
+                    </Badge>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black tracking-tight text-foreground">
+                    Can&apos;t Decide What to Cook Tonight?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                    Spin the Category Wheel, play 1-on-1 Dinner Duel, mystery ingredient cloche reveal, or start a live room session!
+                  </p>
+                </div>
+              </div>
+              <Button className="font-bold shrink-0 group-hover:translate-x-1 transition-transform">
+                <span>Play Games</span>
+                <ArrowRight className="w-4 h-4 ml-1.5" />
+              </Button>
+            </CardContent>
+          </Card>
+        </Link>
 
         {/* Quick Actions Grid - Industry-Defining Suite */}
         <div>
@@ -120,7 +169,7 @@ export default function DashboardPage() {
             </Link>
 
             {/* Action 2: Vision Scanner */}
-            <Link href="/onboarding" className="block">
+            <Link href="/pantry" className="block">
               <Card className="cursor-pointer hover:border-primary transition-colors border-2 h-full">
                 <CardContent className="p-6 text-center">
                   <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center">
@@ -153,7 +202,7 @@ export default function DashboardPage() {
                     <Play className="w-6 h-6 text-white" />
                   </div>
                   <div className="font-semibold text-sm">Metabolic CGM</div>
-                  <div className="text-xs text-muted-foreground mt-1">Glycemic & satiety</div>
+                  <div className="text-xs text-muted-foreground mt-1">Glycemic &amp; satiety</div>
                 </CardContent>
               </Card>
             </Link>
@@ -184,20 +233,72 @@ export default function DashboardPage() {
 
         {/* Recent Activity / Suggestions */}
         <Card>
-          <CardHeader>
-            <CardTitle>Your Recent Recipes</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <div>
+              <CardTitle className="text-xl">Chef-Curated Daily Dishes</CardTitle>
+              <CardDescription>Handpicked recipes ready to cook or customize</CardDescription>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/surprise-me">
+                <Sparkles className="w-3.5 h-3.5 mr-1.5 text-primary" />
+                Surprise Me
+              </Link>
+            </Button>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8 text-muted-foreground">
-              <Sparkles className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>No recipes yet. Get started by generating your first recipe!</p>
-              <Button asChild className="mt-4">
-                <Link href="/surprise-me">
-                  Generate Recipe
-                  <Sparkles className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-            </div>
+            {recentRecipes.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <Sparkles className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>Generating personalized recipe ideas for your kitchen...</p>
+                <Button asChild className="mt-4">
+                  <Link href="/surprise-me">
+                    Generate Recipe
+                    <Sparkles className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {recentRecipes.map((rec) => (
+                  <Card key={rec.id} className="overflow-hidden border hover:border-primary/50 transition-all flex flex-col justify-between">
+                    <CardContent className="p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="secondary" className="text-[11px] font-medium">
+                          {rec.cuisine}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {rec.cookTime}
+                        </span>
+                      </div>
+                      <h4 className="font-bold text-sm tracking-tight line-clamp-1">{rec.title}</h4>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{rec.description}</p>
+                      <div className="pt-2 border-t flex items-center justify-between text-xs">
+                        <span className="font-mono text-primary font-bold">
+                          {rec.macros?.calories} kcal
+                        </span>
+                        <span className="text-muted-foreground font-medium">
+                          {rec.macros?.protein}g protein
+                        </span>
+                      </div>
+                      <div className="flex gap-2 pt-1">
+                        <Button size="sm" className="w-full text-xs font-semibold h-8" asChild>
+                          <Link href="/cook/demo">
+                            <UtensilsCrossed className="w-3 h-3 mr-1" />
+                            Cook
+                          </Link>
+                        </Button>
+                        <Button size="sm" variant="outline" className="w-full text-xs font-semibold h-8" asChild>
+                          <Link href="/recipes">
+                            Fork
+                          </Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

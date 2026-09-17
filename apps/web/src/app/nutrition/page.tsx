@@ -58,11 +58,7 @@ export default function NutritionDashboard() {
       } = await supabase.auth.getUser();
       setUser(user as unknown as AppUser);
       
-      if (user) {
-        // Fetch user's recent meals and calculate nutrition
-        await loadNutritionData();
-      }
-      
+      await loadNutritionData();
       setLoading(false);
     };
 
