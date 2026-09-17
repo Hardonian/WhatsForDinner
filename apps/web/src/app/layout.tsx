@@ -1,4 +1,6 @@
 /**
+
+export const dynamic = "force-dynamic";
  * Root Layout
  * 
  * Includes analytics initialization
