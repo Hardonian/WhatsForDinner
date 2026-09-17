@@ -1,7 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 type Reco = { title:string; body?:string; kind:'meal'|'video'|'tip'; score:number; cta?:{label:string;href?:string;action?:string}; rationale: unknown };
 export async function recoForWhatsForDinner(userId:string): Promise<Reco[]>{
-  const supa=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+  const supa = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
+  );
   const { data: prefsRow } = await supa.from('meal_prefs').select('*').eq('user_id',userId).maybeSingle();
   const prefs = prefsRow || { cuisines:[], diet:'none', allergies:[], cook_time_minutes:30 };
   const since=new Date(Date.now()-14*24*3600e3).toISOString();
