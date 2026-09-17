@@ -1,5 +1,3 @@
-import { ConsentOnboardingWizard } from '@/components/privacy/ConsentOnboardingWizard';
-
-export default function PrivacyOnboardingPage() {
-  return <ConsentOnboardingWizard />;
 }
+
+export const dynamic = "force-dynamic";
