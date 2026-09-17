@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { describe, it, expect } from '@jest/globals';
-import * as module from '../accessibility.ts';
+import * as module from '../accessibility';
 
 describe('accessibility', () => {
   it('should export expected functions/classes', () => {

@@ -730,6 +730,18 @@ class WorkflowManager {
       { type: 'maintenance', scheduled: true }
     );
   }
+
+  getWorkflow(workflowId: string): Workflow | undefined {
+    return this.activeWorkflows.get(workflowId);
+  }
+
+  getAllWorkflows(): Workflow[] {
+    return Array.from(this.activeWorkflows.values());
+  }
+
+  deleteWorkflow(workflowId: string): boolean {
+    return this.activeWorkflows.delete(workflowId);
+  }
 }
 
 // Wrap workflow manager methods with error boundaries for resilience

@@ -4,7 +4,7 @@
  */
 
 import { logger } from './logger';
-const crypto = typeof window === 'undefined' ? require('crypto') : null;
+const crypto = typeof require !== 'undefined' ? require('crypto') : (typeof window !== 'undefined' ? (window.crypto as any) : null);
 
 export interface Secret {
   id: string;

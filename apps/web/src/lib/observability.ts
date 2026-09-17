@@ -727,6 +727,14 @@ class ObservabilitySystem {
     }
   }
 
+  trackMetric(name: string, value: number, tags?: Record<string, string>): void {
+    try {
+      _logger.info(`Metric ${name}: ${value}`, { tags });
+    } catch {
+      // safe fallback
+    }
+  }
+
   private generateId(): string {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
@@ -758,14 +766,20 @@ export const observabilitySystem = {
     baseObservabilitySystem.finishSpan.bind(baseObservabilitySystem),
     (error) => _logger.error('Observability span finish failed:', { error: error instanceof Error ? error.message : String(error) })
   ),
-  log: fireAndForget(
-    (level, message, metadata) => baseObservabilitySystem.log(level, message, metadata),
-    (error) => _logger.error('Observability log failed:', { error: error instanceof Error ? error.message : String(error) })
-  ),
-  trackMetric: fireAndForget(
-    (name, value, tags) => baseObservabilitySystem.trackMetric(name, value, tags),
-    (error) => _logger.error('Observability metric tracking failed:', { error: error instanceof Error ? error.message : String(error) })
-  ),
+  log: (level: any, message: string, metadata?: any) => {
+    try {
+      baseObservabilitySystem.log(level, message, metadata);
+    } catch (error) {
+      _logger.error('Observability log failed:', { error: error instanceof Error ? error.message : String(error) });
+    }
+  },
+  trackMetric: (name: string, value: number, tags?: Record<string, string>) => {
+    try {
+      baseObservabilitySystem.trackMetric(name, value, tags);
+    } catch (error) {
+      _logger.error('Observability metric tracking failed:', { error: error instanceof Error ? error.message : String(error) });
+    }
+  },
 };
 
 // Utility functions for common observability tasks

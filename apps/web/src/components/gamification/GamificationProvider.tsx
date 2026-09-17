@@ -9,7 +9,7 @@ type State = {
   streak: number;
 };
 const Ctx = createContext<State | null>(null);
-export function GamificationProvider({ children }: { children: React.ReactNode }) {
+export function GamificationProvider({ children }: { children?: React.ReactNode }) {
   const [xp, setXp] = useState<number>(0);
   const [streak, setStreak] = useState<number>(0);
   const dailyGoal = 50;
@@ -24,7 +24,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   useEffect(()=>{ if (typeof window !== "undefined") localStorage.setItem("xp", String(xp)); }, [xp]);
   useEffect(()=>{ if (typeof window !== "undefined") localStorage.setItem("streak", String(streak)); }, [streak]);
   const state = useMemo(()=>({ flags, level: Math.floor(xp/100)+1, xp, dailyGoal, streak }), [xp, streak]);
-  return <Ctx.Provider value={state}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={state}><div data-testid="gamificationprovider">{children}</div></Ctx.Provider>;
 }
 const defaultGamifyState: State = {
   flags,
@@ -43,4 +43,6 @@ export const awardXp = (delta=5) => {
   const cur = Number(localStorage.getItem("xp")||0);
   localStorage.setItem("xp", String(cur + delta));
 };
+
+export default GamificationProvider;
 

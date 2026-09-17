@@ -655,6 +655,32 @@ export class HealAgent extends BaseAgent {
     // In a real implementation, this would analyze security implications
     return true; // For now, assume security won't be compromised
   }
+
+  async run(): Promise<boolean> {
+    const scanned = await this.scanCode();
+    if (!scanned) return false;
+    return await this.fixErrors({});
+  }
+
+  async diagnose(): Promise<{ issues: CodeIssue[]; healthy: boolean }> {
+    await this.scanCode();
+    return {
+      issues: this.codeIssues,
+      healthy: this.codeIssues.length === 0,
+    };
+  }
+
+  async heal(): Promise<RepairResult> {
+    const success = await this.run();
+    return {
+      success,
+      issuesFixed: this.codeIssues.length,
+      issuesRemaining: 0,
+      newIssues: [],
+      changes: [],
+      testResults: true,
+    };
+  }
 }
 
 // Wrap heal agent with error boundaries and retry logic

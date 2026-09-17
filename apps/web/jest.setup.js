@@ -14,6 +14,116 @@ screen.getByRole = function (role, options) {
   }
 };
 
+// Polyfill Headers, Request, Response, fetch for Next.js server code in Jest
+if (typeof global.Headers === 'undefined') {
+  global.Headers = class Headers {
+    constructor(init = {}) {
+      this._map = new Map();
+      if (init instanceof Headers) {
+        init.forEach((v, k) => this._map.set(k.toLowerCase(), v));
+      } else if (Array.isArray(init)) {
+        init.forEach(([k, v]) => this._map.set(k.toLowerCase(), v));
+      } else if (init && typeof init === 'object') {
+        Object.entries(init).forEach(([k, v]) => this._map.set(k.toLowerCase(), v));
+      }
+    }
+    append(name, value) { this._map.set(name.toLowerCase(), value); }
+    delete(name) { this._map.delete(name.toLowerCase()); }
+    get(name) { return this._map.get(name.toLowerCase()) || null; }
+    has(name) { return this._map.has(name.toLowerCase()); }
+    set(name, value) { this._map.set(name.toLowerCase(), value); }
+    forEach(callback, thisArg) { this._map.forEach((v, k) => callback.call(thisArg, v, k, this)); }
+    entries() { return this._map.entries(); }
+    keys() { return this._map.keys(); }
+    values() { return this._map.values(); }
+    [Symbol.iterator]() { return this._map.entries(); }
+  };
+}
+
+if (typeof global.Request === 'undefined') {
+  global.Request = class Request {
+    constructor(input, init = {}) {
+      const urlStr = typeof input === 'string' ? input : input?.url || 'http://localhost:3000';
+      const methodStr = (init.method || (typeof input === 'object' && input?.method) || 'GET').toUpperCase();
+      const rawHeaders = init?.headers || (typeof input === 'object' && input ? input.headers : undefined) || {};
+      const headersObj = new global.Headers(rawHeaders);
+      const bodyObj = init.body || null;
+
+      Object.defineProperty(this, 'url', {
+        value: urlStr,
+        writable: true,
+        configurable: true,
+      });
+      Object.defineProperty(this, 'method', {
+        value: methodStr,
+        writable: true,
+        configurable: true,
+      });
+      Object.defineProperty(this, 'headers', {
+        value: headersObj,
+        writable: true,
+        configurable: true,
+      });
+      Object.defineProperty(this, 'body', {
+        value: bodyObj,
+        writable: true,
+        configurable: true,
+      });
+
+      let parsedUrl;
+      try {
+        parsedUrl = new URL(urlStr);
+      } catch {
+        parsedUrl = new URL('http://localhost:3000');
+      }
+      if (!('nextUrl' in this)) {
+        Object.defineProperty(this, 'nextUrl', {
+          value: parsedUrl,
+          writable: true,
+          configurable: true,
+        });
+      }
+      if (!('cookies' in this)) {
+        Object.defineProperty(this, 'cookies', {
+          value: {
+            get: jest.fn((name) => ({ name, value: '' })),
+            set: jest.fn(),
+            delete: jest.fn(),
+            has: jest.fn(() => false),
+            getAll: jest.fn(() => []),
+          },
+          writable: true,
+          configurable: true,
+        });
+      }
+    }
+    async json() { return typeof this.body === 'string' ? JSON.parse(this.body) : (this.body || {}); }
+    async text() { return typeof this.body === 'string' ? this.body : JSON.stringify(this.body || {}); }
+  };
+}
+
+if (typeof global.Response === 'undefined') {
+  global.Response = class Response {
+    constructor(body, init = {}) {
+      this.body = body;
+      this.status = init.status || 200;
+      this.statusText = init.statusText || 'OK';
+      this.headers = new global.Headers(init.headers);
+      this.ok = this.status >= 200 && this.status < 300;
+    }
+    static json(data, init = {}) {
+      const headers = new global.Headers(init.headers);
+      if (!headers.has('content-type')) headers.set('content-type', 'application/json');
+      return new Response(JSON.stringify(data), { ...init, headers });
+    }
+    static redirect(url, status = 302) {
+      return new Response(null, { status, headers: { location: url } });
+    }
+    async json() { return typeof this.body === 'string' ? JSON.parse(this.body) : this.body; }
+    async text() { return String(this.body); }
+  };
+}
+
 // Polyfill fetch and Web APIs
 if (!global.fetch) {
   global.fetch = jest.fn((url, options) =>
@@ -24,7 +134,7 @@ if (!global.fetch) {
       json: async () => ({ success: true, url, ...(options || {}) }),
       text: async () => JSON.stringify({ success: true }),
       blob: async () => new Blob([]),
-      headers: new Headers(),
+      headers: new global.Headers(),
     })
   );
 }
@@ -141,6 +251,23 @@ jest.mock('@/lib/supabase/client', () => ({
   supabase: mockSupabase,
 }));
 
+jest.mock('@supabase/auth-helpers-nextjs', () => ({
+  createRouteHandlerClient: jest.fn(() => mockSupabase),
+  createClientComponentClient: jest.fn(() => mockSupabase),
+  createServerComponentClient: jest.fn(() => mockSupabase),
+  createMiddlewareClient: jest.fn(() => mockSupabase),
+}));
+
+jest.mock('jose', () => ({
+  jwtVerify: jest.fn().mockResolvedValue({ payload: { sub: 'test-user-id' } }),
+  SignJWT: jest.fn().mockImplementation(() => ({
+    setProtectedHeader: jest.fn().mockReturnThis(),
+    setIssuedAt: jest.fn().mockReturnThis(),
+    setExpirationTime: jest.fn().mockReturnThis(),
+    sign: jest.fn().mockResolvedValue('test-jwt-token'),
+  })),
+}));
+
 // Mock uuid
 jest.mock('uuid', () => ({
   v4: () => '00000000-0000-0000-0000-000000000000',
@@ -165,3 +292,23 @@ jest.mock('@/lib/openaiClient', () => ({
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key';
 process.env.OPENAI_API_KEY = 'test-openai-key';
+
+// Mock vitest for tests in web that mistakenly import from vitest instead of @jest/globals
+jest.mock('vitest', () => ({
+  describe: (...args) => globalThis.describe(...args),
+  it: (...args) => globalThis.it(...args),
+  test: (...args) => globalThis.test(...args),
+  expect: (...args) => globalThis.expect(...args),
+  beforeEach: (...args) => globalThis.beforeEach(...args),
+  afterEach: (...args) => globalThis.afterEach(...args),
+  beforeAll: (...args) => globalThis.beforeAll(...args),
+  afterAll: (...args) => globalThis.afterAll(...args),
+  vi: {
+    fn: (...args) => jest.fn(...args),
+    spyOn: (...args) => jest.spyOn(...args),
+    clearAllMocks: () => jest.clearAllMocks(),
+    resetAllMocks: () => jest.resetAllMocks(),
+    restoreAllMocks: () => jest.restoreAllMocks(),
+    mock: (...args) => jest.mock(...args),
+  },
+}));

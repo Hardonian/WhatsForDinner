@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { describe, it, expect } from '@jest/globals';
-import * as module from '../csrf-client.ts';
+import * as module from '../csrf-client';
 
 describe('csrf-client', () => {
   it('should export expected functions/classes', () => {
