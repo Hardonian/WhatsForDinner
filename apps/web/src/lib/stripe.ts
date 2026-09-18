@@ -1,4 +1,8 @@
 import Stripe from 'stripe';
+import { createComponentLogger } from '@whats-for-dinner/utils';
+import { supabase, supabaseAdmin } from './supabaseClient';
+
+const _logger = createComponentLogger('stripe-service');
 
 const stripeApiKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder';
 
@@ -74,8 +78,9 @@ export interface CreateCheckoutSessionParams {
 }
 
 export interface CreateCustomerPortalSessionParams {
-  tenantId: string;
-  userId: string;
+  tenantId?: string;
+  userId?: string;
+  customerId?: string;
   returnUrl: string;
 }
 
@@ -97,7 +102,10 @@ export class StripeService {
       cancelUrl = successUrl,
     } = params;
 
+    const isSubscription = Boolean(plan || billingPeriod);
     const planConfig = plan ? STRIPE_CONFIG.plans[plan] : undefined;
+    const effectivePrice = price ?? planConfig?.price ?? 0;
+    const interval = billingPeriod === 'year' ? 'year' : 'month';
 
     const lineItems: any[] = planConfig?.priceId
       ? [
@@ -111,16 +119,14 @@ export class StripeService {
             price_data: {
               currency: currency || 'usd',
               product_data: {
-                name: (metadata?.type as string) || 'What\'s For Dinner Purchase',
+                name: (metadata?.productName as string) || (metadata?.type as string) || (planConfig ? `${planConfig.name} Plan` : "What's For Dinner Purchase"),
               },
-              unit_amount: Math.round((price || 0) * 100),
-              ...(billingPeriod ? { recurring: { interval: billingPeriod === 'year' ? 'year' : 'month' } } : {}),
+              unit_amount: Math.round(effectivePrice * 100),
+              ...(isSubscription ? { recurring: { interval } } : {}),
             },
             quantity: 1,
           },
         ];
-
-    const isSubscription = Boolean(plan || billingPeriod);
 
     const session = await stripe.checkout.sessions.create({
       mode: isSubscription ? 'subscription' : 'payment',
@@ -157,21 +163,52 @@ export class StripeService {
    */
   static async createCustomerPortalSession({
     tenantId,
+    userId,
+    customerId,
     returnUrl,
   }: CreateCustomerPortalSessionParams) {
-    // First, get the customer ID from the tenant
-    const { data: tenant } = await supabase
-      .from('tenants')
-      .select('stripe_customer_id')
-      .eq('id', tenantId)
-      .single();
+    let resolvedCustomerId = customerId;
 
-    if (!tenant?.stripe_customer_id) {
-      throw new Error('No Stripe customer found for tenant');
+    if (!resolvedCustomerId && userId) {
+      try {
+        const { data: sub } = await supabaseAdmin
+          .from('subscriptions')
+          .select('stripe_customer_id')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (sub?.stripe_customer_id) {
+          resolvedCustomerId = sub.stripe_customer_id;
+        }
+      } catch (err) {
+        _logger.warn('Could not retrieve customer ID from user subscriptions', { userId, error: err });
+      }
+    }
+
+    if (!resolvedCustomerId && tenantId) {
+      try {
+        const { data: tenant } = await supabaseAdmin
+          .from('tenants')
+          .select('stripe_customer_id')
+          .eq('id', tenantId)
+          .maybeSingle();
+
+        if (tenant?.stripe_customer_id) {
+          resolvedCustomerId = tenant.stripe_customer_id;
+        }
+      } catch (err) {
+        _logger.warn('Could not retrieve customer ID from tenant', { tenantId, error: err });
+      }
+    }
+
+    if (!resolvedCustomerId) {
+      throw new Error('No Stripe customer found for user or tenant');
     }
 
     const session = await stripe.billingPortal.sessions.create({
-      customer: tenant.stripe_customer_id,
+      customer: resolvedCustomerId,
       return_url: returnUrl,
     });
 
@@ -242,6 +279,227 @@ export class StripeService {
   }
 
   /**
+   * Handle checkout.session.completed event
+   */
+  static async handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
+    const customerId = typeof session.customer === 'string' ? session.customer : session.customer?.id;
+    const subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id;
+    const metadata = session.metadata || {};
+    const userId = metadata.userId || '';
+    const tenantId = metadata.tenantId || '';
+    const plan = (metadata.plan as PlanType) || 'pro';
+
+    _logger.info('Handling checkout session completed', {
+      sessionId: session.id,
+      userId,
+      tenantId,
+      plan,
+      subscriptionId,
+      mode: session.mode,
+    });
+
+    if (session.mode === 'subscription' && subscriptionId) {
+      let periodStart: string | null = null;
+      let periodEnd: string | null = null;
+      try {
+        const sub = await stripe.subscriptions.retrieve(subscriptionId);
+        periodStart = sub.current_period_start ? new Date(sub.current_period_start * 1000).toISOString() : null;
+        periodEnd = sub.current_period_end ? new Date(sub.current_period_end * 1000).toISOString() : null;
+      } catch (err) {
+        _logger.warn('Could not retrieve subscription dates during checkout completion', { error: err });
+      }
+
+      try {
+        await supabaseAdmin.from('subscriptions').upsert(
+          {
+            user_id: userId || null,
+            tenant_id: tenantId || null,
+            stripe_customer_id: customerId || null,
+            stripe_subscription_id: subscriptionId,
+            plan: plan === 'family' ? 'family' : 'pro',
+            status: 'active',
+            current_period_start: periodStart,
+            current_period_end: periodEnd,
+            cancel_at_period_end: false,
+            metadata: { ...metadata, checkoutSessionId: session.id },
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: 'stripe_subscription_id' }
+        );
+      } catch (dbErr) {
+        _logger.error('Error saving subscription to Supabase', { error: dbErr });
+      }
+
+      if (tenantId) {
+        try {
+          await supabaseAdmin
+            .from('tenants')
+            .update({
+              stripe_customer_id: customerId || null,
+              stripe_subscription_id: subscriptionId,
+              plan: plan === 'family' ? 'family' : 'pro',
+              status: 'active',
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', tenantId);
+        } catch (tenantErr) {
+          _logger.error('Error updating tenant in Supabase', { error: tenantErr });
+        }
+      }
+    } else if (session.mode === 'payment') {
+      const purchaseType = metadata.type || 'credit_purchase';
+      _logger.info('Processed one-time payment fulfillment', {
+        userId,
+        purchaseType,
+        amount: session.amount_total,
+      });
+
+      if (purchaseType === 'usage_credits' || purchaseType === 'credits') {
+        const credits = parseInt(metadata.credits || '0', 10);
+        if (credits > 0 && userId) {
+          try {
+            await supabaseAdmin.from('usage_credits').insert({
+              user_id: userId,
+              tenant_id: tenantId || null,
+              credits,
+              metadata: {
+                stripeSessionId: session.id,
+                featureId: metadata.feature_id || metadata.featureId || null,
+              },
+              created_at: new Date().toISOString(),
+            });
+            _logger.info('Successfully credited user balance', { userId, credits });
+          } catch (credErr) {
+            _logger.error('Failed to credit user balance in Supabase', { error: credErr });
+          }
+        }
+      } else if (purchaseType === 'streak_freeze') {
+        if (userId) {
+          try {
+            await supabaseAdmin.from('user_gamification').upsert(
+              {
+                user_id: userId,
+                streak_freeze_active: true,
+                streak_freeze_purchased_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              },
+              { onConflict: 'user_id' }
+            );
+            _logger.info('Activated streak freeze for user', { userId });
+          } catch (freezeErr) {
+            _logger.warn('Failed to update streak freeze in DB', { error: freezeErr });
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Handle customer.subscription.updated event
+   */
+  static async handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+    const metadata = subscription.metadata || {};
+    const tenantId = metadata.tenantId || '';
+
+    _logger.info('Handling subscription updated', {
+      subscriptionId: subscription.id,
+      status: subscription.status,
+    });
+
+    try {
+      await supabaseAdmin
+        .from('subscriptions')
+        .update({
+          status: subscription.status as any,
+          current_period_start: subscription.current_period_start ? new Date(subscription.current_period_start * 1000).toISOString() : null,
+          current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000).toISOString() : null,
+          cancel_at_period_end: subscription.cancel_at_period_end,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('stripe_subscription_id', subscription.id);
+    } catch (err) {
+      _logger.error('Error updating subscription in database', { error: err });
+    }
+
+    if (tenantId && subscription.status !== 'active') {
+      try {
+        await supabaseAdmin
+          .from('tenants')
+          .update({
+            status: subscription.status === 'past_due' ? 'suspended' : 'inactive',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', tenantId);
+      } catch (err) {
+        _logger.error('Error updating tenant status on subscription update', { error: err });
+      }
+    }
+  }
+
+  /**
+   * Handle customer.subscription.deleted event
+   */
+  static async handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+    const metadata = subscription.metadata || {};
+    const tenantId = metadata.tenantId || '';
+
+    _logger.info('Handling subscription deleted / canceled', {
+      subscriptionId: subscription.id,
+    });
+
+    try {
+      await supabaseAdmin
+        .from('subscriptions')
+        .update({
+          status: 'canceled',
+          cancel_at_period_end: true,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('stripe_subscription_id', subscription.id);
+    } catch (err) {
+      _logger.error('Error marking subscription canceled in database', { error: err });
+    }
+
+    if (tenantId) {
+      try {
+        await supabaseAdmin
+          .from('tenants')
+          .update({
+            plan: 'free',
+            status: 'active',
+            stripe_subscription_id: null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', tenantId);
+      } catch (err) {
+        _logger.error('Error downgrading tenant on subscription deletion', { error: err });
+      }
+    }
+  }
+
+  /**
+   * Handle invoice.payment_succeeded event
+   */
+  static async handleInvoicePaid(invoice: Stripe.Invoice) {
+    _logger.info('Handling invoice payment succeeded', {
+      invoiceId: invoice.id,
+      customer: invoice.customer,
+      amountPaid: invoice.amount_paid,
+    });
+  }
+
+  /**
+   * Handle invoice.payment_failed event
+   */
+  static async handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
+    _logger.warn('Handling invoice payment failed', {
+      invoiceId: invoice.id,
+      customer: invoice.customer,
+      attemptCount: invoice.attempt_count,
+    });
+  }
+
+  /**
    * Calculate usage-based pricing for AI tokens
    */
   static calculateTokenCost(tokens: number, model: string): number {
@@ -256,5 +514,3 @@ export class StripeService {
   }
 }
 
-// Import supabase client
-import { supabase } from './supabaseClient';

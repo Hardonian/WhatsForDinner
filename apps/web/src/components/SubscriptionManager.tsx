@@ -38,12 +38,43 @@ export function SubscriptionManager({ userId = 'anonymous' }: { userId?: string 
       }
 
       const data = await response.json();
-      setSubscription(data);
+      const sub = data?.subscription !== undefined ? data.subscription : data;
+      setSubscription(sub && sub.plan ? sub : null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
       logger.error('Failed to load subscription', { error: err });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  const handleManageBilling = async () => {
+    try {
+      setPortalLoading(true);
+      const response = await fetch('/api/subscriptions/portal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': userId,
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to open billing portal');
+      }
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to open billing portal');
+      logger.error('Failed to open billing portal', { error: err });
+    } finally {
+      setPortalLoading(false);
     }
   };
 
@@ -168,14 +199,25 @@ export function SubscriptionManager({ userId = 'anonymous' }: { userId?: string 
             {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
           </p>
         </div>
-        {subscription.status === 'active' && !subscription.cancelAtPeriodEnd && (
-          <button
-            onClick={handleCancel}
-            className="px-4 py-2 border border-destructive text-destructive rounded-md hover:bg-destructive/10"
-          >
-            Cancel Subscription
-          </button>
-        )}
+        <div className="flex flex-wrap gap-3 pt-2">
+          {subscription.status === 'active' && (
+            <button
+              onClick={handleManageBilling}
+              disabled={portalLoading}
+              className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 disabled:opacity-50 text-sm font-medium"
+            >
+              {portalLoading ? 'Opening Portal...' : 'Manage Invoices & Payment Method'}
+            </button>
+          )}
+          {subscription.status === 'active' && !subscription.cancelAtPeriodEnd && (
+            <button
+              onClick={handleCancel}
+              className="px-4 py-2 border border-destructive text-destructive rounded-md hover:bg-destructive/10 text-sm font-medium"
+            >
+              Cancel Subscription
+            </button>
+          )}
+        </div>
         {subscription.cancelAtPeriodEnd && (
           <p className="text-sm text-muted-foreground">
             Subscription will cancel at the end of the billing period.

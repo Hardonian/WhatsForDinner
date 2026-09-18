@@ -3,21 +3,21 @@ import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { NextRequest } from 'next/server';
 import { POST, GET } from '../route';
 
-describe('API Route: apps/web/src/app/api/credits/purchase/route.ts', () => {
+describe('API Route: apps/web/src/app/api/gamification/streak-freeze/route.ts', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('should return 401 when unauthenticated', async () => {
-    const req = new NextRequest('http://localhost/api/credits/purchase', {
+    const req = new NextRequest('http://localhost/api/gamification/streak-freeze', {
       method: 'POST',
     });
     const response = await POST(req);
     expect(response.status).toBe(401);
   });
 
-  it('should return credit packs on GET with auth headers', async () => {
-    const req = new NextRequest('http://localhost/api/credits/purchase', {
+  it('should return pricing and status on GET', async () => {
+    const req = new NextRequest('http://localhost/api/gamification/streak-freeze', {
       method: 'GET',
       headers: {
         'x-user-id': 'user_123',
@@ -27,26 +27,24 @@ describe('API Route: apps/web/src/app/api/credits/purchase/route.ts', () => {
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data.status).toBe('ok');
-    expect(Array.isArray(data.packs)).toBe(true);
-    expect(data.packs.length).toBeGreaterThan(0);
+    expect(data.price).toBe(1.99);
+    expect(Array.isArray(data.benefits)).toBe(true);
   });
 
-  it('should handle POST purchase request for popular pack', async () => {
-    const req = new NextRequest('http://localhost/api/credits/purchase', {
+  it('should create a $1.99 checkout session on POST', async () => {
+    const req = new NextRequest('http://localhost/api/gamification/streak-freeze', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-user-id': 'user_123',
       },
-      body: JSON.stringify({
-        packId: 'popular',
-      }),
+      body: JSON.stringify({}),
     });
     const response = await POST(req);
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data.status).toBe('ok');
     expect(data.success).toBe(true);
-    expect(data.pack.credits).toBe(25);
+    expect(data.price).toBe(1.99);
   });
 });
