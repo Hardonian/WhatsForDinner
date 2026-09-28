@@ -16,8 +16,8 @@
     "clean": "expo r -c"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.76.1",
-    "@tanstack/react-query": "^5.17.0",
+    "@supabase/supabase-js": "^2.117.1",
+    "@tanstack/react-query": "^5.103.2",
     "@whats-for-dinner/config": "workspace:*",
     "@whats-for-dinner/theme": "workspace:*",
     "@whats-for-dinner/ui": "workspace:*",
