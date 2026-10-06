@@ -84,3 +84,23 @@ overrides:
   'sharp': '>=0.35.5'
   'source-map-js': '>=1.2.2'
   'undici@<6.28.1': '>=6.28.1'
+
+# Pnpm 11 blocks dependency lifecycle scripts by default. None of these
+# packages is imported by production application code; explicitly denying them
+# keeps installs reproducible without granting a broad execution exception.
+allowBuilds:
+  '@prisma/client': false
+  '@prisma/engines': false
+  '@scarf/scarf': false
+  '@tree-sitter-grammars/tree-sitter-yaml': false
+  core-js: false
+  core-js-pure: false
+  detox: false
+  dtrace-provider: false
+  esbuild: false
+  msgpackr-extract: false
+  prisma: false
+  puppeteer: false
+  tree-sitter: false
+  tree-sitter-json: false
+  unrs-resolver: false
