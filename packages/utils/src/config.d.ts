@@ -28,7 +28,7 @@ export declare const envSchema: z.ZodObject<{
     ADMIN_BASIC_AUTH: z.ZodOptional<z.ZodString>;
     PREVIEW_REQUIRE_AUTH: z.ZodDefault<z.ZodEffects<z.ZodString, boolean, string>>;
 }, "strip", z.ZodTypeAny, {
-    NODE_ENV: "development" | "test" | "production";
+    NODE_ENV: "development" | "production" | "test";
     NEXT_PUBLIC_SUPABASE_URL: string;
     NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
     FEATURE_FLAGS_ENABLED: boolean;
@@ -49,7 +49,7 @@ export declare const envSchema: z.ZodObject<{
 }, {
     NEXT_PUBLIC_SUPABASE_URL: string;
     NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
-    NODE_ENV?: "development" | "test" | "production" | undefined;
+    NODE_ENV?: "development" | "production" | "test" | undefined;
     SUPABASE_SERVICE_ROLE_KEY?: string | undefined;
     OPENAI_API_KEY?: string | undefined;
     NEXT_PUBLIC_APP_URL?: string | undefined;

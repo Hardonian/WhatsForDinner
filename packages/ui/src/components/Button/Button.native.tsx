@@ -2,6 +2,13 @@ import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { cn } from '@whats-for-dinner/utils';
 
+type NativeWindTouchableOpacityProps = React.ComponentProps<typeof TouchableOpacity> & {
+  className?: string;
+};
+
+const NativeWindTouchableOpacity =
+  TouchableOpacity as React.ComponentType<NativeWindTouchableOpacityProps>;
+
 export interface ButtonProps {
   children: React.ReactNode;
   onPress?: () => void;
@@ -58,7 +65,7 @@ export function Button({
   );
 
   return (
-    <TouchableOpacity
+    <NativeWindTouchableOpacity
       className={cn(
         baseClasses,
         variantClasses[variant || 'primary'],
@@ -80,6 +87,6 @@ export function Button({
       ) : (
         <Text className={textClasses}>{children}</Text>
       )}
-    </TouchableOpacity>
+    </NativeWindTouchableOpacity>
   );
 }

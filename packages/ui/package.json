@@ -13,6 +13,7 @@
     "@whats-for-dinner/theme": "workspace:*",
     "@whats-for-dinner/utils": "workspace:*",
     "lucide-react-native": "^0.577.0",
+    "nativewind": "^4.0.1",
     "react": "^19.2.0",
     "react-native": "^0.87.1",
     "react-native-safe-area-context": "^4.14.1",
@@ -28,12 +29,12 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-native": "^0.73.0",
+    "@vitest/browser-playwright": "^4.0.3",
+    "@vitest/coverage-v8": "^4.0.3",
+    "playwright": "^1.56.1",
     "storybook": "^9.1.15",
     "typescript": "^5",
-    "vitest": "^4.1.11",
-    "playwright": "^1.56.1",
-    "@vitest/browser-playwright": "^4.0.3",
-    "@vitest/coverage-v8": "^4.0.3"
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
     "react": "^19.2.0",
