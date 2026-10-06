@@ -241,8 +241,8 @@
     "testimonials:generate": "node scripts/send-testimonial-requests.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.76.1",
-    "pg": "^8.11.3"
+    "@supabase/supabase-js": "^2.117.2",
+    "pg": "^8.23.1"
   },
   "devDependencies": {
     "@lhci/cli": "^0.13.0",

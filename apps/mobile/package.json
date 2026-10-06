@@ -16,8 +16,8 @@
     "clean": "expo r -c"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.76.1",
-    "@tanstack/react-query": "^5.17.0",
+    "@supabase/supabase-js": "^2.117.2",
+    "@tanstack/react-query": "^5.104.1",
     "@whats-for-dinner/config": "workspace:*",
     "@whats-for-dinner/theme": "workspace:*",
     "@whats-for-dinner/ui": "workspace:*",
@@ -50,7 +50,7 @@
     "react-native-screens": "4.28.0",
     "react-native-svg": "15.15.5",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-web": "^0.21.2",
+    "react-native-web": "^0.21.3",
     "react-native-css-interop": "^0.2.0",
     "@babel/runtime": "^7.23.0",
     "solito": "^4.0.0",
