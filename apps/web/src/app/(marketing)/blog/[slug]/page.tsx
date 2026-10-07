@@ -185,7 +185,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <SocialShare
                 title={post.title}
                 description={post.excerpt}
-                url={`${typeof window !== 'undefined' ? window.location.origin : ''}/blog/${params.slug}`}
+                url={`${typeof window !== 'undefined' ? window.location.origin : ''}/blog/${slug}`}
               />
             </div>
           </CardContent>
