@@ -6,13 +6,14 @@ import RecipeSuggestions from '@/components/RecipeSuggestions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     ingredients: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const ingredients = decodeURIComponent(params.ingredients).replace(/-/g, ' ');
+  const { ingredients: rawIngredients } = await params;
+  const ingredients = decodeURIComponent(rawIngredients).replace(/-/g, ' ');
   const title = `What to Make with ${ingredients} - Recipe Ideas | What's for Dinner`;
   const description = `Get personalized recipe suggestions using ${ingredients}. AI-powered meal planning that starts with what you have.`;
 
@@ -33,7 +34,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function WhatToMakeWithPage({ params }: PageProps) {
-  const ingredients = decodeURIComponent(params.ingredients).replace(/-/g, ', ');
+  const { ingredients: rawIngredients } = await params;
+  const ingredients = decodeURIComponent(rawIngredients).replace(/-/g, ', ');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 p-6">

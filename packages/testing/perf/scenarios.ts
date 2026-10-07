@@ -10,6 +10,8 @@
  * Generates baseline.json for regression detection
  */
 
+import { createComponentLogger } from '@whats-for-dinner/utils';
+
 const logger = createComponentLogger('scenarios-ts');
 export interface PerfScenario {
   name: string;
@@ -348,7 +350,12 @@ export async function loadBaseline(path: string): Promise<PerfBaseline> {
 /**
  * CLI entry point
  */
-if (import.meta.url === `file://${process.argv[1]}`) {
+const isMain = process.argv[1] && (
+  process.argv[1].replace(/\\/g, '/').endsWith('packages/testing/perf/scenarios.ts') ||
+  import.meta.url === `file://${process.argv[1]}`
+);
+
+if (isMain) {
   const args = process.argv.slice(2);
   
   if (args.includes('--generate-baseline')) {

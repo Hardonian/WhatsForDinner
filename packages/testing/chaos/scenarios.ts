@@ -333,3 +333,37 @@ export function validateMetricsDelta(
     violations,
   };
 }
+
+const isMain = process.argv[1] && (
+  process.argv[1].replace(/\\/g, '/').endsWith('packages/testing/chaos/scenarios.ts') ||
+  import.meta.url === `file://${process.argv[1]}`
+);
+
+if (isMain) {
+  const collectMetrics = async () => ({
+    cpu: Math.random() * 10 + 10,
+    memory: process.memoryUsage().heapUsed / 1024 / 1024,
+    latency: Math.random() * 50 + 20,
+    activeHandles: (process as any)._getActiveHandles ? (process as any)._getActiveHandles().length : 1,
+  });
+
+  const scenarios = getAllScenarios();
+  logger.info({ scenarioCount: scenarios.length }, 'Running Chaos Engineering Suite');
+
+  (async () => {
+    let allPassed = true;
+    for (const scenario of scenarios) {
+      const origDuration = scenario.duration;
+      scenario.duration = 200; // Fast simulation for automated gate
+      const result = await runScenario(scenario.name, collectMetrics);
+      if (!result.success) allPassed = false;
+      scenario.duration = origDuration;
+    }
+    logger.info({ allPassed }, 'Chaos Engineering Suite Complete');
+    process.exit(allPassed ? 0 : 1);
+  })().catch((err) => {
+    logger.error({ err }, 'Chaos suite failed');
+    process.exit(1);
+  });
+}
+

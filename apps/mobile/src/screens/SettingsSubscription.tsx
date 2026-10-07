@@ -32,7 +32,7 @@ export function SettingsSubscription() {
       const currentEntitlements = await getEntitlements();
       setEntitlements(currentEntitlements);
       setIsPremiumUser(await isPremium());
-    } catch {
+    } catch (error) {
       logger.error('Failed to load entitlements:', { error });
     }
   };
@@ -52,7 +52,7 @@ export function SettingsSubscription() {
       } else {
         Alert.alert('Purchase Failed', result.error || 'Unable to complete purchase. Please try again.');
       }
-    } catch {
+    } catch (error) {
       Alert.alert('Error', error instanceof Error ? error.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);

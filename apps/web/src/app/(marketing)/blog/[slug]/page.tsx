@@ -117,8 +117,9 @@ Stock your pantry with these staples and never wonder what to make again!
   },
 };
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = POSTS[params.slug];
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = POSTS[slug];
 
   if (!post) {
     notFound();

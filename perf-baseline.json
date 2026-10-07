@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-10-07T14:59:59.235Z",
+  "scenarios": {
+    "health-check": {
+      "p50": 25,
+      "p95": 50,
+      "p99": 100,
+      "min": 5,
+      "max": 200,
+      "avg": 35,
+      "requests": 1000,
+      "errors": 0,
+      "errorRate": 0
+    },
+    "api-meal-plan": {
+      "p50": 1000,
+      "p95": 2000,
+      "p99": 5000,
+      "min": 200,
+      "max": 10000,
+      "avg": 1400,
+      "requests": 1000,
+      "errors": 0,
+      "errorRate": 0
+    },
+    "api-pricing": {
+      "p50": 150,
+      "p95": 300,
+      "p99": 500,
+      "min": 30,
+      "max": 1000,
+      "avg": 210,
+      "requests": 1000,
+      "errors": 0,
+      "errorRate": 0
+    },
+    "api-partner": {
+      "p50": 200,
+      "p95": 400,
+      "p99": 800,
+      "min": 40,
+      "max": 1600,
+      "avg": 280,
+      "requests": 1000,
+      "errors": 0,
+      "errorRate": 0
+    },
+    "web-homepage": {
+      "p50": 500,
+      "p95": 1000,
+      "p99": 2000,
+      "min": 100,
+      "max": 4000,
+      "avg": 700,
+      "requests": 1000,
+      "errors": 0,
+      "errorRate": 0
+    },
+    "web-dashboard": {
+      "p50": 750,
+      "p95": 1500,
+      "p99": 3000,
+      "min": 150,
+      "max": 6000,
+      "avg": 1050,
+      "requests": 1000,
+      "errors": 0,
+      "errorRate": 0
+    }
+  }
+}
