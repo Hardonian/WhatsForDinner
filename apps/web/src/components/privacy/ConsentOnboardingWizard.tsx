@@ -214,7 +214,7 @@ export function ConsentOnboardingWizard({ onComplete }: ConsentWizardProps) {
               <Alert>
                 <ShieldIcon className="h-4 w-4" />
                 <AlertDescription>
-                  <strong>Your Data, Your Rules:</strong> You control what is collected, how long it's stored,
+                  <strong>Your Data, Your Rules:</strong> You control what is collected, how long it&apos;s stored,
                   and who can access it. No staff or administrators can view your telemetry.
                 </AlertDescription>
               </Alert>

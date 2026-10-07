@@ -64,7 +64,7 @@ export default function HelpPage() {
             <h3 className="text-xl font-semibold mb-2">How does the AI meal planning work?</h3>
             <p className="text-muted-foreground">
               Our AI analyzes the ingredients in your pantry, your dietary preferences, and cooking history 
-              to suggest personalized meal ideas. Simply add your ingredients, and we'll generate recipe 
+              to suggest personalized meal ideas. Simply add your ingredients, and we&apos;ll generate recipe 
               suggestions tailored to you.
             </p>
           </div>
@@ -102,7 +102,7 @@ export default function HelpPage() {
       <div className="bg-card rounded-lg p-6 border">
         <h2 className="text-2xl font-semibold mb-4">Still Need Help?</h2>
         <p className="text-muted-foreground mb-4">
-          Contact our support team and we'll get back to you as soon as possible.
+          Contact our support team and we&apos;ll get back to you as soon as possible.
         </p>
         <div className="space-y-2">
           <p>

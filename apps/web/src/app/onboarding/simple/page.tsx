@@ -131,7 +131,7 @@ export default function SimpleOnboardingPage() {
       <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-primary/5 to-background">
         <Card className="max-w-lg w-full">
           <CardHeader>
-            <CardTitle className="text-2xl">What's in your pantry?</CardTitle>
+            <CardTitle className="text-2xl">What&apos;s in your pantry?</CardTitle>
             <CardDescription>
               Select items you have (or skip to use common ingredients)
             </CardDescription>

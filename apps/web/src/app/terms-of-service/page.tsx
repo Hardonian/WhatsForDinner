@@ -25,7 +25,7 @@ export default function TermsOfServicePage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
           <p>
-            By accessing or using What's for Dinner ("the Service"), you agree to be bound by these Terms of Service. 
+            By accessing or using What&apos;s for Dinner (&quot;the Service&quot;), you agree to be bound by these Terms of Service. 
             If you disagree with any part of these terms, you may not access the Service.
           </p>
         </section>
@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
           <p>
-            What's for Dinner is an AI-powered meal planning application that helps users plan meals, manage their pantry, 
+            What&apos;s for Dinner is an AI-powered meal planning application that helps users plan meals, manage their pantry, 
             generate shopping lists, and discover recipes. The Service includes web and mobile applications.
           </p>
         </section>
@@ -72,8 +72,8 @@ export default function TermsOfServicePage() {
 
           <h3 className="text-xl font-semibold mb-2 mt-4">4.4 Free Trial</h3>
           <p>
-            We offer a 14-day free trial for Pro and Family plans. If you don't cancel before the trial ends, 
-            you'll be charged automatically.
+            We offer a 14-day free trial for Pro and Family plans. If you don&apos;t cancel before the trial ends, 
+            you&apos;ll be charged automatically.
           </p>
         </section>
 
@@ -132,7 +132,7 @@ export default function TermsOfServicePage() {
             <li>Infringe on intellectual property rights</li>
             <li>Transmit harmful code or malware</li>
             <li>Attempt to gain unauthorized access</li>
-            <li>Interfere with the Service's operation</li>
+            <li>Interfere with the Service&apos;s operation</li>
             <li>Use automated systems to access the Service</li>
           </ul>
         </section>
@@ -140,7 +140,7 @@ export default function TermsOfServicePage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">9. Intellectual Property</h2>
           <p>
-            The Service and its content are owned by What's for Dinner and protected by copyright, trademark, 
+            The Service and its content are owned by What&apos;s for Dinner and protected by copyright, trademark, 
             and other laws. You may not copy, modify, or distribute our content without permission.
           </p>
         </section>
@@ -148,7 +148,7 @@ export default function TermsOfServicePage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">10. Limitation of Liability</h2>
           <p>
-            TO THE MAXIMUM EXTENT PERMITTED BY LAW, WHAT'S FOR DINNER SHALL NOT BE LIABLE FOR ANY INDIRECT, 
+            TO THE MAXIMUM EXTENT PERMITTED BY LAW, WHAT&apos;S FOR DINNER SHALL NOT BE LIABLE FOR ANY INDIRECT, 
             INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, DATA, OR USE.
           </p>
           <p className="mt-4">
@@ -186,7 +186,7 @@ export default function TermsOfServicePage() {
 
       <div className="mt-12 pt-8 border-t">
         <p className="text-sm text-muted-foreground">
-          By using What's for Dinner, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
+          By using What&apos;s for Dinner, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.
         </p>
       </div>
     </div>

@@ -276,7 +276,7 @@ export default function OnboardingChecklist({
         {completedCount === totalCount && (
           <div className="pt-2 border-t">
             <p className="text-sm font-medium text-green-600 text-center">
-              🎉 You're all set!
+              🎉 You&apos;re all set!
             </p>
           </div>
         )}

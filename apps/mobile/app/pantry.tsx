@@ -2,12 +2,11 @@ import React from 'react';
 import { View, ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Button, Card } from '@whats-for-dinner/ui';
-import { usePantryItems, useAddPantryItem, useRemovePantryItem } from '../src/hooks/usePantry';
+import { usePantryItems, useRemovePantryItem } from '../src/hooks/usePantry';
 import { Plus } from 'lucide-react-native';
 
 export default function PantryScreen() {
   const { data: pantryItems = [], isLoading } = usePantryItems();
-  const addPantryItem = useAddPantryItem();
   const removePantryItem = useRemovePantryItem();
   const [refreshing, setRefreshing] = React.useState(false);
 

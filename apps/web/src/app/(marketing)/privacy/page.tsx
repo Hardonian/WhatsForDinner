@@ -15,7 +15,7 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
           <p>
-            Nomad ("we," "our," or "us") respects your privacy and is committed to protecting your personal data.
+            Nomad (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) respects your privacy and is committed to protecting your personal data.
             This privacy policy explains how we collect, use, and safeguard your information when you use our mobile
             and web applications.
           </p>
@@ -77,7 +77,7 @@ export default function PrivacyPage() {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">6. Children's Privacy (COPPA)</h2>
+          <h2 className="text-2xl font-semibold mb-4">6. Children&apos;s Privacy (COPPA)</h2>
           <p>
             We do not knowingly collect personal information from children under 13. If we become aware that a child
             under 13 has provided us with personal information, we will delete it immediately. Users under 13 cannot

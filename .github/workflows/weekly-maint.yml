@@ -18,12 +18,11 @@ jobs:
         with:
           fetch-depth: 0
 
-            - name: Setup pnpm
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
 
-- name: Setup Node.js
-        uses: actions/setup-node@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -117,18 +116,18 @@ jobs:
               const report = JSON.parse(fs.readFileSync('security/license-report.json', 'utf8'));
               const complianceReport = fs.readFileSync('SECURITY_COMPLIANCE_REPORT.md', 'utf8');
               
-              const licenseSection = \`
-## License Compliance (Weekly Scan)
+              const licenseSection = `
+                ## License Compliance (Weekly Scan)
 
-**Scan Date:** \${report.timestamp}
-**Restricted Licenses Found:** \${report.restrictedLicenseCount}
-**Total Dependencies:** \${report.totalDependencies}
-**Status:** \${report.restrictedLicenseCount > 0 ? '⚠️ Warning' : '✅ Pass'}
+                **Scan Date:** \${report.timestamp}
+                **Restricted Licenses Found:** \${report.restrictedLicenseCount}
+                **Total Dependencies:** \${report.totalDependencies}
+                **Status:** \${report.restrictedLicenseCount > 0 ? '⚠️ Warning' : '✅ Pass'}
 
-### Restricted Licenses Detected:
-\${report.restrictedLicenses.length > 0 ? report.restrictedLicenses.map(d => '- ' + d).join('\\n') : 'None'}
+                ### Restricted Licenses Detected:
+                \${report.restrictedLicenses.length > 0 ? report.restrictedLicenses.map(d => '- ' + d).join('\\n') : 'None'}
 
-\`;
+              \`;
               
               // Append to report (before final ---)
               const updated = complianceReport.replace(/^---$/m, licenseSection + '\\n---');

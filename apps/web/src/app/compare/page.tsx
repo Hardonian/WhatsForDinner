@@ -101,7 +101,7 @@ export default function ComparePage() {
             How We Compare to Competitors
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're not just another recipe app. We're the only pantry-first meal planning platform that helps you use what you have, reduce waste, and save money.
+            We&apos;re not just another recipe app. We&apos;re the only pantry-first meal planning platform that helps you use what you have, reduce waste, and save money.
           </p>
         </div>
 
@@ -113,7 +113,7 @@ export default function ComparePage() {
               <thead>
                 <tr className="border-b">
                   <th className="text-left py-3 px-4 font-semibold">Feature</th>
-                  <th className="text-center py-3 px-4 font-semibold">What's for Dinner</th>
+                  <th className="text-center py-3 px-4 font-semibold">What&apos;s for Dinner</th>
                   <th className="text-center py-3 px-4 font-semibold">Competitors</th>
                 </tr>
               </thead>
@@ -170,7 +170,7 @@ export default function ComparePage() {
             <div>
               <h3 className="text-xl font-semibold mb-3">Pantry-First Approach</h3>
               <p className="text-white/90">
-                We're the only platform that starts with what you already have. Others make you buy ingredients; we help you use what you have.
+                We&apos;re the only platform that starts with what you already have. Others make you buy ingredients; we help you use what you have.
               </p>
             </div>
             <div>
@@ -198,7 +198,7 @@ export default function ComparePage() {
         <div className="text-center bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-3xl font-bold mb-4">Ready to Experience the Difference?</h2>
           <p className="text-gray-600 mb-6 text-lg">
-            Join thousands of users who've discovered the power of pantry-first meal planning.
+            Join thousands of users who&apos;ve discovered the power of pantry-first meal planning.
           </p>
           <div className="flex gap-4 justify-center">
             <Link

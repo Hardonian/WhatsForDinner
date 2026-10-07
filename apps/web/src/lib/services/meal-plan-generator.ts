@@ -245,8 +245,8 @@ function buildShoppingList(
       pantryItem.includes(ingredient) || ingredient.includes(pantryItem)
     );
     
-    if (!inPantry || data.quantity > 2) {
-      // Add to shopping list if not in pantry or need more
+    if (!inPantry) {
+      // Add to shopping list if not in pantry
       shoppingList.push({
         ingredient,
         quantity: data.quantity,

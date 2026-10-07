@@ -174,7 +174,7 @@ export default function ReferralProgramPage() {
           Referral Program
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-          Invite friends to What's for Dinner and both of you get <strong>30 days of premium free</strong>! 
+          Invite friends to What&apos;s for Dinner and both of you get <strong>30 days of premium free</strong>! 
           Share your unique link and start earning rewards today.
         </p>
         <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -342,7 +342,7 @@ export default function ReferralProgramPage() {
             <CardHeader>
               <CardTitle>Reward Structure</CardTitle>
               <CardDescription>
-                Here's what you and your friends get
+                Here&apos;s what you and your friends get
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -464,7 +464,7 @@ export default function ReferralProgramPage() {
           <div>
             <h3 className="font-semibold mb-2">How do I get my referral link?</h3>
             <p className="text-muted-foreground text-sm">
-              Sign up or log in to your account and you'll automatically get a unique referral link. 
+              Sign up or log in to your account and you&apos;ll automatically get a unique referral link. 
               You can find it on this page or in your account settings.
             </p>
           </div>
@@ -478,7 +478,7 @@ export default function ReferralProgramPage() {
           <div>
             <h3 className="font-semibold mb-2">Is there a limit on referrals?</h3>
             <p className="text-muted-foreground text-sm">
-              No! There's no limit on how many friends you can refer. Each successful referral earns you 30 days of premium.
+              No! There&apos;s no limit on how many friends you can refer. Each successful referral earns you 30 days of premium.
             </p>
           </div>
           <div>
@@ -491,7 +491,7 @@ export default function ReferralProgramPage() {
           <div>
             <h3 className="font-semibold mb-2">Do rewards expire?</h3>
             <p className="text-muted-foreground text-sm">
-              Subscription day rewards never expire. They're added to your account and can be used whenever you have an active subscription.
+              Subscription day rewards never expire. They&apos;re added to your account and can be used whenever you have an active subscription.
             </p>
           </div>
         </CardContent>
@@ -501,7 +501,7 @@ export default function ReferralProgramPage() {
       <div className="mt-12 text-center bg-primary/5 rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-4">Ready to Start Earning?</h2>
         <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-          Join thousands of users who are earning free premium time by sharing What's for Dinner with their friends.
+          Join thousands of users who are earning free premium time by sharing What&apos;s for Dinner with their friends.
         </p>
         {user ? (
           <Button size="lg" onClick={shareReferral}>

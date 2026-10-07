@@ -127,7 +127,7 @@ export default function BetaOnboardingPage() {
               <div>
                 <CardTitle className="text-2xl">Welcome, Beta Tester!</CardTitle>
                 <CardDescription>
-                  Thank you for helping us improve What's for Dinner
+                  Thank you for helping us improve What&apos;s for Dinner
                 </CardDescription>
               </div>
             </div>

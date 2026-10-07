@@ -79,7 +79,7 @@ export function LeadMagnet({
             <Check className="w-12 h-12 mx-auto mb-4 text-green-600" />
             <h3 className="text-xl font-semibold mb-2">Check Your Email!</h3>
             <p className="text-muted-foreground">
-              We've sent your free guide to {email}
+              We&apos;ve sent your free guide to {email}
             </p>
           </div>
         </CardContent>

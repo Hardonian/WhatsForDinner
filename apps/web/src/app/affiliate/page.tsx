@@ -405,7 +405,7 @@ export default function AffiliateProgramPage() {
               <CardHeader>
                 <CardTitle>Application Pending</CardTitle>
                 <CardDescription>
-                  Your affiliate application is under review. We'll notify you via email once approved (usually within 24-48 hours).
+                  Your affiliate application is under review. We&apos;ll notify you via email once approved (usually within 24-48 hours).
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -539,7 +539,7 @@ export default function AffiliateProgramPage() {
               <div className="bg-muted p-4 rounded-lg">
                 <p className="text-sm">
                   <strong>Note:</strong> Commissions are tracked in real-time but paid monthly. 
-                  You'll receive a detailed payout report with each payment.
+                  You&apos;ll receive a detailed payout report with each payment.
                 </p>
               </div>
             </CardContent>
@@ -593,14 +593,14 @@ export default function AffiliateProgramPage() {
           <div>
             <h3 className="font-semibold mb-2">How do I get approved?</h3>
             <p className="text-muted-foreground text-sm">
-              Submit an application and we'll review it within 24-48 hours. 
+              Submit an application and we&apos;ll review it within 24-48 hours. 
               We approve most legitimate affiliates automatically.
             </p>
           </div>
           <div>
             <h3 className="font-semibold mb-2">When do I get paid?</h3>
             <p className="text-muted-foreground text-sm">
-              Payouts are processed monthly on the first business day of each month for the previous month's earnings.
+              Payouts are processed monthly on the first business day of each month for the previous month&apos;s earnings.
               Minimum payout is $50.
             </p>
           </div>

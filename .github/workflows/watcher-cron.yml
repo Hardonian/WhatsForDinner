@@ -29,20 +29,9 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-
-            - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-- name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -102,10 +91,9 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -141,10 +129,9 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -199,10 +186,9 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
 
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
@@ -224,13 +210,13 @@ jobs:
           });
           
           const failedJobs = [];
-          if ('${{ needs.database-integrity-watcher.result }}' === 'failure') {
+          if ('\${{ needs.database-integrity-watcher.result }}' === 'failure') {
             failedJobs.push('Database Integrity Watcher');
           }
-          if ('${{ needs.api-contract-watcher.result }}' === 'failure') {
+          if ('\${{ needs.api-contract-watcher.result }}' === 'failure') {
             failedJobs.push('API Contract Watcher');
           }
-          if ('${{ needs.ai-performance-watcher.result }}' === 'failure') {
+          if ('\${{ needs.ai-performance-watcher.result }}' === 'failure') {
             failedJobs.push('AI Performance Watcher');
           }
           
@@ -238,20 +224,20 @@ jobs:
             const issue = {
               title: '🚨 Watcher Cron Jobs Failed',
               body: \`
-## Watcher Cron Job Failures
+                ## Watcher Cron Job Failures
 
-The following watcher jobs failed during the nightly run:
+                The following watcher jobs failed during the nightly run:
 
-\${failedJobs.map(job => \`- \${job}\`).join('\\n')}
+                \${failedJobs.map(job => \`- \${job}\`).join('\\n')}
 
-### Next Steps
+                ### Next Steps
 
-1. Check the workflow logs for detailed error information
-2. Investigate and fix the underlying issues
-3. Re-run the failed watchers manually if needed
+                1. Check the workflow logs for detailed error information
+                2. Investigate and fix the underlying issues
+                3. Re-run the failed watchers manually if needed
 
-**Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-**Timestamp:** \${new Date().toISOString()}
+                **Workflow Run:** \${{ github.server_url }}/\${{ github.repository }}/actions/runs/\${{ github.run_id }}
+                **Timestamp:** \${new Date().toISOString()}
               \`,
               labels: ['watcher', 'failure', 'automated', 'critical']
             };

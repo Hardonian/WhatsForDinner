@@ -56,7 +56,7 @@ export default function Navbar({ user }: NavbarProps = {}) {
               <ChefHat className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold text-foreground transition-colors group-hover:text-primary">
-              What's for Dinner?
+              What&apos;s for Dinner?
             </span>
           </Link>
 

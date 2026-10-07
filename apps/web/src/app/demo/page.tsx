@@ -14,7 +14,7 @@ export default function DemoPage() {
       <div className="mx-auto max-w-4xl space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-foreground">
-            What's for Dinner? - Demo
+            What&apos;s for Dinner? - Demo
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
             Demonstrating shared components across platforms

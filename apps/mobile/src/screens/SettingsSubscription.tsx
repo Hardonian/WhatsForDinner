@@ -32,7 +32,7 @@ export function SettingsSubscription() {
       const currentEntitlements = await getEntitlements();
       setEntitlements(currentEntitlements);
       setIsPremiumUser(await isPremium());
-    } catch (error) {
+    } catch {
       logger.error('Failed to load entitlements:', { error });
     }
   };
@@ -52,7 +52,7 @@ export function SettingsSubscription() {
       } else {
         Alert.alert('Purchase Failed', result.error || 'Unable to complete purchase. Please try again.');
       }
-    } catch (error) {
+    } catch {
       Alert.alert('Error', error instanceof Error ? error.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -70,7 +70,7 @@ export function SettingsSubscription() {
       } else {
         Alert.alert('No Purchases Found', 'We couldn\'t find any purchases to restore.');
       }
-    } catch (error) {
+    } catch {
       Alert.alert('Error', 'Failed to restore purchases. Please try again.');
     } finally {
       setRestoring(false);

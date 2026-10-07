@@ -39,7 +39,7 @@ export function SettingsPrivacy() {
           );
         }
       }
-    } catch (error) {
+    } catch {
       Alert.alert('Error', 'Failed to update preferences');
     } finally {
       setLoading(false);
@@ -70,7 +70,7 @@ export function SettingsPrivacy() {
       } else {
         Alert.alert('Data Export', 'Your data export will be sent to your email address.');
       }
-    } catch (error) {
+    } catch {
       Alert.alert('Error', 'Failed to export data. Please try again later.');
     } finally {
       setDownloading(false);
@@ -104,7 +104,7 @@ export function SettingsPrivacy() {
                   // Sign out and redirect to home
                 }}]
               );
-            } catch (error) {
+            } catch {
               Alert.alert('Error', 'Failed to delete account. Please try again later.');
             }
           },

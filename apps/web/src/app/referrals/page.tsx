@@ -107,7 +107,7 @@ export default function ReferralsPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Referral Program</h1>
           <p className="text-muted-foreground mt-2">
-            Share What's for Dinner with friends and earn rewards!
+            Share What&apos;s for Dinner with friends and earn rewards!
           </p>
         </div>
 
@@ -153,7 +153,7 @@ export default function ReferralsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">{data.totalReferrals}</div>
-              <p className="text-sm text-muted-foreground mt-2">People you've referred</p>
+              <p className="text-sm text-muted-foreground mt-2">People you&apos;ve referred</p>
             </CardContent>
           </Card>
 

@@ -48,7 +48,7 @@ export const WeeklyDigestEmail = ({
             <Text style={heading}>Your Weekly Meal Planning Digest</Text>
             
             <Text style={paragraph}>
-              Hi {userName}, here's a summary of your meal planning activity this week.
+              Hi {userName}, here&apos;s a summary of your meal planning activity this week.
             </Text>
             
             {mealPlans.length > 0 && (
@@ -94,7 +94,7 @@ export const WeeklyDigestEmail = ({
           
           <Section style={footer}>
             <Text style={footerText}>
-              You're receiving this email because you signed up for Nomad.
+              You&apos;re receiving this email because you signed up for Nomad.
             </Text>
             <Link href={`${baseUrl}/unsubscribe`} style={footerLink}>
               Unsubscribe

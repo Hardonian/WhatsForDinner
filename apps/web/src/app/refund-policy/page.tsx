@@ -28,8 +28,8 @@ export default function RefundPolicyPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">30-Day Money-Back Guarantee</h2>
           <p className="mb-4">
-            We stand behind our service. If you're not satisfied with What's for Dinner within 30 days of your purchase, 
-            we'll refund your money, no questions asked.
+            We stand behind our service. If you&apos;re not satisfied with What&apos;s for Dinner within 30 days of your purchase, 
+            we&apos;ll refund your money, no questions asked.
           </p>
         </section>
 
@@ -94,7 +94,7 @@ export default function RefundPolicyPage() {
               <div>
                 <h3 className="font-semibold mb-2">Provide Details</h3>
                 <p className="text-muted-foreground">
-                  Include your account email and subscription details. We'll process your request promptly.
+                  Include your account email and subscription details. We&apos;ll process your request promptly.
                 </p>
               </div>
             </div>
@@ -169,7 +169,7 @@ export default function RefundPolicyPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Canceling stops future billing but doesn't refund past payments. 
+                  Canceling stops future billing but doesn&apos;t refund past payments. 
                   You retain access until the end of your billing period.
                 </p>
                 <Button variant="outline" size="sm" asChild>
@@ -198,7 +198,7 @@ export default function RefundPolicyPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">Questions?</h2>
           <p className="mb-4">
-            If you have questions about refunds or need assistance, we're here to help:
+            If you have questions about refunds or need assistance, we&apos;re here to help:
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button variant="outline" asChild>

@@ -125,11 +125,7 @@ export function ConsentGate({ onConsentComplete, store }: ConsentGateProps) {
     onConsentComplete(consentStore.getState());
   };
 
-  const handleCustomConsent = async () => {
-    // Show individual purpose toggles
-    // For now, just accept all
-    await handleAcceptAll();
-  };
+  
 
   // Age Gate Screen
   if (step === 'age_gate') {

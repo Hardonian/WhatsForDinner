@@ -73,7 +73,7 @@ export function PricingSection() {
             Simple, Transparent Pricing
           </h2>
           <p className="mb-2 text-xl text-muted-foreground">
-            Start free, upgrade when you're ready
+            Start free, upgrade when you&apos;re ready
           </p>
           <p className="mb-16 text-sm text-muted-foreground">
             No credit card required • Cancel anytime • 30-day money-back guarantee
@@ -139,8 +139,8 @@ export function PricingSection() {
         {/* Money-back guarantee */}
         <div className="mt-12 text-center">
           <p className="text-sm text-muted-foreground">
-            <strong className="text-foreground">30-day money-back guarantee</strong> • If you're not
-            satisfied, we'll refund every penny. No questions asked.
+            <strong className="text-foreground">30-day money-back guarantee</strong> • If you&apos;re not
+            satisfied, we&apos;ll refund every penny. No questions asked.
           </p>
         </div>
       </div>

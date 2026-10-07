@@ -70,9 +70,9 @@ export default function EmptyStateGuide({
 
         {/* Headline */}
         <div className="space-y-4">
-          <h2 className="text-3xl font-bold">What's in your pantry?</h2>
+          <h2 className="text-3xl font-bold">What&apos;s in your pantry?</h2>
           <p className="text-lg text-muted-foreground">
-            Let's find recipes you can make right now with the ingredients you already have.
+            Let&apos;s find recipes you can make right now with the ingredients you already have.
           </p>
         </div>
 
@@ -125,7 +125,7 @@ export default function EmptyStateGuide({
 
         {/* Helper Text */}
         <p className="text-sm text-muted-foreground">
-          Don't worry, you can always add more ingredients later
+          Don&apos;t worry, you can always add more ingredients later
         </p>
       </div>
     </div>

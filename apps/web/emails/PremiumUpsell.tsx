@@ -29,7 +29,7 @@ export const PremiumUpsellEmail = ({
           <Section style={content}>
             <Text style={heading}>Unlock Premium Features, {userName}</Text>
             <Text style={paragraph}>
-              You've been creating amazing meal plans! Upgrade to Premium to unlock unlimited plans,
+              You&apos;ve been creating amazing meal plans! Upgrade to Premium to unlock unlimited plans,
               AI-powered suggestions, and family sharing.
             </Text>
             {offerType === 'trial' && (

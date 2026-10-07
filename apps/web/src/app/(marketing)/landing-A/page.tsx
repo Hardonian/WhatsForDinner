@@ -132,7 +132,7 @@ function LandingA() {
               Never stare at your pantry confused again
             </h1>
             <p className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground md:text-2xl px-2 leading-relaxed">
-              Our AI learns your pantry and suggests recipes you'll actually want to make—in under 30 seconds.
+              Our AI learns your pantry and suggests recipes you&apos;ll actually want to make—in under 30 seconds.
             </p>
           </div>
 
@@ -306,7 +306,7 @@ function LandingA() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto space-y-12">
             <div className="text-center space-y-4">
-              <h2 className="text-3xl sm:text-4xl font-bold">Why Choose What's for Dinner?</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold">Why Choose What&apos;s for Dinner?</h2>
               <p className="text-lg text-muted-foreground">
                 The pantry-first meal planner that saves you time and reduces waste
               </p>

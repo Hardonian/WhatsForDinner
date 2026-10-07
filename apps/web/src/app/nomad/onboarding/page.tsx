@@ -109,7 +109,7 @@ export default function OnboardingPage() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-2">Welcome to Nomad! ???</h2>
-              <p className="text-muted-foreground">Let's personalize your experience</p>
+              <p className="text-muted-foreground">Let&apos;s personalize your experience</p>
             </div>
             <div className="space-y-4">
               <div>
@@ -168,7 +168,7 @@ export default function OnboardingPage() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold mb-2">Allergies & Restrictions</h2>
-              <p className="text-muted-foreground">We'll avoid these in your recommendations</p>
+              <p className="text-muted-foreground">We&apos;ll avoid these in your recommendations</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {allergens.map((allergen) => (

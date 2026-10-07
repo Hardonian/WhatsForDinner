@@ -6,7 +6,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '@whats-for-dinner/ui';
-import { Sparkles } from 'lucide-react-native';
 
 interface QuickGenerateFABProps {
   onPress: () => void;

@@ -162,7 +162,7 @@ export default function RoadmapPage() {
             Product Roadmap
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            See what we're building next and help shape our future
+            See what we&apos;re building next and help shape our future
           </p>
         </div>
 
@@ -265,7 +265,7 @@ export default function RoadmapPage() {
           <CardContent className="pt-6 text-center">
             <h2 className="text-2xl font-bold mb-2">Have a Feature Request?</h2>
             <p className="text-muted-foreground mb-6">
-              We'd love to hear your ideas! Your feedback helps shape our roadmap.
+              We&apos;d love to hear your ideas! Your feedback helps shape our roadmap.
             </p>
             <div className="flex gap-4 justify-center">
               <Link href="/support">
@@ -275,7 +275,7 @@ export default function RoadmapPage() {
               </Link>
               <Link href="/">
                 <Button className="gap-2">
-                  Try What's for Dinner?
+                  Try What&apos;s for Dinner?
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>

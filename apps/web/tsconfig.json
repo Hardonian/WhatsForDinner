@@ -37,6 +37,12 @@
       }
     ],
     "paths": {
+      "@supabase/auth-helpers-nextjs": [
+        "./src/lib/supabase/auth-helpers-compat.ts"
+      ],
+      "@supabase/auth-helpers-react": [
+        "./src/lib/supabase/auth-helpers-react-compat.ts"
+      ],
       "@/*": [
         "./src/*"
       ],

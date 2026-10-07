@@ -3,12 +3,14 @@ import { useEffect } from "react";
 import { isIntegrationEnabled } from "@/lib/integrations-config";
 
 export function LenisIntegration() {
-  if (!isIntegrationEnabled("lenis")) return null;
+  const enabled = isIntegrationEnabled("lenis");
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!enabled || typeof window === "undefined") return;
     // Lenis smooth scroll optional integration
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return null;
 }

@@ -60,7 +60,7 @@ async function verifyJWTReceipt(
   receipt: string,
   transactionId?: string,
   productId?: string,
-  userId: string
+  userId?: string
 ): Promise<AppleSubscriptionStatus | null> {
   try {
     // In production, use @apple/app-store-server-library
@@ -125,7 +125,7 @@ async function verifyLegacyReceipt(
   receipt: string,
   transactionId?: string,
   productId?: string,
-  userId: string
+  userId?: string
 ): Promise<AppleSubscriptionStatus | null> {
   try {
     // In production, use App Store Server API or verifyReceipt endpoint

@@ -40,7 +40,7 @@ export default function TestimonialsSection() {
             <InViewReveal key={index} delay={index * 0.1}>
               <Card>
                 <CardContent className="pt-6">
-                  <p className="mb-4 text-lg">"{testimonial.quote}"</p>
+                  <p className="mb-4 text-lg">&quot;{testimonial.quote}&quot;</p>
                   <div>
                     <p className="font-semibold">{testimonial.author}</p>
                     <p className="text-sm text-muted-foreground">{testimonial.role}</p>

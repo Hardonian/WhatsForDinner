@@ -123,7 +123,7 @@ export default function CreateCollectionPage() {
               <div className="flex justify-between mb-2">
                 <Label>Price: ${price[0].toFixed(2)}</Label>
                 <span className="text-sm text-muted-foreground">
-                  You'll receive 70% (${(price[0] * 0.7).toFixed(2)})
+                  You&apos;ll receive 70% (${(price[0] * 0.7).toFixed(2)})
                 </span>
               </div>
               <Slider
@@ -152,7 +152,7 @@ export default function CreateCollectionPage() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
-              Select 5-50 recipes for your collection. You can add recipes you've created or saved.
+              Select 5-50 recipes for your collection. You can add recipes you&apos;ve created or saved.
             </p>
             <div className="border rounded-lg p-4 min-h-[200px]">
               <p className="text-sm text-muted-foreground text-center py-8">

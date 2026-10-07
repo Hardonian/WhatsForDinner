@@ -57,44 +57,40 @@ export function useConditionalRender(
  * Hook for debounced values
  */
 export function useDebouncedValue<T>(value: T, delay: number): T {
-  return useMemo(() => {
-    const [debouncedValue, setDebouncedValue] = React.useState(value);
-    
-    React.useEffect(() => {
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
 
-      return () => {
-        clearTimeout(handler);
-      };
-    }, [value, delay]);
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
 
-    return debouncedValue;
+    return () => {
+      clearTimeout(handler);
+    };
   }, [value, delay]);
+
+  return debouncedValue;
 }
 
 /**
  * Hook for throttled values
  */
 export function useThrottledValue<T>(value: T, limit: number): T {
-  return useMemo(() => {
-    const [throttledValue, setThrottledValue] = React.useState(value);
-    const lastRan = React.useRef(Date.now());
+  const [throttledValue, setThrottledValue] = React.useState(value);
+  const lastRan = React.useRef(Date.now());
 
-    React.useEffect(() => {
-      const handler = setTimeout(() => {
-        if (Date.now() - lastRan.current >= limit) {
-          setThrottledValue(value);
-          lastRan.current = Date.now();
-        }
-      }, limit - (Date.now() - lastRan.current));
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      if (Date.now() - lastRan.current >= limit) {
+        setThrottledValue(value);
+        lastRan.current = Date.now();
+      }
+    }, Math.max(0, limit - (Date.now() - lastRan.current)));
 
-      return () => {
-        clearTimeout(handler);
-      };
-    }, [value, limit]);
-
-    return throttledValue;
+    return () => {
+      clearTimeout(handler);
+    };
   }, [value, limit]);
+
+  return throttledValue;
 }

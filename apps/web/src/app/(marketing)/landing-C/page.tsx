@@ -168,7 +168,7 @@ function LandingC() {
                   </div>
                   <div className="flex-1">
                     <p className="text-muted-foreground italic mb-2">
-                      "This app saved me so much time! I no longer stare at my pantry wondering what to make."
+                      &quot;This app saved me so much time! I no longer stare at my pantry wondering what to make.&quot;
                     </p>
                     <p className="text-sm font-semibold">— Sarah M., Busy Parent</p>
                   </div>

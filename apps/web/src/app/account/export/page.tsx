@@ -57,7 +57,7 @@ export default function ExportDataPage() {
       </div>
 
       <div className="bg-card rounded-lg p-6 border mb-8">
-        <h2 className="text-2xl font-semibold mb-4">What's Included</h2>
+        <h2 className="text-2xl font-semibold mb-4">What&apos;s Included</h2>
         <ul className="space-y-2 text-muted-foreground">
           <li>• Account information (name, email, preferences)</li>
           <li>• Pantry data (ingredients, dietary restrictions)</li>
@@ -108,9 +108,9 @@ export default function ExportDataPage() {
       <div className="bg-card rounded-lg p-6 border mb-8">
         <h2 className="text-2xl font-semibold mb-4">Export Process</h2>
         <ol className="list-decimal pl-5 space-y-2 text-muted-foreground">
-          <li>Click "Request Export" below</li>
-          <li>We'll prepare your data (may take a few minutes)</li>
-          <li>You'll receive an email with a download link</li>
+          <li>Click &quot;Request Export&quot; below</li>
+          <li>We&apos;ll prepare your data (may take a few minutes)</li>
+          <li>You&apos;ll receive an email with a download link</li>
           <li>Download your data within 7 days (link expires)</li>
         </ol>
         <p className="mt-4 text-sm text-muted-foreground">
@@ -124,7 +124,7 @@ export default function ExportDataPage() {
             Export Requested
           </h2>
           <p className="text-green-700 dark:text-green-300">
-            Your export request has been submitted. You'll receive an email with your data 
+            Your export request has been submitted. You&apos;ll receive an email with your data 
             within 30 days. Check your inbox for the download link.
           </p>
         </div>

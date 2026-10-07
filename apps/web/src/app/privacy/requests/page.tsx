@@ -282,7 +282,7 @@ export default function DSARPortalPage() {
 
       <div className="mt-6 p-4 bg-blue-50 rounded-lg">
         <p className="text-sm text-blue-800">
-          <strong>Note:</strong> After submitting, you'll receive an email verification link. Your
+          <strong>Note:</strong> After submitting, you&apos;ll receive an email verification link. Your
           request will be processed within the legal timeframe for your region (typically 30 days
           for GDPR, 45 days for CCPA/CPRA).
         </p>

@@ -26,7 +26,7 @@ export function HeroSection() {
           <h1 className="mb-6 text-5xl font-bold tracking-tight md:text-6xl lg:text-7xl">
             Never Wonder
             <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              {' '}What's For Dinner
+              {' '}What&apos;s For Dinner
             </span>
             {' '}Again
           </h1>

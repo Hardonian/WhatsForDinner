@@ -129,7 +129,7 @@ export async function validateRequestBody<T extends z.ZodTypeAny>(
     } else if (contentType.includes('application/x-www-form-urlencoded')) {
       try {
         const formData = await req.formData();
-        body = Object.fromEntries(formData.entries());
+        body = Object.fromEntries((formData as any).entries());
       } catch (error) {
         return {
           success: false,

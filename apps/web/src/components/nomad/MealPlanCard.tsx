@@ -63,7 +63,7 @@ export function MealPlanCard() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Calendar className="w-5 h-5 text-brand-600" />
-          <h3 className="font-semibold text-lg">Today's Meal Plan</h3>
+          <h3 className="font-semibold text-lg">Today&apos;s Meal Plan</h3>
         </div>
         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
           <ChevronRight className="w-4 h-4" />

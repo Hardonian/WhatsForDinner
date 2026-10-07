@@ -178,7 +178,7 @@ export default function DeleteAccountPage() {
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>
                   This will permanently delete your account and all data. 
-                  This action cannot be undone. Make sure you've exported your data first.
+                  This action cannot be undone. Make sure you&apos;ve exported your data first.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

@@ -338,7 +338,7 @@ export default function ForCorporatePage() {
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-center gap-2 text-green-600">
                     <CheckCircle2 className="h-5 w-5" />
-                    <span className="font-semibold">We'll contact you soon!</span>
+                    <span className="font-semibold">We&apos;ll contact you soon!</span>
                   </div>
                 </CardContent>
               </Card>

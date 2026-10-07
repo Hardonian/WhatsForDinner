@@ -108,7 +108,7 @@ export function ConsentGate({ onConsentComplete, store }: ConsentGateProps) {
           <h3 className="font-semibold text-sm mb-1">Privacy Preferences</h3>
           <p className="text-xs text-muted-foreground">
             We use cookies and similar technologies to improve your experience, analyze usage, and show personalized ads.
-            By clicking "Accept All", you consent to our use of these technologies.{' '}
+            By clicking &quot;Accept All&quot;, you consent to our use of these technologies.{' '}
             <Link href="/privacy-policy" className="underline hover:text-primary">
               Learn more
             </Link>

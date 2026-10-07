@@ -156,7 +156,7 @@ export default function BlogPage() {
               </p>
               <Link href="/">
                 <Button size="lg" className="gap-2">
-                  Try What's for Dinner?
+                  Try What&apos;s for Dinner?
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>

@@ -24,7 +24,7 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
           <p>
-            What's for Dinner ("we", "our", "us") respects your privacy. This Privacy Policy explains how we 
+            What&apos;s for Dinner (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) respects your privacy. This Privacy Policy explains how we 
             collect, use, disclose, and safeguard your information when you use our meal planning application.
           </p>
         </section>
@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
             <li><strong>Profile Data:</strong> Dietary preferences, family size, cooking preferences</li>
             <li><strong>Pantry Data:</strong> Ingredients you add to your pantry</li>
             <li><strong>Meal Plans:</strong> Recipes and meal plans you create</li>
-            <li><strong>Payment Information:</strong> Processed securely by Stripe (we don't store card details)</li>
+            <li><strong>Payment Information:</strong> Processed securely by Stripe (we don&apos;t store card details)</li>
           </ul>
 
           <h3 className="text-xl font-semibold mb-2 mt-4">2.2 Automatically Collected Information</h3>
@@ -163,7 +163,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">9. Children's Privacy</h2>
+          <h2 className="text-2xl font-semibold mb-4">9. Children&apos;s Privacy</h2>
           <p>
             Our Service is not intended for children under 13. We do not knowingly collect personal information 
             from children. If you believe we have, please contact us immediately.
@@ -209,7 +209,7 @@ export default function PrivacyPolicyPage() {
 
       <div className="mt-12 pt-8 border-t">
         <p className="text-sm text-muted-foreground">
-          By using What's for Dinner, you acknowledge that you have read and understood this Privacy Policy.
+          By using What&apos;s for Dinner, you acknowledge that you have read and understood this Privacy Policy.
         </p>
       </div>
     </div>

@@ -44,7 +44,7 @@ export interface LearningCycle {
 export class SelfLearningSystem {
   private static instance: SelfLearningSystem;
   private learningCycleActive = false;
-  private learningInterval: NodeJS.Timeout | null = null;
+  private learningInterval: any = null;
 
   static getInstance(): SelfLearningSystem {
     if (!SelfLearningSystem.instance) {

@@ -104,7 +104,7 @@ export default function ForFamiliesPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    "My kids won't eat what I cook" is a daily struggle. Our AI suggests kid-friendly recipes that actually get eaten.
+                    &quot;My kids won&apos;t eat what I cook&quot; is a daily struggle. Our AI suggests kid-friendly recipes that actually get eaten.
                   </p>
                 </CardContent>
               </Card>
@@ -132,7 +132,7 @@ export default function ForFamiliesPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Stop wasting money on groceries kids don't eat. Use what you already have, reduce waste by 30%.
+                    Stop wasting money on groceries kids don&apos;t eat. Use what you already have, reduce waste by 30%.
                   </p>
                 </CardContent>
               </Card>
@@ -270,7 +270,7 @@ export default function ForFamiliesPage() {
               <Card>
                 <CardContent className="pt-6">
                   <p className="text-muted-foreground italic mb-4">
-                    "Finally, recipes my kids actually eat! No more dinner battles. This app saved my sanity."
+                    &quot;Finally, recipes my kids actually eat! No more dinner battles. This app saved my sanity.&quot;
                   </p>
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -287,7 +287,7 @@ export default function ForFamiliesPage() {
               <Card>
                 <CardContent className="pt-6">
                   <p className="text-muted-foreground italic mb-4">
-                    "I save 15 minutes every night. The kid-friendly filter is a game-changer for picky eaters."
+                    &quot;I save 15 minutes every night. The kid-friendly filter is a game-changer for picky eaters.&quot;
                   </p>
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">

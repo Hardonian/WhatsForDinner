@@ -125,7 +125,7 @@ export default function WikiPage() {
           Help Center & Wiki
         </h1>
         <p className="text-muted-foreground text-lg">
-          Find answers, learn features, and get the most out of What's for Dinner
+          Find answers, learn features, and get the most out of What&apos;s for Dinner
         </p>
       </div>
 
@@ -173,7 +173,7 @@ export default function WikiPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground text-sm">
-                New to What's for Dinner? Start here
+                New to What&apos;s for Dinner? Start here
               </p>
             </CardContent>
           </Card>
@@ -237,7 +237,7 @@ export default function WikiPage() {
           <Card>
             <CardContent className="py-8 text-center">
               <p className="text-muted-foreground mb-4">
-                No articles found for "{searchQuery}". Try different keywords or ask the AI assistant.
+                No articles found for &quot;{searchQuery}&quot;. Try different keywords or ask the AI assistant.
               </p>
               <Button onClick={() => setShowChatBot(true)}>
                 Ask AI Assistant

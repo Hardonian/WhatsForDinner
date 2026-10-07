@@ -65,7 +65,7 @@ export default function SubscriptionsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">6. Restore Purchases</h2>
           <p>
-            If you reinstall the app or switch devices, use "Restore Purchases" to recover your subscription.
+            If you reinstall the app or switch devices, use &quot;Restore Purchases&quot; to recover your subscription.
             This requires signing in with the same account used for the original purchase.
           </p>
         </section>

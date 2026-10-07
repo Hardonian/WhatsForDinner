@@ -85,7 +85,7 @@ export default function ForHealthcarePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Patients don't follow meal plans. Our tools make meal planning easy and accessible.
+                    Patients don&apos;t follow meal plans. Our tools make meal planning easy and accessible.
                   </p>
                 </CardContent>
               </Card>
@@ -173,7 +173,7 @@ export default function ForHealthcarePage() {
                     <div className="flex-1">
                       <CardTitle>Progress Tracking</CardTitle>
                       <p className="text-muted-foreground mt-2">
-                        Track patient meals, nutrition goals, and progress over time. See what's working.
+                        Track patient meals, nutrition goals, and progress over time. See what&apos;s working.
                       </p>
                     </div>
                   </div>

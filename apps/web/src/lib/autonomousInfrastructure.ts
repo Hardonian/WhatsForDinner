@@ -55,7 +55,7 @@ export interface SelfHealingAction {
 
 export class AutonomousInfrastructure {
   private static instance: AutonomousInfrastructure;
-  private healthCheckInterval: NodeJS.Timeout | null = null;
+  private healthCheckInterval: any = null;
   private selfHealingEnabled = true;
 
   static getInstance(): AutonomousInfrastructure {

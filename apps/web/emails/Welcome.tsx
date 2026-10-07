@@ -36,7 +36,7 @@ export const WelcomeEmail = ({ userName = 'there', baseUrl = 'https://nomad.app'
             <Text style={heading}>Welcome to Nomad, {userName}! ??</Text>
             
             <Text style={paragraph}>
-              We're excited to have you join our community of meal planners. Nomad helps you plan
+              We&apos;re excited to have you join our community of meal planners. Nomad helps you plan
               delicious, healthy meals that fit your lifestyle and dietary preferences.
             </Text>
             
@@ -74,7 +74,7 @@ export const WelcomeEmail = ({ userName = 'there', baseUrl = 'https://nomad.app'
           
           <Section style={footer}>
             <Text style={footerText}>
-              You're receiving this email because you signed up for Nomad.
+              You&apos;re receiving this email because you signed up for Nomad.
             </Text>
             <Link href={`${baseUrl}/unsubscribe`} style={footerLink}>
               Unsubscribe

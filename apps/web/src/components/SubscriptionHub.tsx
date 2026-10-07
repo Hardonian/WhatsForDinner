@@ -82,7 +82,7 @@ export function SubscriptionHub() {
                   <span className="font-semibold">Upgrade to Pro</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-3">
-                  You're running low on free recipes. Upgrade for unlimited access.
+                  You&apos;re running low on free recipes. Upgrade for unlimited access.
                 </p>
                 <Button asChild size="sm" className="w-full">
                   <Link href="/pricing">View Plans</Link>

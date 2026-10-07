@@ -29,7 +29,7 @@ export default function InvestorsPage() {
       <div className="text-center mb-12">
         <h1 className="text-5xl font-bold mb-4">Investor Information</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Transparency, growth, and opportunity. Here's what investors need to know.
+          Transparency, growth, and opportunity. Here&apos;s what investors need to know.
         </p>
       </div>
 
@@ -238,7 +238,7 @@ export default function InvestorsPage() {
         <CardContent className="pt-6 text-center">
           <h2 className="text-2xl font-bold mb-4">Interested in Investing?</h2>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            We're always looking for strategic partners who share our vision of making meal planning effortless.
+            We&apos;re always looking for strategic partners who share our vision of making meal planning effortless.
           </p>
           <div className="flex gap-4 justify-center">
             <Button size="lg" asChild>

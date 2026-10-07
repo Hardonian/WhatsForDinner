@@ -11,7 +11,7 @@ const BACKGROUND_REFRESH_INTERVAL = 15 * 60 * 1000; // 15 minutes minimum
 const STALE_DATA_THRESHOLD = 24 * 60 * 60 * 1000; // 24 hours
 
 class BackgroundRefreshManager {
-  private refreshInterval: NodeJS.Timeout | null = null;
+  private refreshInterval: any = null;
 
   /**
    * Initialize background refresh

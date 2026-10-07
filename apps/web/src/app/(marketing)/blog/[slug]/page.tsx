@@ -200,7 +200,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         {/* CTA */}
         <Card className="border-2 bg-gradient-to-br from-primary/5 to-background mt-8">
           <CardContent className="pt-6 text-center">
-            <h2 className="text-2xl font-bold mb-2">Try What's for Dinner?</h2>
+            <h2 className="text-2xl font-bold mb-2">Try What&apos;s for Dinner?</h2>
             <p className="text-muted-foreground mb-6">
               Get personalized recipe suggestions based on your pantry
             </p>

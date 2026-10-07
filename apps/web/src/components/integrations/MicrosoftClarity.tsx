@@ -4,10 +4,10 @@ import ConsentGate from "@/components/integrations/ConsentGate";
 import { isIntegrationEnabled } from "@/lib/integrations-config";
 
 export function MicrosoftClarityIntegration() {
-  if (!isIntegrationEnabled("clarity")) return null;
+  const enabled = isIntegrationEnabled("clarity");
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!enabled || typeof window === "undefined") return;
     const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
     if (!clarityId) return;
 
@@ -25,7 +25,9 @@ export function MicrosoftClarityIntegration() {
       })(window, document, "clarity", "script", "${clarityId}");
     `;
     document.head.appendChild(script);
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <ConsentGate requireKey="analytics">

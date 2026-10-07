@@ -132,7 +132,7 @@ function LandingB() {
               From pantry to plate in 30 seconds
             </h1>
             <p className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground md:text-2xl px-2 leading-relaxed">
-              Stop wondering what's for dinner. Get AI-powered recipes that fit your kitchen, your diet, and your schedule.
+              Stop wondering what&apos;s for dinner. Get AI-powered recipes that fit your kitchen, your diet, and your schedule.
             </p>
           </div>
 
@@ -345,7 +345,7 @@ function LandingB() {
                 </div>
                 <h3 className="text-xl font-semibold">Add Ingredients</h3>
                 <p className="text-muted-foreground">
-                  Tell us what's in your pantry—we'll remember for next time.
+                  Tell us what&apos;s in your pantry—we&apos;ll remember for next time.
                 </p>
               </div>
               <div className="text-center space-y-4">

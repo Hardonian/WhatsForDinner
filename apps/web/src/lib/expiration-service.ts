@@ -155,7 +155,7 @@ export class ExpirationService {
       const uniqueUserIds = [...new Set(users.map(u => u.user_id))];
       
       for (const userId of uniqueUserIds) {
-        const alerts = await this.getExpiringItems(userId, 7);
+        const alerts = await this.getExpiringItems(userId as string, 7);
         
         if (alerts.length > 0) {
           // Store alerts for user to see

@@ -67,7 +67,7 @@ export default function AuditLogPage() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-4">My Audit Log</h1>
         <p className="text-muted-foreground text-lg">
-          View your personal activity log. This shows actions you've taken in the service.
+          View your personal activity log. This shows actions you&apos;ve taken in the service.
         </p>
       </div>
 

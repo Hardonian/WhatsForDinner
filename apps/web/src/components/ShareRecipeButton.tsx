@@ -92,7 +92,7 @@ export function ShareRecipeButton({ recipe, onShare }: ShareRecipeButtonProps) {
               Thanks for Sharing!
             </DialogTitle>
             <DialogDescription>
-              You've earned 1 free Pro feature credit. Use it to unlock unlimited recipes or advanced customization.
+              You&apos;ve earned 1 free Pro feature credit. Use it to unlock unlimited recipes or advanced customization.
             </DialogDescription>
           </DialogHeader>
           <div className="flex gap-2">

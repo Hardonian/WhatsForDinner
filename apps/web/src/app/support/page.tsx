@@ -59,7 +59,7 @@ export default function SupportPage() {
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Support Center</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          We're here to help. Find answers, get support, or contact our team.
+          We&apos;re here to help. Find answers, get support, or contact our team.
         </p>
       </div>
 
@@ -114,7 +114,7 @@ export default function SupportPage() {
         <CardHeader>
           <CardTitle>Create Support Ticket</CardTitle>
           <CardDescription>
-            Can't find what you're looking for? Create a ticket and we'll help you out.
+            Can&apos;t find what you&apos;re looking for? Create a ticket and we&apos;ll help you out.
           </CardDescription>
         </CardHeader>
         <CardContent>

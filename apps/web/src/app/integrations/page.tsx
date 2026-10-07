@@ -202,8 +202,8 @@ export default function IntegrationsPage() {
         <h2 className="text-xl font-semibold mb-2">Integration Status</h2>
         <ul className="list-disc list-inside space-y-1 text-sm">
           <li>All integrations respect privacy consent</li>
-          <li>Analytics integrations require "analytics" consent</li>
-          <li>Functional integrations require "functional" consent</li>
+          <li>Analytics integrations require &quot;analytics&quot; consent</li>
+          <li>Functional integrations require &quot;functional&quot; consent</li>
           <li>All scripts are lazy-loaded to preserve performance</li>
           <li>Widget heights are reserved to prevent CLS</li>
         </ul>

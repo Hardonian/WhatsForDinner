@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, RefreshControl, Text as RNText } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, Button, Card, ThemeToggle } from '@whats-for-dinner/ui';
-import { useDeviceInfo, useTheme, createComponentLogger } from '@whats-for-dinner/utils';
+import { Text, Card, ThemeToggle } from '@whats-for-dinner/ui';
+import { createComponentLogger } from '@whats-for-dinner/utils';
 import { RecipeCard } from '../src/components/RecipeCard';
 import { InputPrompt } from '../src/components/InputPrompt';
-import { Navbar } from '../src/components/Navbar';
 import { QuickGenerateFAB } from '../src/components/QuickGenerateFAB';
 import { useGenerateRecipes, useSaveRecipe } from '../src/hooks/useRecipes';
 import { usePantryItems } from '../src/hooks/usePantry';
 import { Recipe } from '@whats-for-dinner/utils';
-import type { Profile, PantryItem } from '../src/types/supabase';
+import type { Profile } from '../src/types/supabase';
 
 const logger = createComponentLogger('index-tsx');
 export default function HomeScreen() {
-  const [user, setUser] = useState<Profile | null>(null);
+  const [user] = useState<Profile | null>(null);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const deviceInfo = useDeviceInfo();
-  const { isDark } = useTheme();
   const generateRecipesMutation = useGenerateRecipes();
   const saveRecipeMutation = useSaveRecipe();
-  const { data: pantryItems = [], isLoading: pantryLoading } = usePantryItems();
+  const { data: pantryItems = [] } = usePantryItems();
 
   const pantryItemNames = (pantryItems as any[]).map(item => item?.ingredient || item?.name || '');
 

@@ -138,7 +138,7 @@ export function DailyRetentionHooks({ userId, compact = false }: DailyRetentionH
           <CardHeader>
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-primary" />
-              <CardTitle className="text-lg">Today's Suggestion</CardTitle>
+              <CardTitle className="text-lg">Today&apos;s Suggestion</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -189,7 +189,7 @@ export function DailyRetentionHooks({ userId, compact = false }: DailyRetentionH
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-center text-muted-foreground">
-                    You're on a {streak}-day streak! Check in to continue and earn rewards.
+                    You&apos;re on a {streak}-day streak! Check in to continue and earn rewards.
                   </p>
                   <div className="flex gap-2">
                     <Button onClick={handleCheckIn} className="flex-1">

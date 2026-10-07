@@ -245,6 +245,8 @@
     "pg": "^8.11.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@eslint/js": "^10.0.1",
     "@lhci/cli": "^0.13.0",
     "@octokit/rest": "^20.0.2",
     "@opentelemetry/auto-instrumentations-node": "^0.80.0",
@@ -257,6 +259,8 @@
     "@prisma/client": "^5.22.0",
     "@types/node": "^20",
     "@types/pg": "^8.10.9",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
     "commander": "^12.0.0",
     "depcheck": "^1.4.7",
     "glob": "^11.0.0",

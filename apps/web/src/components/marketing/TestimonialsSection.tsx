@@ -78,7 +78,7 @@ export function TestimonialsSection() {
                 ))}
               </div>
 
-              <p className="mb-3 text-muted-foreground">"{testimonial.text}"</p>
+              <p className="mb-3 text-muted-foreground">&quot;{testimonial.text}&quot;</p>
               
               <div className="rounded-md bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
                 {testimonial.highlight}

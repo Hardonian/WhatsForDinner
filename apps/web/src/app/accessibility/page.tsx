@@ -20,7 +20,7 @@ export default function AccessibilityPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Accessibility Statement</h1>
           <p className="text-muted-foreground">
-            Our commitment to making What's for Dinner accessible to everyone
+            Our commitment to making What&apos;s for Dinner accessible to everyone
           </p>
         </div>
 

@@ -35,7 +35,7 @@ type RoomListener = (room: SharedKitchenRoom) => void;
 class HouseholdRealtimeSync {
   private room: SharedKitchenRoom | null = null;
   private listeners: Set<RoomListener> = new Set();
-  private timerTicker: NodeJS.Timeout | null = null;
+  private timerTicker: any = null;
 
   /**
    * Create or join a live synchronized kitchen cooking room

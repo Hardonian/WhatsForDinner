@@ -209,7 +209,7 @@ export function VoiceInput({ onTranscript, placeholder = 'Say ingredients...', d
           animate={{ opacity: 1 }}
           className="text-sm text-muted-foreground"
         >
-          Heard: "{transcript}"
+          Heard: &quot;{transcript}&quot;
         </motion.div>
       )}
     </div>

@@ -32,7 +32,7 @@ class BluetoothProbeDriver {
   private server: any = null;
   private characteristic: any = null;
   private listeners: Set<ProbeListener> = new Set();
-  private simulationInterval: NodeJS.Timeout | null = null;
+  private simulationInterval: any = null;
 
   private state: BluetoothProbeReading = {
     connected: false,

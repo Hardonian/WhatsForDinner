@@ -183,7 +183,7 @@ export default function SecurityPage() {
       <Card className="mb-12">
         <CardHeader>
           <CardTitle>Bug Bounty Program</CardTitle>
-          <CardDescription>Help us keep What's for Dinner secure</CardDescription>
+          <CardDescription>Help us keep What&apos;s for Dinner secure</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="mb-4">

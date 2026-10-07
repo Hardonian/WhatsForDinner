@@ -7,8 +7,14 @@ jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }));
 
+const mockCreateClient = jest.fn();
+
 jest.mock('@supabase/auth-helpers-nextjs', () => ({
-  createClientComponentClient: jest.fn(),
+  createClientComponentClient: (...args: any[]) => mockCreateClient(...args),
+}));
+
+jest.mock('@/lib/supabase/auth-helpers-compat', () => ({
+  createClientComponentClient: (...args: any[]) => mockCreateClient(...args),
 }));
 
 describe('Home Page Router', () => {
@@ -20,7 +26,7 @@ describe('Home Page Router', () => {
     (useRouter as jest.Mock).mockReturnValue({
       push: mockPush,
     });
-    (createClientComponentClient as jest.Mock).mockReturnValue({
+    mockCreateClient.mockReturnValue({
       auth: {
         getUser: mockGetUser,
       },

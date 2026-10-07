@@ -16,7 +16,7 @@ export default function VsCompetitorsPage() {
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            What's for Dinner vs Competitors
+            What&apos;s for Dinner vs Competitors
           </h1>
           <p className="text-xl text-blue-100 max-w-2xl mx-auto">
             See how we compare to Yummly, AllRecipes, Mealime, and other meal planning apps. 
@@ -35,7 +35,7 @@ export default function VsCompetitorsPage() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Feature</th>
                   <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
                     <div className="flex flex-col items-center">
-                      <span className="text-blue-600 font-bold">What's for Dinner</span>
+                      <span className="text-blue-600 font-bold">What&apos;s for Dinner</span>
                       <span className="text-xs text-gray-500 mt-1">(Us)</span>
                     </div>
                   </th>
@@ -158,7 +158,7 @@ export default function VsCompetitorsPage() {
         {/* Key Differentiators */}
         <div className="mt-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Why What's for Dinner is Different
+            Why What&apos;s for Dinner is Different
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -178,7 +178,7 @@ export default function VsCompetitorsPage() {
               <h3 className="text-xl font-bold text-gray-900 mb-2">Fastest Time-to-Value</h3>
               <p className="text-gray-600">
                 Get your first recipe in under 30 seconds. Competitors require 3-10+ minutes of setup. 
-                We're the fastest in the market.
+                We&apos;re the fastest in the market.
               </p>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-md">
@@ -187,7 +187,7 @@ export default function VsCompetitorsPage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Advanced AI Personalization</h3>
               <p className="text-gray-600">
-                Our AI learns your preferences over time. More advanced than competitors' basic AI, 
+                Our AI learns your preferences over time. More advanced than competitors&apos; basic AI, 
                 providing truly personalized recipe suggestions.
               </p>
             </div>
@@ -196,7 +196,7 @@ export default function VsCompetitorsPage() {
 
         {/* CTA Section */}
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-12 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">Ready to Try What's for Dinner?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Try What&apos;s for Dinner?</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
             Experience the only pantry-first meal planner. Get personalized recipes from ingredients 
             you already have in under 30 seconds.
@@ -225,10 +225,10 @@ export default function VsCompetitorsPage() {
           <div className="space-y-6 max-w-3xl mx-auto">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h3 className="text-xl font-bold text-gray-900 mb-2">
-                What makes What's for Dinner different from Yummly?
+                What makes What&apos;s for Dinner different from Yummly?
               </h3>
               <p className="text-gray-600">
-                We're the only pantry-first meal planner. Yummly is recipe-first, meaning you browse 
+                We&apos;re the only pantry-first meal planner. Yummly is recipe-first, meaning you browse 
                 recipes and then buy ingredients. We start with what you have and generate personalized 
                 recipes instantly. Plus, we have the fastest time-to-value in the market (&lt;30 seconds).
               </p>
@@ -238,9 +238,9 @@ export default function VsCompetitorsPage() {
                 How do you compare to AllRecipes?
               </h3>
               <p className="text-gray-600">
-                AllRecipes is a recipe database with 50M+ recipes, but it's recipe-first (you browse 
+                AllRecipes is a recipe database with 50M+ recipes, but it&apos;s recipe-first (you browse 
                 recipes). We use AI to generate personalized recipes from your ingredients. AllRecipes 
-                has no meal planning, no AI personalization, and outdated UX. We're modern, fast, and 
+                has no meal planning, no AI personalization, and outdated UX. We&apos;re modern, fast, and 
                 pantry-first.
               </p>
             </div>
@@ -249,9 +249,9 @@ export default function VsCompetitorsPage() {
                 What about Mealime?
               </h3>
               <p className="text-gray-600">
-                Mealime is meal planning focused and requires planning ahead. We're spontaneous—use 
+                Mealime is meal planning focused and requires planning ahead. We&apos;re spontaneous—use 
                 what you have right now. Mealime takes 10+ minutes to set up, we take &lt;30 seconds. 
-                We're also adding grocery integration and voice interface, which Mealime doesn't have.
+                We&apos;re also adding grocery integration and voice interface, which Mealime doesn&apos;t have.
               </p>
             </div>
           </div>
