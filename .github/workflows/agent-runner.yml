@@ -3,7 +3,7 @@ name: Unified Agent Runner
 on:
   schedule:
     # Run every 12 hours at :05 (light maintenance)
-    - cron: "5 */12 * * *"
+    - cron: "0 6 * * 1"  # weekly Mon 06:00 UTC
   workflow_dispatch:
     # Allow manual triggering
   push:
@@ -15,9 +15,14 @@ on:
       - '.cursor/config/master-agent.json'
       - 'package.json'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   run-agents:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     name: Run Unified Agent System
     
     steps:

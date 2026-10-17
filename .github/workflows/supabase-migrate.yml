@@ -3,6 +3,10 @@ name: Supabase Migrations
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.vscode/**'
   workflow_dispatch:
 
 concurrency:

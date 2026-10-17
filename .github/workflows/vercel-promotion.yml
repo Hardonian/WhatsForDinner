@@ -22,11 +22,16 @@ env:
   PNPM_VERSION: 9
   PRISMA_CLIENT_ENGINE_TYPE: 'wasm'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # Validate promotion prerequisites
   validate-promotion:
     name: Validate Promotion Prerequisites
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       can_promote: ${{ steps.validate.outputs.can_promote }}
       version: ${{ steps.version.outputs.version }}
@@ -80,6 +85,7 @@ jobs:
   post-deployment-check:
     name: Post-Deployment Check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: deploy-vercel
     if: always() && needs.deploy-vercel.result == 'success'
     steps:
@@ -125,6 +131,7 @@ jobs:
   deployment-summary:
     name: Generate Deployment Summary
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: [validate-promotion, deploy-vercel, post-deployment-check]
     if: always()
     steps:

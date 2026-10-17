@@ -12,10 +12,15 @@ env:
   NODE_VERSION: '22'
   PNPM_VERSION: 9
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate-release:
     name: Validate Release Prerequisites
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -59,6 +64,7 @@ jobs:
   build-release:
     name: Build Release Artifacts
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: validate-release
     steps:
       - name: Checkout code
@@ -89,6 +95,7 @@ jobs:
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: [validate-release, build-release]
     steps:
       - name: Checkout code

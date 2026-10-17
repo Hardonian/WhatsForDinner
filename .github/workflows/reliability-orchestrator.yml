@@ -3,7 +3,7 @@ name: Reliability Orchestrator
 on:
   schedule:
     # Run every 6 hours
-    - cron: '0 */6 * * *'
+    - cron: '0 6 * * 1'  # weekly Mon 06:00 UTC
   workflow_dispatch:
     inputs:
       check_only:
@@ -17,9 +17,14 @@ on:
         default: 'false'
         type: boolean
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     name: Reliability, Financial, and Security Orchestration
     
     steps:

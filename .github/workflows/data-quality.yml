@@ -1,11 +1,16 @@
 name: Data Quality Checks
 on:
   schedule:
-    - cron: '0 2 * * *'  # 02:00 America/Toronto (nightly)
+    - cron: '0 6 * * 1'  # weekly Mon 06:00 UTC
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   dq:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7

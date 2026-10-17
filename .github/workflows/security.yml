@@ -3,17 +3,22 @@ name: Security Hardening & Compliance
 on:
   schedule:
     # Run nightly at 2 AM UTC
-    - cron: '0 2 * * *'
+    - cron: '0 6 * * 1'  # weekly Mon 06:00 UTC
   workflow_dispatch:
 
 env:
   NODE_VERSION: '22'
   PNPM_VERSION: 9
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   snyk-sca:
     name: SCA (Snyk)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -54,6 +59,7 @@ jobs:
   codeql-analysis:
     name: CodeQL Analysis
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       actions: read
       contents: read
@@ -76,6 +82,7 @@ jobs:
   sbom-generation:
     name: SBOM Generation
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -114,6 +121,7 @@ jobs:
   container-scanning:
     name: Container Image Scanning
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -145,6 +153,7 @@ jobs:
   secrets-scan:
     name: Secret Scanning
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -174,6 +183,7 @@ jobs:
   owasp-zap:
     name: OWASP ZAP Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -201,6 +211,7 @@ jobs:
   opa-policy-check:
     name: Policy-as-Code (OPA)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -217,6 +228,7 @@ jobs:
   security-summary:
     name: Security Summary
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: [snyk-sca, codeql-analysis, sbom-generation, container-scanning, secrets-scan, owasp-zap, opa-policy-check]
     if: always()
     steps:

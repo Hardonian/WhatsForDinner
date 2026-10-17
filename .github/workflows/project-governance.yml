@@ -3,8 +3,12 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.vscode/**'
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "0 6 * * 1"  # weekly Mon 06:00 UTC
 permissions:
   contents: read
   pull-requests: write
@@ -20,6 +24,7 @@ env:
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
         with:

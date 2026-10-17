@@ -25,10 +25,15 @@ env:
   NODE_VERSION: '22'
   PNPM_VERSION: 9
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy-production:
     name: Deploy to Production (DEPRECATED)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment: production
     concurrency:
       group: prod-deploy
