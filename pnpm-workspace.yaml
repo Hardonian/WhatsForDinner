@@ -8,6 +8,13 @@ packages:
 # limited to versions confirmed by the latest audit; unpatchable advisories are
 # tracked in CURRENT_EXECUTION_ROADMAP.md instead of being silently suppressed.
 overrides:
+  'react-native': '0.76.9'
+  'metro': '0.81.5'
+  'metro-cache': '0.81.5'
+  'metro-config': '0.81.5'
+  'metro-core': '0.81.5'
+  'metro-runtime': '0.81.5'
+  'metro-transform-worker': '0.81.5'
   'immutable@3': '>=3.8.4'
   'immutable@4': '>=4.3.9'
   'immutable@5': '>=5.1.8'

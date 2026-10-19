@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {
-    const supabase = (createClient as any)();
+    const supabase = await createClient();
     const { data: authData } = await supabase.auth.getUser();
     const user = authData?.user;
 
@@ -37,4 +37,6 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function POST() {
+  return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405, headers: { Allow: 'GET' } });
+}

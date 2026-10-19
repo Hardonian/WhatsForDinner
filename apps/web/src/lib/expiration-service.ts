@@ -31,7 +31,7 @@ export class ExpirationService {
    */
   static async getExpiringItems(userId: string, daysAhead: number = 7): Promise<ExpirationAlert[]> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       const today = new Date();
       const futureDate = new Date(today.getTime() + daysAhead * 24 * 60 * 60 * 1000);
       
@@ -83,7 +83,7 @@ export class ExpirationService {
     itemIds: string[]
   ): Promise<Array<{ recipeId: string; title: string; usesItems: string[] }>> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       // Get item names
       const { data: items } = await supabase
@@ -141,7 +141,7 @@ export class ExpirationService {
    */
   static async sendExpirationAlerts(): Promise<void> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       // Get all users with pantry items
       const { data: users } = await supabase

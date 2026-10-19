@@ -32,7 +32,7 @@ export class MealPlanningService {
    */
   static async saveMealPlan(plan: WeeklyMealPlan): Promise<WeeklyMealPlan> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       const planData = {
         user_id: plan.userId,
@@ -101,7 +101,7 @@ export class MealPlanningService {
     householdId?: string
   ): Promise<WeeklyMealPlan | null> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       let query = supabase
         .from('meal_plans_enhanced')
@@ -148,7 +148,7 @@ export class MealPlanningService {
     userId: string
   ): Promise<string> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       const plan = await this.getMealPlan(userId, new Date().toISOString().split('T')[0]);
       if (!plan) {

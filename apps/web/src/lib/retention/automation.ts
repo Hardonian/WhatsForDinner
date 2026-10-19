@@ -17,7 +17,7 @@ export class RetentionAutomation {
    * Send daily meal reminder (push notification)
    */
   async sendDailyMealReminder(userId: string): Promise<void> {
-    const supabase = createClient();
+    const supabase = await createClient();
     
     // Check if user has push notifications enabled
     const { data: preferences } = await supabase
@@ -56,7 +56,7 @@ export class RetentionAutomation {
    * Send weekly pantry check email
    */
   async sendWeeklyPantryEmail(userId: string): Promise<void> {
-    const supabase = createClient();
+    const supabase = await createClient();
     
     // Get pantry items that are running low
     const { data: pantryItems } = await supabase
@@ -92,7 +92,7 @@ export class RetentionAutomation {
   async sendInactiveUserReEngagement(userId: string, daysInactive: number): Promise<void> {
     if (daysInactive < 7) return; // Only for users inactive 7+ days
 
-    const supabase = createClient();
+    const supabase = await createClient();
     
     // Get user's last activity
     const { data: lastActivity } = await supabase
@@ -146,7 +146,7 @@ export class RetentionAutomation {
     userId: string,
     notification: { title: string; body: string; data?: Record<string, unknown> }
   ): Promise<void> {
-    const supabase = createClient();
+    const supabase = await createClient();
     
     // Get user's push token
     const { data: pushToken } = await supabase
@@ -178,7 +178,7 @@ export class RetentionAutomation {
     userId: string,
     email: { subject: string; template: string; data?: Record<string, unknown> }
   ): Promise<void> {
-    const supabase = createClient();
+    const supabase = await createClient();
     
     // Get user email
     const { data: profile } = await supabase
@@ -206,7 +206,7 @@ export class RetentionAutomation {
    * Run daily retention automation
    */
   async runDailyAutomation(): Promise<void> {
-    const supabase = createClient();
+    const supabase = await createClient();
     
     // Get all active users
     const { data: users } = await supabase
@@ -226,7 +226,7 @@ export class RetentionAutomation {
    * Run weekly retention automation
    */
   async runWeeklyAutomation(): Promise<void> {
-    const supabase = createClient();
+    const supabase = await createClient();
     
     // Get all active users
     const { data: users } = await supabase

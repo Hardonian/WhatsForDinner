@@ -97,7 +97,7 @@ class PerformanceMonitor {
     // Send to Supabase analytics_events table
     try {
       const { createClient } = await import('@/lib/supabase/server');
-      const supabase = createClient();
+      const supabase = await createClient();
       
       await supabase.from('analytics_events').insert({
         event_type: 'performance_metric',

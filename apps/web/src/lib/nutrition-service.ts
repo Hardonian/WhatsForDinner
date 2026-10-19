@@ -46,7 +46,7 @@ export class NutritionService {
    */
   static async logNutrition(entry: NutritionLog): Promise<NutritionLog> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       const { data, error } = await supabase
         .from('nutrition_logs')
@@ -103,7 +103,7 @@ export class NutritionService {
     endDate: string
   ): Promise<NutritionSummary[]> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       const { data: logs, error } = await supabase
         .from('nutrition_logs')
@@ -176,7 +176,7 @@ export class NutritionService {
     fiber: number;
   }> {
     try {
-      const supabase = createClient();
+      const supabase = await createClient();
       
       const { data: recipe, error } = await supabase
         .from('recipes')
