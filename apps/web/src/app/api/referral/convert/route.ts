@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const referralCode = body?.referralCode;
-    const supabase = (createClient as any)();
+    const supabase = await createClient();
     const { data: authData } = await supabase.auth.getUser();
     const user = authData?.user;
 
@@ -47,4 +47,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function GET() {
+  return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405, headers: { Allow: 'POST' } });
+}
