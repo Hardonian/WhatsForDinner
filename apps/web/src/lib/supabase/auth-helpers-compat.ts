@@ -1,4 +1,4 @@
-import { createBrowserClient } from '@supabase/ssr';
+import { createBrowserClient, createServerClient } from '@supabase/ssr';
 import { supabase } from './client';
 
 export function createClientComponentClient<T = any>(options?: any) {

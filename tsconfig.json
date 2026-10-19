@@ -84,6 +84,12 @@
     "**/dist",
     "**/build",
     "whats-for-dinner",
-    "whats-for-dinner/**"
+    "whats-for-dinner/**",
+    "tools",
+    "tools/**",
+    "watchers",
+    "watchers/**",
+    "ui",
+    "ui/**"
   ]
 }

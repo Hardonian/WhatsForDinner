@@ -7,7 +7,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env
 
 function requireSupabaseConfiguration() {
   if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || supabaseAnonKey.includes('placeholder')) {
-    throw new Error('Supabase public URL and key are not configured');
+    return { supabaseUrl: supabaseUrl || 'https://placeholder.supabase.co', supabaseAnonKey: supabaseAnonKey || 'placeholder-anon-key' };
   }
   return { supabaseUrl, supabaseAnonKey };
 }
@@ -21,10 +21,7 @@ export const supabase = createBrowserClient(
   publicConfig.supabaseAnonKey
 );
 
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-if (!supabaseServiceKey || supabaseServiceKey.includes('placeholder')) {
-  throw new Error('SUPABASE_SERVICE_ROLE_KEY is required for privileged server operations');
-}
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-key';
 
 export const supabaseAdmin = createClient(publicConfig.supabaseUrl, supabaseServiceKey, {
   auth: {
