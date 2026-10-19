@@ -121,7 +121,7 @@ export function PricingSection() {
                 variant={plan.popular ? 'default' : 'outline'}
                 size="lg"
               >
-                <Link href="/auth/signup">{plan.cta}</Link>
+                <Link href="/signup">{plan.cta}</Link>
               </Button>
 
               <ul className="space-y-3">

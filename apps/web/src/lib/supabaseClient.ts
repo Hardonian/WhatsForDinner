@@ -1,13 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || 'placeholder-anon-key';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+function requireSupabaseConfiguration() {
+  if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || supabaseAnonKey.includes('placeholder')) {
+    throw new Error('Supabase public URL and key are not configured');
+  }
+  return { supabaseUrl, supabaseAnonKey };
+}
 
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey;
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+const publicConfig = requireSupabaseConfiguration();
+
+// The SSR browser client persists sessions in cookies so route handlers and
+// middleware can validate the same authenticated user as the UI.
+export const supabase = createBrowserClient(
+  publicConfig.supabaseUrl,
+  publicConfig.supabaseAnonKey
+);
+
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+if (!supabaseServiceKey || supabaseServiceKey.includes('placeholder')) {
+  throw new Error('SUPABASE_SERVICE_ROLE_KEY is required for privileged server operations');
+}
+
+export const supabaseAdmin = createClient(publicConfig.supabaseUrl, supabaseServiceKey, {
   auth: {
     persistSession: false,
     autoRefreshToken: false,

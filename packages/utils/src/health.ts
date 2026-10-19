@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Production Health Check Utilities
  * 
@@ -59,80 +58,77 @@ function getUptime(): number {
  */
 async function checkDatabase(): Promise<CheckResult> {
   const start = Date.now();
-  
+
   try {
-    // Try to import Supabase client
-    let supabase: { from: (table: string) => { select: (columns: string) => Promise<{ error: unknown }> } } | null = null;
-    
-    try {
-      // Dynamic import to avoid breaking if Supabase is not available
-      const supabaseModule = await import('@supabase/supabase-js');
-      // This is a placeholder - actual implementation would use real Supabase client
-      supabase = null; // Would be actual client instance
-    } catch {
-      // Supabase not available
-    }
-    
-    if (!supabase) {
-      return {
-        status: 'warn',
-        message: 'Database client not available',
-      };
-    }
-    
-    // Simple query to check connectivity
-    const { error } = await (supabase as any).from('health').select('1');
-    const latency = Date.now() - start;
-    
-    if (error) {
+    const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+    const isPlaceholder = (value?: string) => !value || /placeholder|example|undefined|null/i.test(value);
+
+    if (isPlaceholder(rawUrl) || isPlaceholder(anonKey)) {
       return {
         status: 'fail',
-        message: `Database error: ${error}`,
+        message: 'Database health-check configuration is missing',
+        latency: Date.now() - start,
+      };
+    }
+
+    let supabaseUrl: URL;
+    try {
+      supabaseUrl = new URL(rawUrl!);
+    } catch {
+      return {
+        status: 'fail',
+        message: 'Database health-check URL is invalid',
+        latency: Date.now() - start,
+      };
+    }
+
+    if (supabaseUrl.protocol !== 'https:' && !['localhost', '127.0.0.1', '::1'].includes(supabaseUrl.hostname)) {
+      return {
+        status: 'fail',
+        message: 'Database health-check URL must use HTTPS',
+        latency: Date.now() - start,
+      };
+    }
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000);
+    let response: Response;
+    try {
+      const endpoint = new URL('/rest/v1/recipes?select=id&limit=1', supabaseUrl);
+      response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          apikey: anonKey!,
+          Authorization: `Bearer ${anonKey}`,
+          Accept: 'application/json',
+        },
+        cache: 'no-store',
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    const latency = Date.now() - start;
+
+    if (!response.ok) {
+      return {
+        status: 'fail',
+        message: `Database dependency returned HTTP ${response.status}`,
         latency,
       };
     }
-    
+
     return {
       status: 'pass',
-      message: 'Database connection healthy',
+      message: 'Database dependency is reachable',
       latency,
     };
   } catch (error) {
     return {
       status: 'fail',
       message: error instanceof Error ? error.message : 'Database check failed',
-      latency: Date.now() - start,
-    };
-  }
-}
-
-/**
- * Check external API availability
- */
-async function checkExternalAPIs(): Promise<CheckResult> {
-  const start = Date.now();
-  
-  try {
-    // Check OpenAI API (if configured)
-    const openaiKey = process.env.OPENAI_API_KEY;
-    if (!openaiKey) {
-      return {
-        status: 'warn',
-        message: 'OpenAI API key not configured',
-      };
-    }
-    
-    // In production, you might want to make a lightweight API call
-    // For now, just check if key exists
-    return {
-      status: 'pass',
-      message: 'External APIs configured',
-      latency: Date.now() - start,
-    };
-  } catch (error) {
-    return {
-      status: 'fail',
-      message: error instanceof Error ? error.message : 'External API check failed',
       latency: Date.now() - start,
     };
   }
@@ -193,7 +189,6 @@ export async function runHealthCheck(
   // Run standard checks
   const checkPromises = [
     { name: 'database', fn: checkDatabase },
-    { name: 'externalAPIs', fn: checkExternalAPIs },
     { name: 'memory', fn: checkMemory },
     ...Object.entries(customChecks).map(([name, fn]) => ({ name, fn })),
   ];

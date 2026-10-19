@@ -4,7 +4,6 @@
  */
 
 import { ConsentModel, ConsentState } from './consentModel';
-import { Platform } from 'react-native';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const logger = createComponentLogger('consentstore-ts');
@@ -238,7 +237,9 @@ export class ConsentStore {
    * Create platform-specific storage implementation
    */
   private createPlatformStorage(): ConsentStorage {
-    if (Platform.OS === 'web') {
+    // Avoid importing react-native into the web compilation. The presence of a
+    // browser document is the capability this storage implementation needs.
+    if (typeof document !== 'undefined') {
       return new WebConsentStorage();
     } else {
       return new MobileConsentStorage();

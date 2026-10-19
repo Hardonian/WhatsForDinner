@@ -251,10 +251,10 @@ export function validateEnv() {
       
       logger.error('❌ Environment variable validation failed:');
       if (missing.length > 0) {
-        logger.error('   Missing required variables:', { missing.join(', ' }));
+        logger.error('   Missing required variables:', { missing: missing.join(', ') });
       }
       if (invalid.length > 0) {
-        logger.error('   Invalid variables:', { invalid.join(', ' }));
+        logger.error('   Invalid variables:', { invalid: invalid.join(', ') });
       }
       
       throw new Error(`Environment validation failed: ${error.errors.map(e => e.message).join(', ')}`);

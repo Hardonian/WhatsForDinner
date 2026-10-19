@@ -1,13 +1,67 @@
 #!/usr/bin/env node
 
 /**
- * Uptime Monitor
- * Pings /api/health every 6h and records latency
- * Detects downtime > 2min and creates alerts
+ * Uptime monitor for the deployed readiness endpoint.
+ *
+ * A successful TCP request is not enough: a check is healthy only when the
+ * endpoint returns 2xx JSON with an explicit healthy status.
  */
 
 import https from 'https';
 import http from 'http';
+
+const HEALTHY_RESPONSE_STATUSES = new Set(['healthy', 'ready', 'ok']);
+const INVALID_URL_MARKERS = ['${{', '}}', 'undefined', 'null', 'placeholder'];
+
+function normalizeBaseUrl(value) {
+  const trimmed = value.trim();
+  return /^[a-z][a-z\d+.-]*:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+}
+
+export function validateHealthCheckUrl(value) {
+  if (!value || typeof value !== 'string') {
+    throw new Error('A health-check URL or deployment domain must be configured');
+  }
+
+  const candidate = value.trim();
+  if (!candidate || INVALID_URL_MARKERS.some((marker) => candidate.toLowerCase().includes(marker.toLowerCase()))) {
+    throw new Error('Health-check URL contains an unresolved or placeholder value');
+  }
+
+  let url;
+  try {
+    url = new URL(candidate);
+  } catch {
+    throw new Error(`Health-check URL is invalid: ${candidate}`);
+  }
+
+  const isLocalHttp = url.protocol === 'http:' && ['localhost', '127.0.0.1', '::1'].includes(url.hostname);
+  if (url.protocol !== 'https:' && !isLocalHttp) {
+    throw new Error('Health-check URL must use HTTPS (HTTP is allowed only for localhost)');
+  }
+  if (url.username || url.password) {
+    throw new Error('Health-check URL must not contain credentials');
+  }
+  if (url.hash) {
+    throw new Error('Health-check URL must not contain a fragment');
+  }
+
+  return url;
+}
+
+export function resolveHealthCheckUrl(env = process.env) {
+  if (env.HEALTH_CHECK_URL?.trim()) {
+    return validateHealthCheckUrl(env.HEALTH_CHECK_URL).toString();
+  }
+
+  const base = env.NEXT_PUBLIC_SITE_URL?.trim() || env.VERCEL_PROJECT_DOMAIN?.trim();
+  if (!base) {
+    throw new Error('Set HEALTH_CHECK_URL, NEXT_PUBLIC_SITE_URL, or VERCEL_PROJECT_DOMAIN');
+  }
+
+  const baseUrl = validateHealthCheckUrl(normalizeBaseUrl(base));
+  return new URL('/api/health/ready', baseUrl).toString();
+}
 
 export class UptimeMonitor {
   constructor(supabase, config) {
@@ -15,7 +69,7 @@ export class UptimeMonitor {
     this.config = config;
     this.results = {
       timestamp: new Date().toISOString(),
-      uptime: 1.0,
+      uptime: 0,
       avgLatency: 0,
       downtime: 0,
       checks: [],
@@ -24,221 +78,233 @@ export class UptimeMonitor {
   }
 
   async run() {
-    try {
-      // Get health check endpoint URL
-      const healthUrl = process.env.HEALTH_CHECK_URL || 
-                       process.env.NEXT_PUBLIC_SITE_URL + '/api/health' ||
-                       'http://localhost:3000/api/health';
-      
-      // Perform health check
-      const checkResult = await this.performHealthCheck(healthUrl);
-      
-      // Store in metrics_log
-      await this.storeHealthCheck(checkResult);
-      
-      // Get historical data for uptime calculation
-      await this.calculateUptime();
-      
-      // Check for downtime alerts
-      await this.checkDowntimeAlerts();
-      
-      return this.results;
-    } catch (error) {
-      console.error('Error in uptime monitoring:', error);
-      throw error;
+    const healthUrl = resolveHealthCheckUrl();
+    const checkResult = await this.performHealthCheck(healthUrl);
+
+    await this.storeHealthCheck(checkResult);
+    await this.calculateUptime();
+    await this.checkDowntimeAlerts();
+
+    if (!checkResult.healthy) {
+      const detail = checkResult.error || `HTTP ${checkResult.status}, application status ${checkResult.applicationStatus || 'missing'}`;
+      throw new Error(`Readiness check failed for ${checkResult.url}: ${detail}`);
     }
+
+    return this.results;
   }
 
-  async performHealthCheck(url) {
+  async performHealthCheck(value) {
+    const url = validateHealthCheckUrl(value);
     const startTime = Date.now();
-    
-    return new Promise((resolve, reject) => {
-      const client = url.startsWith('https') ? https : http;
-      
-      const req = client.get(url, { timeout: 10000 }, (res) => {
-        const latency = Date.now() - startTime;
-        const status = res.statusCode;
-        
+
+    return new Promise((resolve) => {
+      const client = url.protocol === 'https:' ? https : http;
+      let settled = false;
+      const finish = (result) => {
+        if (settled) return;
+        settled = true;
+        resolve({
+          timestamp: new Date().toISOString(),
+          url: url.toString(),
+          latency: Date.now() - startTime,
+          ...result
+        });
+      };
+
+      const req = client.get(url, {
+        timeout: 10000,
+        headers: {
+          Accept: 'application/json',
+          'User-Agent': 'WhatsForDinner-Reliability-Monitor/1.0'
+        }
+      }, (res) => {
+        const status = res.statusCode || 0;
         let data = '';
-        res.on('data', chunk => { data += chunk; });
+
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => {
+          data += chunk;
+          if (data.length > 64 * 1024) {
+            req.destroy(new Error('Health-check response exceeded 64 KiB'));
+          }
+        });
         res.on('end', () => {
-          const isHealthy = status >= 200 && status < 300;
-          
-          resolve({
-            timestamp: new Date().toISOString(),
-            url,
+          let payload;
+          try {
+            payload = JSON.parse(data);
+          } catch {
+            finish({ status, healthy: false, error: 'Health-check response was not valid JSON' });
+            return;
+          }
+
+          const applicationStatus = typeof payload?.status === 'string'
+            ? payload.status.toLowerCase()
+            : undefined;
+          const healthy = status >= 200 && status < 300 && HEALTHY_RESPONSE_STATUSES.has(applicationStatus);
+
+          finish({
             status,
-            latency,
-            healthy: isHealthy,
-            response: data.substring(0, 500) // Truncate response
+            applicationStatus,
+            healthy,
+            error: healthy ? undefined : 'Health-check response did not explicitly report a healthy status'
           });
         });
       });
-      
+
       req.on('error', (error) => {
-        const latency = Date.now() - startTime;
-        resolve({
-          timestamp: new Date().toISOString(),
-          url,
-          status: 0,
-          latency,
-          healthy: false,
-          error: error.message
-        });
+        finish({ status: 0, healthy: false, error: error.message });
       });
-      
+
       req.on('timeout', () => {
-        req.destroy();
-        const latency = Date.now() - startTime;
-        resolve({
-          timestamp: new Date().toISOString(),
-          url,
-          status: 0,
-          latency,
-          healthy: false,
-          error: 'Timeout'
-        });
+        req.destroy(new Error('Health-check request timed out'));
       });
     });
   }
 
   async storeHealthCheck(checkResult) {
     this.results.checks.push(checkResult);
-    
-    // Store in metrics_log
-    await this.supabase.from('metrics_log').insert({
+
+    const { error } = await this.supabase.from('metrics_log').insert({
       source: 'healthcheck',
       metric: {
         type: 'health_check',
         url: checkResult.url,
         status: checkResult.status,
+        applicationStatus: checkResult.applicationStatus,
         latency: checkResult.latency,
         healthy: checkResult.healthy,
         error: checkResult.error
       },
       ts: checkResult.timestamp
     });
+
+    if (error) {
+      throw new Error(`Failed to persist health-check result: ${error.message}`);
+    }
   }
 
   async calculateUptime() {
-    // Get health checks from last 7 days
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    
-    const { data } = await this.supabase
+
+    const { data, error } = await this.supabase
       .from('metrics_log')
       .select('*')
       .eq('source', 'healthcheck')
       .gte('ts', sevenDaysAgo.toISOString())
       .order('ts', { ascending: false });
-    
+
+    if (error) {
+      throw new Error(`Failed to read health-check history: ${error.message}`);
+    }
+
     if (!data || data.length === 0) {
-      // Use current check only
       const currentCheck = this.results.checks[0];
-      this.results.uptime = currentCheck?.healthy ? 1.0 : 0.0;
+      this.results.uptime = currentCheck?.healthy === true ? 1 : 0;
       this.results.avgLatency = currentCheck?.latency || 0;
       return;
     }
-    
-    // Calculate uptime percentage
-    const healthyChecks = data.filter(d => d.metric?.healthy !== false);
+
+    const healthyChecks = data.filter((entry) => entry.metric?.healthy === true);
     this.results.uptime = healthyChecks.length / data.length;
-    
-    // Calculate average latency
+
     const latencies = data
-      .map(d => d.metric?.latency)
-      .filter(l => l !== undefined && l > 0);
-    
+      .map((entry) => entry.metric?.latency)
+      .filter((latency) => Number.isFinite(latency) && latency >= 0);
+
     if (latencies.length > 0) {
       this.results.avgLatency = Math.round(
-        latencies.reduce((sum, l) => sum + l, 0) / latencies.length
+        latencies.reduce((sum, latency) => sum + latency, 0) / latencies.length
       );
     }
-    
-    // Calculate downtime (in milliseconds)
-    const downtimePeriods = [];
-    let lastHealthyTime = null;
-    
-    data.reverse().forEach(check => {
-      const checkTime = new Date(check.ts);
-      if (check.metric?.healthy === false) {
-        if (lastHealthyTime) {
-          downtimePeriods.push(checkTime - lastHealthyTime);
-        }
-      } else {
-        lastHealthyTime = checkTime;
+
+    const orderedChecks = [...data].reverse();
+    let failureStartedAt = null;
+    let downtime = 0;
+
+    for (const check of orderedChecks) {
+      const checkTime = new Date(check.ts).getTime();
+      if (!Number.isFinite(checkTime)) continue;
+
+      if (check.metric?.healthy !== true && failureStartedAt === null) {
+        failureStartedAt = checkTime;
+      } else if (check.metric?.healthy === true && failureStartedAt !== null) {
+        downtime += Math.max(0, checkTime - failureStartedAt);
+        failureStartedAt = null;
       }
-    });
-    
-    this.results.downtime = downtimePeriods.reduce((sum, d) => sum + d, 0);
+    }
+
+    if (failureStartedAt !== null) {
+      downtime += Math.max(0, Date.now() - failureStartedAt);
+    }
+    this.results.downtime = downtime;
   }
 
   async checkDowntimeAlerts() {
-    // Check if downtime exceeds threshold
+    const currentCheck = this.results.checks[0];
+    if (currentCheck?.healthy !== true) {
+      await this.addAlert({
+        type: 'health_check',
+        severity: 'critical',
+        message: `Readiness check failed: ${currentCheck?.error || `HTTP ${currentCheck?.status || 0}`}`
+      });
+    }
+
     if (this.results.downtime > this.config.downtimeThreshold) {
-      const alert = {
+      await this.addAlert({
         type: 'downtime',
         severity: 'high',
-        message: `Downtime detected: ${Math.round(this.results.downtime / 1000)}s exceeds threshold of ${Math.round(this.config.downtimeThreshold / 1000)}s`,
-        timestamp: new Date().toISOString()
-      };
-      
-      this.results.alerts.push(alert);
-      
-      // Send webhook if configured
-      const webhookUrl = process.env.RELIABILITY_ALERT_WEBHOOK;
-      if (webhookUrl) {
-        await this.sendWebhookAlert(webhookUrl, alert);
-      }
+        message: `Downtime detected: ${Math.round(this.results.downtime / 1000)}s exceeds threshold of ${Math.round(this.config.downtimeThreshold / 1000)}s`
+      });
     }
-    
-    // Check if uptime is below threshold
+
     if (this.results.uptime < this.config.uptimeThreshold) {
-      const alert = {
+      await this.addAlert({
         type: 'uptime',
         severity: 'high',
-        message: `Uptime ${(this.results.uptime * 100).toFixed(3)}% is below threshold of ${(this.config.uptimeThreshold * 100).toFixed(2)}%`,
-        timestamp: new Date().toISOString()
-      };
-      
-      this.results.alerts.push(alert);
-      
-      const webhookUrl = process.env.RELIABILITY_ALERT_WEBHOOK;
-      if (webhookUrl) {
-        await this.sendWebhookAlert(webhookUrl, alert);
-      }
+        message: `Uptime ${(this.results.uptime * 100).toFixed(3)}% is below threshold of ${(this.config.uptimeThreshold * 100).toFixed(2)}%`
+      });
+    }
+  }
+
+  async addAlert(alert) {
+    const timestampedAlert = { ...alert, timestamp: new Date().toISOString() };
+    this.results.alerts.push(timestampedAlert);
+
+    if (process.env.RELIABILITY_ALERT_WEBHOOK) {
+      await this.sendWebhookAlert(process.env.RELIABILITY_ALERT_WEBHOOK, timestampedAlert);
     }
   }
 
   async sendWebhookAlert(webhookUrl, alert) {
     try {
-      const https = await import('https');
-      const http = await import('http');
       const url = new URL(webhookUrl);
+      if (!['https:', 'http:'].includes(url.protocol)) {
+        throw new Error('Webhook URL must use HTTP or HTTPS');
+      }
       const client = url.protocol === 'https:' ? https : http;
-      
       const payload = JSON.stringify({
-        text: `🚨 Reliability Alert: ${alert.message}`,
-        alert: alert,
+        text: `Reliability Alert: ${alert.message}`,
+        alert,
         timestamp: alert.timestamp
       });
-      
-      const options = {
-        hostname: url.hostname,
-        port: url.port || (url.protocol === 'https:' ? 443 : 80),
-        path: url.pathname + url.search,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(payload)
-        }
-      };
-      
-      return new Promise((resolve, reject) => {
-        const req = client.request(options, (res) => {
-          resolve();
+
+      await new Promise((resolve, reject) => {
+        const req = client.request({
+          hostname: url.hostname,
+          port: url.port || (url.protocol === 'https:' ? 443 : 80),
+          path: url.pathname + url.search,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(payload)
+          }
+        }, (res) => {
+          res.resume();
+          if (res.statusCode >= 200 && res.statusCode < 300) resolve();
+          else reject(new Error(`Webhook returned HTTP ${res.statusCode || 0}`));
         });
-        
+
         req.on('error', reject);
         req.write(payload);
         req.end();

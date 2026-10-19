@@ -23,13 +23,17 @@ function SignupContent() {
   const [name, setName] = useState('');
   const [plan, setPlan] = useState(initialPlan);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -41,11 +45,20 @@ function SignupContent() {
       });
 
       if (error) {
-        // If Supabase is in mock/offline mode or returns error, provide graceful fallback
-        toast.info('Account initialized in Chef Session mode!');
-      } else {
-        toast.success('Welcome to WhatsForDinner!');
+        const message = error.message || 'Unable to create your account. Please try again.';
+        setErrorMessage(message);
+        toast.error(message);
+        return;
       }
+
+      if (!data.session) {
+        const message = 'Check your email to verify your account, then sign in to continue.';
+        setSuccessMessage(message);
+        toast.success(message);
+        return;
+      }
+
+      toast.success('Welcome to WhatsForDinner!');
 
       // If user selected paid plan (Pro or Family), transition to Stripe Checkout
       if (plan === 'pro' || plan === 'family') {
@@ -59,20 +72,27 @@ function SignupContent() {
               customerEmail: email,
             }),
           });
+          if (!res.ok) {
+            throw new Error('Checkout is unavailable right now. Your account was created successfully.');
+          }
           const subData = await res.json();
           if (subData.checkoutUrl) {
             window.location.href = subData.checkoutUrl;
             return;
           }
-        } catch {
-          // Continue to onboarding
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'Checkout is unavailable right now. Please try again later.';
+          setErrorMessage(message);
+          toast.error(message);
+          return;
         }
       }
 
-      router.push('/dashboard');
-    } catch {
-      toast.error('Signup failed, continuing to dashboard');
-      router.push('/dashboard');
+      router.push('/onboarding');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to create your account. Please try again.';
+      setErrorMessage(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -130,9 +150,11 @@ function SignupContent() {
           <CardContent>
             <form onSubmit={handleSignup} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold">Full Name</label>
+                <label htmlFor="signup-name" className="text-xs font-semibold">Full Name</label>
                 <Input
+                  id="signup-name"
                   type="text"
+                  autoComplete="name"
                   placeholder="Chef Julia"
                   value={name}
                   onChange={e => setName(e.target.value)}
@@ -141,9 +163,11 @@ function SignupContent() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold">Email Address</label>
+                <label htmlFor="signup-email" className="text-xs font-semibold">Email Address</label>
                 <Input
+                  id="signup-email"
                   type="email"
+                  autoComplete="email"
                   placeholder="julia@kitchen.com"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -152,15 +176,30 @@ function SignupContent() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold">Password</label>
+                <label htmlFor="signup-password" className="text-xs font-semibold">Password</label>
                 <Input
+                  id="signup-password"
                   type="password"
+                  autoComplete="new-password"
+                  minLength={8}
                   placeholder="••••••••"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
                 />
               </div>
+
+              {errorMessage && (
+                <div role="alert" className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                  {errorMessage}
+                </div>
+              )}
+
+              {successMessage && (
+                <div role="status" className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
+                  {successMessage}
+                </div>
+              )}
 
               <Button type="submit" className="w-full font-bold h-11" disabled={loading}>
                 {loading ? 'Creating Account...' : plan === 'free' ? 'Get Started Free' : `Start 14-Day ${plan.toUpperCase()} Trial`}

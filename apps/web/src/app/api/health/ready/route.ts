@@ -1,15 +1,38 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { runHealthCheck } from '@whats-for-dinner/utils';
 
 export const dynamic = 'force-dynamic';
 
-function checkAuth(req?: NextRequest) {
-  if (!req?.headers?.get('authorization') && !req?.headers?.get('content-type') && !req?.headers?.get('x-api-key') && !req?.headers?.get('x-user-id')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  return null;
-}
+/**
+ * Readiness verifies the dependencies needed to serve application traffic.
+ * Degraded is deliberately not ready: deployment and uptime gates must fail
+ * closed when a dependency cannot be verified.
+ */
+export async function GET() {
+  try {
+    const checkFn = (globalThis as any).__mockRunHealthCheck || runHealthCheck;
+    const health = await checkFn({ checkTimeout: 5000 });
+    const ready = health.status === 'healthy';
 
-export async function GET(req?: NextRequest) { return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true }); }
-export async function POST(req?: NextRequest) { return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true }); }
-export async function PUT(req?: NextRequest) { return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true }); }
-export async function DELETE(req?: NextRequest) { return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true }); }
+    return NextResponse.json(
+      {
+        status: ready ? 'ready' : 'not-ready',
+        timestamp: health.timestamp,
+        checks: health.checks,
+      },
+      {
+        status: ready ? 200 : 503,
+        headers: { 'Cache-Control': 'no-store, max-age=0' },
+      },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        status: 'not-ready',
+        timestamp: new Date().toISOString(),
+        error: error instanceof Error ? error.message : 'Readiness check failed',
+      },
+      { status: 503, headers: { 'Cache-Control': 'no-store, max-age=0' } },
+    );
+  }
+}

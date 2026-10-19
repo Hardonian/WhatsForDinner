@@ -34,6 +34,12 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "next": [
+        "./apps/web/node_modules/next"
+      ],
+      "next/*": [
+        "./apps/web/node_modules/next/*"
+      ],
       "@/*": [
         "./src/*"
       ],
@@ -76,6 +82,8 @@
     "**/node_modules",
     "**/.next",
     "**/dist",
-    "**/build"
+    "**/build",
+    "whats-for-dinner",
+    "whats-for-dinner/**"
   ]
 }

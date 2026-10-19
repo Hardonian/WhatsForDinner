@@ -29,7 +29,7 @@ export default function LandingPage() {
             Join thousands of families saving time and eating better
           </p>
           <a
-            href="/auth/signup"
+            href="/signup"
             className="inline-block rounded-lg bg-background px-8 py-4 text-lg font-semibold text-primary transition-all hover:scale-105"
           >
             Start Free Today →

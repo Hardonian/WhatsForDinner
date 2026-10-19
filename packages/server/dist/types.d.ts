@@ -28,11 +28,11 @@ export declare const paginationSchema: z.ZodObject<{
     page: z.ZodDefault<z.ZodNumber>;
     limit: z.ZodDefault<z.ZodNumber>;
 }, "strip", z.ZodTypeAny, {
-    page: number;
     limit: number;
+    page: number;
 }, {
-    page?: number | undefined;
     limit?: number | undefined;
+    page?: number | undefined;
 }>;
 export declare const dateRangeSchema: z.ZodObject<{
     from: z.ZodOptional<z.ZodDate>;
