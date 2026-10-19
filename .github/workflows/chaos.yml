@@ -121,7 +121,7 @@ jobs:
           echo "- Delta: $DELTA_PCT%" >> chaos-report.md
 
       - name: Upload report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: chaos-report
           path: chaos-report.md

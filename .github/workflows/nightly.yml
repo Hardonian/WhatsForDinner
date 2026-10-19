@@ -57,7 +57,7 @@ jobs:
 
       - name: Upload Reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: drift-report-${{ github.run_number }}
           path: |
@@ -91,7 +91,7 @@ jobs:
 
       - name: Upload hygiene reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: hygiene-reports-nightly
           path: reports/*.json
@@ -133,7 +133,7 @@ jobs:
 
       - name: Upload benchmarks
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: performance-benchmarks
           path: |
