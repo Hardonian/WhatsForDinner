@@ -98,7 +98,7 @@
     "openai": "^6.7.0",
     "posthog-js": "^1.434.0",
     "react": "19.2.0",
-    "react-dom": "19.3.0",
+    "react-dom": "19.2.0",
     "recharts": "^2.8.0",
     "resend": "^6.2.2",
     "sonner": "^1.4.0",
