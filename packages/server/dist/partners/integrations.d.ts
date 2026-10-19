@@ -10,13 +10,13 @@ export declare const PartnerWebhookSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     partner: "meta" | "tiktok" | "stripe";
     data: Record<string, any>;
-    timestamp: string;
     event: string;
+    timestamp: string;
 }, {
     partner: "meta" | "tiktok" | "stripe";
     data: Record<string, any>;
-    timestamp: string;
     event: string;
+    timestamp: string;
 }>;
 export type PartnerWebhook = z.infer<typeof PartnerWebhookSchema>;
 export declare function validatePartnerWebhook(payload: unknown): Promise<PartnerWebhook>;
