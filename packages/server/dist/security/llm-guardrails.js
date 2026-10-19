@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * AI Agent Guardrails
  */
@@ -68,6 +67,48 @@ export class LLMGuardrails {
             }
             return fallbackFunction();
         }
+    }
+    /**
+     * Sanitizes user input to prevent prompt injection and escapes control tokens.
+     */
+    sanitizePrompt(input) {
+        if (!input || typeof input !== 'string')
+            return '';
+        const sanitized = input
+            .replace(/<\/?(?:system|user|assistant|instruction|prompt)[^>]*>/gi, '')
+            .replace(/(?:ignore previous instructions|ignore all previous directions|system prompt)/gi, '[FILTERED]')
+            .trim();
+        return `<user_input>${sanitized}</user_input>`;
+    }
+    /**
+     * Deterministically scans an array of recipe ingredients against a user allergen blacklist.
+     */
+    scanAllergens(ingredients, blacklist) {
+        if (!ingredients?.length || !blacklist?.length) {
+            return { safe: true, violations: [] };
+        }
+        const stem = (word) => word.toLowerCase().trim().replace(/s$/i, '').replace(/ies$/i, 'y');
+        const normalizedBlacklist = blacklist
+            .map((b) => b.trim().toLowerCase())
+            .filter(Boolean)
+            .map((b) => ({ raw: b, stemmed: stem(b) }));
+        const violations = [];
+        for (const ingredient of ingredients) {
+            const lowerIng = ingredient.toLowerCase();
+            const words = lowerIng.split(/[\s,/-]+/).map(stem);
+            for (const allergen of normalizedBlacklist) {
+                if (lowerIng.includes(allergen.raw) ||
+                    (allergen.stemmed.length >= 3 && lowerIng.includes(allergen.stemmed)) ||
+                    words.includes(allergen.raw) ||
+                    words.includes(allergen.stemmed)) {
+                    violations.push(`${ingredient} contains allergen "${allergen.raw}"`);
+                }
+            }
+        }
+        return {
+            safe: violations.length === 0,
+            violations: Array.from(new Set(violations)),
+        };
     }
 }
 export const llmGuardrails = new LLMGuardrails();

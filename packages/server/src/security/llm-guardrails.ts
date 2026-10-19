@@ -124,15 +124,28 @@ export class LLMGuardrails {
       return { safe: true, violations: [] };
     }
 
-    const normalizedBlacklist = blacklist.map((b) => b.trim().toLowerCase()).filter(Boolean);
+    const stem = (word: string) =>
+      word.toLowerCase().trim().replace(/s$/i, '').replace(/ies$/i, 'y');
+
+    const normalizedBlacklist = blacklist
+      .map((b) => b.trim().toLowerCase())
+      .filter(Boolean)
+      .map((b) => ({ raw: b, stemmed: stem(b) }));
+
     const violations: string[] = [];
 
     for (const ingredient of ingredients) {
       const lowerIng = ingredient.toLowerCase();
+      const words = lowerIng.split(/[\s,/-]+/).map(stem);
+
       for (const allergen of normalizedBlacklist) {
-        const regex = new RegExp(`\\b${allergen}\\b`, 'i');
-        if (regex.test(lowerIng) || lowerIng.includes(allergen)) {
-          violations.push(`${ingredient} contains allergen "${allergen}"`);
+        if (
+          lowerIng.includes(allergen.raw) ||
+          (allergen.stemmed.length >= 3 && lowerIng.includes(allergen.stemmed)) ||
+          words.includes(allergen.raw) ||
+          words.includes(allergen.stemmed)
+        ) {
+          violations.push(`${ingredient} contains allergen "${allergen.raw}"`);
         }
       }
     }
