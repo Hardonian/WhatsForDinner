@@ -241,7 +241,7 @@
     "testimonials:generate": "node scripts/send-testimonial-requests.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.76.1",
+    "@supabase/supabase-js": "^2.118.0",
     "pg": "^8.11.3"
   },
   "devDependencies": {
@@ -249,11 +249,11 @@
     "@eslint/js": "^10.0.1",
     "@lhci/cli": "^0.15.1",
     "@octokit/rest": "^20.0.2",
-    "@opentelemetry/auto-instrumentations-node": "^0.80.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.81.1",
     "@opentelemetry/exporter-otlp-http": "^0.26.0",
     "@opentelemetry/resources": "^1.28.0",
     "@opentelemetry/sdk-metrics": "^1.28.0",
-    "@opentelemetry/sdk-node": "^0.222.0",
+    "@opentelemetry/sdk-node": "^0.223.0",
     "@opentelemetry/semantic-conventions": "^1.28.0",
     "@playwright/test": "^1.64.0",
     "@prisma/client": "^5.22.0",
