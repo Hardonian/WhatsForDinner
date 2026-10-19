@@ -29,11 +29,32 @@ export async function getAuthenticatedUser(
   try {
     const supabase = createRouteHandlerClient({ cookies } as any);
     
-    // Get user from JWT token (validates the token)
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+    // Check Authorization header for Bearer token first
+    const authHeader = request.headers.get('authorization');
+    const bearerToken = authHeader?.startsWith('Bearer ')
+      ? authHeader.substring(7)
+      : (authHeader?.startsWith('bearer ') ? authHeader.substring(7) : null);
+
+    let user: any = null;
+    let authError: any = null;
+
+    if (bearerToken) {
+      const result = await supabase.auth.getUser(bearerToken);
+      user = result.data?.user;
+      authError = result.error;
+    }
+
+    if (!user) {
+      const result = await supabase.auth.getUser();
+      user = result.data?.user;
+      authError = result.error;
+    }
+
+    // Support dev/test header mock in non-production
+    if (!user && process.env.NODE_ENV !== 'production' && request.headers.get('x-user-id')) {
+      user = { id: request.headers.get('x-user-id')!, email: 'test@example.com' };
+      authError = null;
+    }
 
     if (authError || !user) {
       return null;

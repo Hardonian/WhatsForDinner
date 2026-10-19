@@ -53,7 +53,24 @@ export function middleware(request: NextRequest) {
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('X-DNS-Prefetch-Control', 'on');
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  response.headers.set('Permissions-Policy', 'camera=(self), microphone=(), geolocation=()');
+
+  // Content Security Policy
+  const cspHeader = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://app.posthog.com https://us.i.posthog.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://res.cloudinary.com https://*.stripe.com",
+    "font-src 'self' https://fonts.gstatic.com data:",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com https://app.posthog.com https://us.i.posthog.com https://*.sentry.io https://api.openai.com",
+    "frame-src 'self' https://js.stripe.com https://hooks.stripe.com",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+  ].join('; ');
+  response.headers.set('Content-Security-Policy', cspHeader);
 
   if (duration > 1000) {
     console.warn(`[Slow Request] ${request.method} ${request.nextUrl.pathname} took ${duration}ms (ID: ${requestId})`);
