@@ -23,10 +23,11 @@ export async function POST(
     const authContext = await getAuthenticatedUser(req);
     const authenticatedUser = authContext?.user;
 
-    // Check header fallback for test/dev environments if authContext is absent
-    const userId = authenticatedUser?.id || req.headers.get('x-user-id');
+    // Check header fallback ONLY for test/dev environments if authContext is absent
+    const isProd = process.env.NODE_ENV === 'production';
+    const userId = authenticatedUser?.id || (!isProd ? req.headers.get('x-user-id') : null);
 
-    if (!userId && process.env.NODE_ENV === 'production') {
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized: Authentication required' }, { status: 401 });
     }
 
@@ -52,14 +53,14 @@ export async function POST(
     }
 
     // Verify ownership and authorization
-    if (dbSub && authenticatedUser?.id) {
-      const isOwner = dbSub.user_id === authenticatedUser.id;
+    if (dbSub) {
+      const isOwner = dbSub.user_id === userId;
       const isAdmin = (authenticatedUser as any)?.role === 'admin' || (authenticatedUser as any)?.isAdmin === true;
 
       if (!isOwner && !isAdmin) {
         logger.warn('Unauthorized subscription cancellation attempt', {
           subscriptionId,
-          callerUserId: authenticatedUser.id,
+          callerUserId: userId,
           ownerUserId: dbSub.user_id,
         });
         return NextResponse.json(

@@ -1330,6 +1330,9 @@ importers:
       '@sendgrid/mail':
         specifier: ^8.1.3
         version: 8.1.6(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
+      '@whats-for-dinner/utils':
+        specifier: workspace:*
+        version: link:../utils
       archiver:
         specifier: ^7.0.0
         version: 7.0.1

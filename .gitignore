@@ -10,11 +10,9 @@ node_modules/
 
 # next.js
 .next/
-/out/
-/dist/
-apps/web/.next/
-apps/web/out/
-apps/web/dist/
+out/
+dist/
+
 
 # production
 /build

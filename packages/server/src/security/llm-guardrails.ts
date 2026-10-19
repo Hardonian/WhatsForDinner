@@ -3,9 +3,11 @@
  */
 
 import { z } from 'zod';
-import { createComponentLogger } from '@whats-for-dinner/utils';
-
-const logger = createComponentLogger('llm-guardrails-ts');
+const logger = {
+  warn: (msg: string, meta?: any) => console.warn(`[llm-guardrails] ${msg}`, meta),
+  error: (msg: string, meta?: any) => console.error(`[llm-guardrails] ${msg}`, meta),
+  info: (msg: string, meta?: any) => console.info(`[llm-guardrails] ${msg}`, meta),
+};
 export interface LLMCallOptions {
   timeout?: number;
   maxRetries?: number;

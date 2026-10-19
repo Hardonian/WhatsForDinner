@@ -27,6 +27,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@whats-for-dinner/utils": "workspace:*",
     "@opentelemetry/api": "^1.8.0",
     "@opentelemetry/auto-instrumentations-node": "^0.80.0",
     "@opentelemetry/exporter-prometheus": "^0.222.0",
