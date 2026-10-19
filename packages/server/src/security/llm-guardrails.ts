@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * AI Agent Guardrails
  */
@@ -101,6 +100,49 @@ export class LLMGuardrails {
       return fallbackFunction();
     }
   }
+
+  /**
+   * Sanitizes user input to prevent prompt injection and escapes control tokens.
+   */
+  sanitizePrompt(input: string): string {
+    if (!input || typeof input !== 'string') return '';
+    const sanitized = input
+      .replace(/<\/?(?:system|user|assistant|instruction|prompt)[^>]*>/gi, '')
+      .replace(/(?:ignore previous instructions|ignore all previous directions|system prompt)/gi, '[FILTERED]')
+      .trim();
+    return `<user_input>${sanitized}</user_input>`;
+  }
+
+  /**
+   * Deterministically scans an array of recipe ingredients against a user allergen blacklist.
+   */
+  scanAllergens(
+    ingredients: string[],
+    blacklist: string[]
+  ): { safe: boolean; violations: string[] } {
+    if (!ingredients?.length || !blacklist?.length) {
+      return { safe: true, violations: [] };
+    }
+
+    const normalizedBlacklist = blacklist.map((b) => b.trim().toLowerCase()).filter(Boolean);
+    const violations: string[] = [];
+
+    for (const ingredient of ingredients) {
+      const lowerIng = ingredient.toLowerCase();
+      for (const allergen of normalizedBlacklist) {
+        const regex = new RegExp(`\\b${allergen}\\b`, 'i');
+        if (regex.test(lowerIng) || lowerIng.includes(allergen)) {
+          violations.push(`${ingredient} contains allergen "${allergen}"`);
+        }
+      }
+    }
+
+    return {
+      safe: violations.length === 0,
+      violations: Array.from(new Set(violations)),
+    };
+  }
 }
 
 export const llmGuardrails = new LLMGuardrails();
+
