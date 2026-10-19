@@ -11,6 +11,7 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@whats-for-dinner/utils$': '<rootDir>/../../packages/utils/src/index.ts',
     '^@whats-for-dinner/server$': '<rootDir>/../../packages/server/src/index.ts',
+    '^@whats-for-dinner/server/(.*)$': '<rootDir>/../../packages/server/src/$1',
     '^@whats-for-dinner/ui$': '<rootDir>/../../packages/ui/src/index.ts',
   },
   collectCoverageFrom: [

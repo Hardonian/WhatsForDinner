@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NextRequest } from 'next/server';
-import { POST } from '../route';
+import { POST, GET, PUT, DELETE } from '../route';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const _logger = createComponentLogger('test-dinner-api');
@@ -171,14 +171,35 @@ describe('Dinner API Route', () => {
       expect(data.metadata.cached).toBe(true);
     });
 
-    it('should handle errors gracefully', async () => {
+    it('should scan and flag allergens when user specifies allergies', async () => {
       const { getTenantContext } = await import('@/lib/auth-middleware');
-      vi.mocked(getTenantContext).mockRejectedValue(new Error('Test error'));
+      vi.mocked(getTenantContext).mockResolvedValue({
+        success: true,
+        context: { supabase: {} },
+        tenantId: 'test-tenant-id',
+      });
+
+      const { suggestionCache } = await import('@/lib/cache');
+      vi.mocked(suggestionCache.get).mockReturnValue(null);
+
+      const { aiOptimization } = await import('@/lib/aiOptimization');
+      vi.mocked(aiOptimization.getOptimizedResponse).mockResolvedValue({
+        response: {
+          recipes: [
+            {
+              id: '1',
+              title: 'Peanut Satay Chicken',
+              ingredients: ['chicken', 'peanut butter', 'soy sauce'],
+            },
+          ],
+        },
+      });
 
       const request = new NextRequest('http://localhost:3000/api/dinner', {
         method: 'POST',
         body: JSON.stringify({
-          ingredients: ['chicken'],
+          ingredients: ['chicken', 'peanut butter'],
+          allergies: ['peanuts'],
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +207,26 @@ describe('Dinner API Route', () => {
       });
 
       const response = await POST(request);
-      expect(response.status).toBeGreaterThanOrEqual(500);
+      expect(response.status).toBe(200);
+      const data = await response.json();
+      expect(data.recipes[0].allergenSafety).toBeDefined();
+      expect(data.recipes[0].allergenSafety.safe).toBe(false);
+      expect(data.recipes[0].allergenSafety.detectedAllergens[0]).toContain('peanuts');
+    });
+
+    it('should return 405 Method Not Allowed for GET, PUT, and DELETE', async () => {
+      const getRes = await GET();
+      expect(getRes.status).toBe(405);
+      expect(getRes.headers.get('Allow')).toBe('POST');
+
+      const putRes = await PUT();
+      expect(putRes.status).toBe(405);
+      expect(putRes.headers.get('Allow')).toBe('POST');
+
+      const deleteRes = await DELETE();
+      expect(deleteRes.status).toBe(405);
+      expect(deleteRes.headers.get('Allow')).toBe('POST');
     });
   });
 });
+

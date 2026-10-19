@@ -132,6 +132,7 @@ export class StripeService {
       mode: isSubscription ? 'subscription' : 'payment',
       payment_method_types: ['card'],
       line_items: lineItems,
+      automatic_tax: { enabled: true },
       success_url: successUrl,
       cancel_url: cancelUrl,
       ...(customerId ? { customer: customerId } : {}),
