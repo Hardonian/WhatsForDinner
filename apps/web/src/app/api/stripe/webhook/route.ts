@@ -35,7 +35,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
     }
   } else {
-    // If webhook secret is not configured (e.g. testing or local staging)
+    // In production, signature verification is strictly required
+    if (process.env.NODE_ENV === 'production') {
+      _logger.error('Missing Stripe webhook signature or unconfigured secret in production');
+      return NextResponse.json(
+        { error: 'Webhook signature verification required' },
+        { status: 400 }
+      );
+    }
+
+    // Dev/testing environment fallback
     try {
       event = JSON.parse(rawBody);
     } catch {
@@ -99,5 +108,16 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT() { return NextResponse.json({ status: 'ok', stub: true }); }
-export async function DELETE() { return NextResponse.json({ status: 'ok', stub: true }); }
+export async function PUT() {
+  return new NextResponse('Method Not Allowed', {
+    status: 405,
+    headers: { Allow: 'GET, POST' },
+  });
+}
+
+export async function DELETE() {
+  return new NextResponse('Method Not Allowed', {
+    status: 405,
+    headers: { Allow: 'GET, POST' },
+  });
+}
