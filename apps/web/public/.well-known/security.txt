@@ -1,0 +1,6 @@
+Contact: mailto:security@whatsfordinner.app
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://whatsfordinner.app/.well-known/security.txt
+Policy: https://whatsfordinner.app/security-policy
+Acknowledgments: https://whatsfordinner.app/hall-of-fame
