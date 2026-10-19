@@ -57,6 +57,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ status: 'ok', received: true });
   }
 
+  const processedEventIds = (globalThis as any).__processedWebhookEvents || ((globalThis as any).__processedWebhookEvents = new Set<string>());
+
+  if (event.id && processedEventIds.has(event.id)) {
+    _logger.info(`Stripe webhook event ${event.id} already processed (idempotent skip)`);
+    return NextResponse.json({ received: true, idempotent: true, event: event.type });
+  }
+
   _logger.info(`Received Stripe webhook event: ${event.type}`, { eventId: event.id });
 
   try {
@@ -92,8 +99,25 @@ export async function POST(req: NextRequest) {
         break;
       }
 
+      case 'charge.dispute.created': {
+        const dispute = event.data.object as any;
+        _logger.warn(`Stripe dispute created: ${dispute?.id} for charge: ${dispute?.charge}`, {
+          amount: dispute?.amount,
+          reason: dispute?.reason,
+        });
+        break;
+      }
+
       default:
         _logger.debug(`Unhandled Stripe event type: ${event.type}`);
+    }
+
+    if (event.id) {
+      processedEventIds.add(event.id);
+      if (processedEventIds.size > 5000) {
+        const oldest = Array.from(processedEventIds).slice(0, 1000) as string[];
+        oldest.forEach((id: string) => processedEventIds.delete(id));
+      }
     }
 
     return NextResponse.json({ received: true, event: event.type });
