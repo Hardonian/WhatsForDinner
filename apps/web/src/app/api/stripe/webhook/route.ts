@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { StripeService, STRIPE_CONFIG } from '@/lib/stripe';
 import { createComponentLogger } from '@whats-for-dinner/utils';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 
 const _logger = createComponentLogger('stripe-webhook');
+const PROCESSING_LEASE_MS = 10 * 60 * 1000;
 
 export const dynamic = 'force-dynamic';
 
@@ -11,8 +13,68 @@ export async function GET() {
   return NextResponse.json({
     status: 'ok',
     service: 'stripe-webhook',
-    configured: Boolean(STRIPE_CONFIG.webhookSecret),
   });
+}
+
+async function claimEvent(event: Stripe.Event): Promise<'claimed' | 'completed' | 'processing'> {
+  const db = getSupabaseAdmin();
+  const { error } = await db.from('stripe_webhook_events').insert({
+    event_id: event.id,
+    event_type: event.type,
+    status: 'processing',
+  });
+  if (!error) return 'claimed';
+  if (error.code !== '23505') throw error;
+
+  const { data: existing, error: readError } = await db
+    .from('stripe_webhook_events')
+    .select('status, received_at')
+    .eq('event_id', event.id)
+    .maybeSingle();
+  if (readError) throw readError;
+  if (existing?.status === 'completed') return 'completed';
+
+  if (existing?.status === 'failed') {
+    const { data: reclaimed, error: reclaimError } = await db
+      .from('stripe_webhook_events')
+      .update({ status: 'processing', last_error: null, received_at: new Date().toISOString() })
+      .eq('event_id', event.id)
+      .eq('status', 'failed')
+      .select('event_id')
+      .maybeSingle();
+    if (reclaimError) throw reclaimError;
+    if (reclaimed) return 'claimed';
+  }
+
+  if (existing?.status === 'processing' && existing.received_at) {
+    const staleBefore = new Date(Date.now() - PROCESSING_LEASE_MS).toISOString();
+    if (existing.received_at < staleBefore) {
+      const { data: reclaimed, error: reclaimError } = await db
+        .from('stripe_webhook_events')
+        .update({ received_at: new Date().toISOString(), processed_at: null, last_error: null })
+        .eq('event_id', event.id)
+        .eq('status', 'processing')
+        .lt('received_at', staleBefore)
+        .select('event_id')
+        .maybeSingle();
+      if (reclaimError) throw reclaimError;
+      if (reclaimed) return 'claimed';
+    }
+  }
+
+  return 'processing';
+}
+
+async function finishEvent(eventId: string, status: 'completed' | 'failed', error?: string) {
+  const { error: updateError } = await getSupabaseAdmin()
+    .from('stripe_webhook_events')
+    .update({
+      status,
+      processed_at: new Date().toISOString(),
+      last_error: error?.slice(0, 1000) || null,
+    })
+    .eq('event_id', eventId);
+  if (updateError) throw updateError;
 }
 
 export async function POST(req: NextRequest) {
@@ -27,41 +89,35 @@ export async function POST(req: NextRequest) {
   const signature = req.headers.get('stripe-signature');
   let event: Stripe.Event;
 
-  if (STRIPE_CONFIG.webhookSecret && signature) {
-    try {
-      event = StripeService.verifyWebhookSignature(rawBody, signature);
-    } catch (err: any) {
-      _logger.error('Webhook signature verification failed', { error: err.message });
-      return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
-    }
-  } else {
-    // In production, signature verification is strictly required
-    if (process.env.NODE_ENV === 'production') {
-      _logger.error('Missing Stripe webhook signature or unconfigured secret in production');
-      return NextResponse.json(
-        { error: 'Webhook signature verification required' },
-        { status: 400 }
-      );
-    }
-
-    // Dev/testing environment fallback
-    try {
-      event = JSON.parse(rawBody);
-    } catch {
-      return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 });
-    }
+  if (!STRIPE_CONFIG.webhookSecret) {
+    _logger.error('Stripe webhook secret is not configured');
+    return NextResponse.json({ error: 'Webhook is not configured' }, { status: 503 });
+  }
+  if (!signature) {
+    return NextResponse.json({ error: 'Stripe signature is required' }, { status: 400 });
+  }
+  try {
+    event = StripeService.verifyWebhookSignature(rawBody, signature);
+  } catch (err: any) {
+    _logger.error('Webhook signature verification failed', { error: err.message });
+    return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
   }
 
   if (!event || !event.type) {
-    // Allow empty payload in test mocks
-    return NextResponse.json({ status: 'ok', received: true });
+    return NextResponse.json({ error: 'Invalid Stripe event' }, { status: 400 });
   }
 
-  const processedEventIds = (globalThis as any).__processedWebhookEvents || ((globalThis as any).__processedWebhookEvents = new Set<string>());
-
-  if (event.id && processedEventIds.has(event.id)) {
-    _logger.info(`Stripe webhook event ${event.id} already processed (idempotent skip)`);
-    return NextResponse.json({ received: true, idempotent: true, event: event.type });
+  try {
+    const claim = await claimEvent(event);
+    if (claim === 'completed') {
+      return NextResponse.json({ received: true, idempotent: true, event: event.type });
+    }
+    if (claim === 'processing') {
+      return NextResponse.json({ error: 'Event is already being processed' }, { status: 409 });
+    }
+  } catch (claimError) {
+    _logger.error('Failed to claim Stripe event', { error: claimError });
+    return NextResponse.json({ error: 'Webhook persistence unavailable' }, { status: 503 });
   }
 
   _logger.info(`Received Stripe webhook event: ${event.type}`, { eventId: event.id });
@@ -112,16 +168,15 @@ export async function POST(req: NextRequest) {
         _logger.debug(`Unhandled Stripe event type: ${event.type}`);
     }
 
-    if (event.id) {
-      processedEventIds.add(event.id);
-      if (processedEventIds.size > 5000) {
-        const oldest = Array.from(processedEventIds).slice(0, 1000) as string[];
-        oldest.forEach((id: string) => processedEventIds.delete(id));
-      }
-    }
+    await finishEvent(event.id, 'completed');
 
     return NextResponse.json({ received: true, event: event.type });
   } catch (handlerErr: any) {
+    try {
+      await finishEvent(event.id, 'failed', handlerErr.message);
+    } catch (persistenceError) {
+      _logger.error('Failed to record Stripe webhook failure', { error: persistenceError });
+    }
     _logger.error(`Error processing Stripe webhook event ${event.type}`, {
       error: handlerErr.message,
     });

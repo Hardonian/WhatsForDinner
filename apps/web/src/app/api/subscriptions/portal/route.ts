@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { StripeService } from '@/lib/stripe';
 import { createComponentLogger } from '@whats-for-dinner/utils';
+import { requireAuth } from '@/lib/auth-middleware';
 
 const logger = createComponentLogger('subscription-portal-api');
 
@@ -8,6 +9,9 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = await requireAuth(req);
+    if ('response' in auth) return auth.response;
+
     let body: any = {};
     try {
       body = await req.json();
@@ -15,15 +19,19 @@ export async function POST(req: NextRequest) {
       // Body is optional
     }
 
-    const userId = body.userId || req.headers.get('x-user-id') || req.headers.get('authorization');
-    const tenantId = body.tenantId || req.headers.get('x-tenant-id') || undefined;
-
-    if (!userId && !tenantId) {
-      return NextResponse.json({ error: 'Unauthorized: User or Tenant ID required' }, { status: 401 });
-    }
+    const userId = auth.context.user.id;
+    const tenantId = auth.context.user.tenantId || undefined;
 
     const origin = req.nextUrl?.origin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const returnUrl = body.returnUrl || `${origin}/settings`;
+    let returnUrl = `${origin}/settings/billing`;
+    if (typeof body.returnUrl === 'string') {
+      try {
+        const candidate = new URL(body.returnUrl, origin);
+        if (candidate.origin === origin) returnUrl = candidate.toString();
+      } catch {
+        return NextResponse.json({ error: 'Invalid return URL' }, { status: 400 });
+      }
+    }
 
     logger.info('Creating customer portal session', { userId, tenantId, returnUrl });
 
@@ -56,5 +64,5 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  return POST(req);
+  return new NextResponse('Method Not Allowed', { status: 405, headers: { Allow: 'POST' } });
 }

@@ -5,6 +5,10 @@
  */
 
 import { NextRequest } from 'next/server';
+const mockGetUser = jest.fn();
+jest.mock('@supabase/ssr', () => ({
+  createServerClient: () => ({ auth: { getUser: mockGetUser } }),
+}));
 import { middleware } from './middleware';
 
 // Mock environment variables
@@ -39,7 +43,7 @@ describe('Middleware', () => {
   it('should handle API key rate limiting when enabled', async () => {
     process.env.API_MONETIZATION_ENABLED = 'true';
     
-    const request = new NextRequest('http://localhost:3000/api/v1/test', {
+    const request = new NextRequest('http://localhost:3000/api/v2/test', {
       headers: {
         'x-api-key': 'test-key',
       },
@@ -63,6 +67,21 @@ describe('Middleware', () => {
     const response = await middleware(request);
     
     // Should return 401 for invalid API key
+    expect(response.status).toBe(401);
+  });
+
+  it('does not treat Content-Type or x-user-id as authentication', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: null }, error: null });
+    const request = new NextRequest('http://localhost:3000/api/preferences', {
+      method: 'POST',
+      headers: {
+        origin: 'http://localhost:3000',
+        'content-type': 'application/json',
+        'x-user-id': 'spoofed-user',
+      },
+      body: '{}',
+    });
+    const response = await middleware(request);
     expect(response.status).toBe(401);
   });
 

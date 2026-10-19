@@ -1,8 +1,28 @@
 import Stripe from 'stripe';
+import 'server-only';
 import { createComponentLogger } from '@whats-for-dinner/utils';
-import { supabase, supabaseAdmin } from './supabaseClient';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import { getSupabaseAdmin } from './supabase/admin';
 
 const _logger = createComponentLogger('stripe-service');
+
+const supabaseAdmin = new Proxy({} as SupabaseClient, {
+  get(_target, property) {
+    const client = getSupabaseAdmin();
+    return Reflect.get(client, property, client);
+  },
+});
+
+async function requireDatabaseWrite<T extends { error?: { message?: string } | null }>(
+  operation: PromiseLike<T>,
+  label: string
+): Promise<T> {
+  const result = await operation;
+  if (result.error) {
+    throw new Error(`${label}: ${result.error.message || 'database write failed'}`);
+  }
+  return result;
+}
 
 const stripeApiKey = process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder';
 
@@ -310,8 +330,8 @@ export class StripeService {
         _logger.warn('Could not retrieve subscription dates during checkout completion', { error: err });
       }
 
-      try {
-        await supabaseAdmin.from('subscriptions').upsert(
+      await requireDatabaseWrite(
+        supabaseAdmin.from('subscriptions').upsert(
           {
             user_id: userId || null,
             tenant_id: tenantId || null,
@@ -326,14 +346,13 @@ export class StripeService {
             updated_at: new Date().toISOString(),
           },
           { onConflict: 'stripe_subscription_id' }
-        );
-      } catch (dbErr) {
-        _logger.error('Error saving subscription to Supabase', { error: dbErr });
-      }
+        ),
+        'Save subscription'
+      );
 
       if (tenantId) {
-        try {
-          await supabaseAdmin
+        await requireDatabaseWrite(
+          supabaseAdmin
             .from('tenants')
             .update({
               stripe_customer_id: customerId || null,
@@ -342,10 +361,9 @@ export class StripeService {
               status: 'active',
               updated_at: new Date().toISOString(),
             })
-            .eq('id', tenantId);
-        } catch (tenantErr) {
-          _logger.error('Error updating tenant in Supabase', { error: tenantErr });
-        }
+            .eq('id', tenantId),
+          'Update subscription tenant'
+        );
       }
     } else if (session.mode === 'payment') {
       const purchaseType = metadata.type || 'credit_purchase';
@@ -358,8 +376,8 @@ export class StripeService {
       if (purchaseType === 'usage_credits' || purchaseType === 'credits') {
         const credits = parseInt(metadata.credits || '0', 10);
         if (credits > 0 && userId) {
-          try {
-            await supabaseAdmin.from('usage_credits').insert({
+          await requireDatabaseWrite(
+            supabaseAdmin.from('usage_credits').insert({
               user_id: userId,
               tenant_id: tenantId || null,
               credits,
@@ -368,16 +386,15 @@ export class StripeService {
                 featureId: metadata.feature_id || metadata.featureId || null,
               },
               created_at: new Date().toISOString(),
-            });
-            _logger.info('Successfully credited user balance', { userId, credits });
-          } catch (credErr) {
-            _logger.error('Failed to credit user balance in Supabase', { error: credErr });
-          }
+            }),
+            'Credit purchased usage balance'
+          );
+          _logger.info('Successfully credited user balance', { userId, credits });
         }
       } else if (purchaseType === 'streak_freeze') {
         if (userId) {
-          try {
-            await supabaseAdmin.from('user_gamification').upsert(
+          await requireDatabaseWrite(
+            supabaseAdmin.from('user_gamification').upsert(
               {
                 user_id: userId,
                 streak_freeze_active: true,
@@ -385,11 +402,10 @@ export class StripeService {
                 updated_at: new Date().toISOString(),
               },
               { onConflict: 'user_id' }
-            );
-            _logger.info('Activated streak freeze for user', { userId });
-          } catch (freezeErr) {
-            _logger.warn('Failed to update streak freeze in DB', { error: freezeErr });
-          }
+            ),
+            'Activate streak freeze'
+          );
+          _logger.info('Activated streak freeze for user', { userId });
         }
       }
     }
@@ -407,8 +423,8 @@ export class StripeService {
       status: subscription.status,
     });
 
-    try {
-      await supabaseAdmin
+    await requireDatabaseWrite(
+      supabaseAdmin
         .from('subscriptions')
         .update({
           status: subscription.status as any,
@@ -417,23 +433,21 @@ export class StripeService {
           cancel_at_period_end: subscription.cancel_at_period_end,
           updated_at: new Date().toISOString(),
         })
-        .eq('stripe_subscription_id', subscription.id);
-    } catch (err) {
-      _logger.error('Error updating subscription in database', { error: err });
-    }
+        .eq('stripe_subscription_id', subscription.id),
+      'Update Stripe subscription state'
+    );
 
     if (tenantId && subscription.status !== 'active') {
-      try {
-        await supabaseAdmin
+      await requireDatabaseWrite(
+        supabaseAdmin
           .from('tenants')
           .update({
             status: subscription.status === 'past_due' ? 'suspended' : 'inactive',
             updated_at: new Date().toISOString(),
           })
-          .eq('id', tenantId);
-      } catch (err) {
-        _logger.error('Error updating tenant status on subscription update', { error: err });
-      }
+          .eq('id', tenantId),
+        'Update tenant subscription state'
+      );
     }
   }
 
@@ -448,22 +462,21 @@ export class StripeService {
       subscriptionId: subscription.id,
     });
 
-    try {
-      await supabaseAdmin
+    await requireDatabaseWrite(
+      supabaseAdmin
         .from('subscriptions')
         .update({
           status: 'canceled',
           cancel_at_period_end: true,
           updated_at: new Date().toISOString(),
         })
-        .eq('stripe_subscription_id', subscription.id);
-    } catch (err) {
-      _logger.error('Error marking subscription canceled in database', { error: err });
-    }
+        .eq('stripe_subscription_id', subscription.id),
+      'Mark Stripe subscription canceled'
+    );
 
     if (tenantId) {
-      try {
-        await supabaseAdmin
+      await requireDatabaseWrite(
+        supabaseAdmin
           .from('tenants')
           .update({
             plan: 'free',
@@ -471,10 +484,9 @@ export class StripeService {
             stripe_subscription_id: null,
             updated_at: new Date().toISOString(),
           })
-          .eq('id', tenantId);
-      } catch (err) {
-        _logger.error('Error downgrading tenant on subscription deletion', { error: err });
-      }
+          .eq('id', tenantId),
+        'Downgrade canceled subscription tenant'
+      );
     }
   }
 

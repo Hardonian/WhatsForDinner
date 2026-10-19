@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { StripeService } from '../../../../../lib/stripe';
-import { supabaseAdmin } from '../../../../../lib/supabaseClient';
-import { getAuthenticatedUser } from '../../../../../lib/auth-middleware';
+import { StripeService } from '@/lib/stripe';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
+import { getAuthenticatedUser } from '@/lib/auth-middleware';
 import { createComponentLogger } from '@whats-for-dinner/utils';
 
 const logger = createComponentLogger('subscription-cancel-api');
@@ -13,6 +13,7 @@ export async function POST(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const supabaseAdmin = getSupabaseAdmin();
     const { id: subscriptionId } = await context.params;
 
     if (!subscriptionId) {
@@ -23,9 +24,7 @@ export async function POST(
     const authContext = await getAuthenticatedUser(req);
     const authenticatedUser = authContext?.user;
 
-    // Check header fallback ONLY for test/dev environments if authContext is absent
-    const isProd = process.env.NODE_ENV === 'production';
-    const userId = authenticatedUser?.id || (!isProd ? req.headers.get('x-user-id') : null);
+    const userId = authenticatedUser?.id;
 
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized: Authentication required' }, { status: 401 });
@@ -36,28 +35,24 @@ export async function POST(
     let stripeSubscriptionId = subscriptionId;
     let dbSub: any = null;
 
-    // Check if subscriptionId corresponds to a database record
-    try {
-      const { data } = await supabaseAdmin
-        .from('subscriptions')
-        .select('*')
-        .or(`id.eq.${subscriptionId},stripe_subscription_id.eq.${subscriptionId}`)
-        .maybeSingle();
-
-      dbSub = data;
-      if (dbSub?.stripe_subscription_id) {
-        stripeSubscriptionId = dbSub.stripe_subscription_id;
-      }
-    } catch (dbErr) {
-      logger.warn('Could not query database for subscription', { error: dbErr });
+    const { data, error: lookupError } = await supabaseAdmin
+      .from('subscriptions')
+      .select('*')
+      .or(`id.eq.${subscriptionId},stripe_subscription_id.eq.${subscriptionId}`)
+      .maybeSingle();
+    if (lookupError) throw lookupError;
+    dbSub = data;
+    if (!dbSub) {
+      return NextResponse.json({ error: 'Subscription not found' }, { status: 404 });
+    }
+    if (dbSub.stripe_subscription_id) {
+      stripeSubscriptionId = dbSub.stripe_subscription_id;
     }
 
     // Verify ownership and authorization
     if (dbSub) {
       const isOwner = dbSub.user_id === userId;
-      const isAdmin = (authenticatedUser as any)?.role === 'admin' || (authenticatedUser as any)?.isAdmin === true;
-
-      if (!isOwner && !isAdmin) {
+      if (!isOwner) {
         logger.warn('Unauthorized subscription cancellation attempt', {
           subscriptionId,
           callerUserId: userId,
@@ -71,36 +66,17 @@ export async function POST(
     }
 
     // Attempt cancellation via Stripe if it looks like a Stripe subscription ID
-    if (stripeSubscriptionId.startsWith('sub_')) {
-      try {
-        await StripeService.cancelSubscription(stripeSubscriptionId, false);
-      } catch (stripeErr: any) {
-        logger.warn('Stripe cancellation failed or skipped in test mode', {
-          stripeSubscriptionId,
-          error: stripeErr?.message,
-        });
-      }
+    if (!stripeSubscriptionId.startsWith('sub_')) {
+      return NextResponse.json({ error: 'Subscription is not linked to Stripe' }, { status: 409 });
     }
+    await StripeService.cancelSubscription(stripeSubscriptionId, false);
 
     // Update database status with tenant-scoped query
-    try {
-      let query = supabaseAdmin
-        .from('subscriptions')
-        .update({
-          cancel_at_period_end: true,
-          updated_at: new Date().toISOString(),
-        });
-
-      if (dbSub?.id) {
-        query = query.eq('id', dbSub.id);
-      } else {
-        query = query.or(`id.eq.${subscriptionId},stripe_subscription_id.eq.${subscriptionId}`);
-      }
-
-      await query;
-    } catch (updateErr) {
-      logger.warn('Failed to update subscription cancellation status in DB', { error: updateErr });
-    }
+    const { error: updateError } = await supabaseAdmin
+      .from('subscriptions')
+      .update({ cancel_at_period_end: true, updated_at: new Date().toISOString() })
+      .eq('id', dbSub.id);
+    if (updateError) throw updateError;
 
     return NextResponse.json({
       success: true,

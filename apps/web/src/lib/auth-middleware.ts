@@ -4,9 +4,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 export interface AuthenticatedUser {
   id: string;
@@ -27,36 +26,39 @@ export async function getAuthenticatedUser(
   request: NextRequest
 ): Promise<{ user: AuthenticatedUser; supabase: SupabaseClient } | null> {
   try {
-    const supabase = createRouteHandlerClient({ cookies } as any);
-    
-    // Check Authorization header for Bearer token first
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key || url.includes('placeholder') || key.includes('placeholder')) {
+      return null;
+    }
+
     const authHeader = request.headers.get('authorization');
-    const bearerToken = authHeader?.startsWith('Bearer ')
-      ? authHeader.substring(7)
-      : (authHeader?.startsWith('bearer ') ? authHeader.substring(7) : null);
+    const bearerToken = /^Bearer\s+(.+)$/i.exec(authHeader || '')?.[1];
+    const supabase = bearerToken
+      ? createClient(url, key, {
+          auth: { persistSession: false, autoRefreshToken: false },
+          global: { headers: { Authorization: `Bearer ${bearerToken}` } },
+        })
+      : createServerClient(url, key, {
+          cookies: {
+            getAll: () => request.cookies.getAll(),
+            setAll: () => {
+              // Route handlers validate the request session; middleware owns
+              // refresh-cookie writes on the response path.
+            },
+          },
+        });
 
-    let user: any = null;
-    let authError: any = null;
+    const { data: { user }, error: authError } = bearerToken
+      ? await supabase.auth.getUser(bearerToken)
+      : await supabase.auth.getUser();
 
-    if (bearerToken) {
-      const result = await supabase.auth.getUser(bearerToken);
-      user = result.data?.user;
-      authError = result.error;
-    }
+    const testUserId = process.env.NODE_ENV === 'test' && process.env.ALLOW_TEST_AUTH_HEADERS === 'true'
+      ? request.headers.get('x-user-id')
+      : null;
+    const resolvedUser = user || (testUserId ? { id: testUserId, email: 'test@example.com' } : null);
 
-    if (!user) {
-      const result = await supabase.auth.getUser();
-      user = result.data?.user;
-      authError = result.error;
-    }
-
-    // Support dev/test header mock in non-production
-    if (!user && process.env.NODE_ENV !== 'production' && request.headers.get('x-user-id')) {
-      user = { id: request.headers.get('x-user-id')!, email: 'test@example.com' };
-      authError = null;
-    }
-
-    if (authError || !user) {
+    if ((authError && !resolvedUser) || !resolvedUser) {
       return null;
     }
 
@@ -64,13 +66,13 @@ export async function getAuthenticatedUser(
     const { data: profile } = await supabase
       .from('profiles')
       .select('tenant_id')
-      .eq('id', user.id)
-      .single();
+      .eq('id', resolvedUser.id)
+      .maybeSingle();
 
     return {
       user: {
-        id: user.id,
-        email: user.email,
+        id: resolvedUser.id,
+        email: resolvedUser.email,
         tenantId: profile?.tenant_id || null,
       },
       supabase,

@@ -2,6 +2,12 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 export async function createClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key || url.includes('placeholder') || key.includes('placeholder')) {
+    throw new Error('Supabase public URL and key are not configured');
+  }
+
   let cookieStore: any;
   try {
     cookieStore = await cookies();
@@ -10,8 +16,8 @@ export async function createClient() {
   }
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key',
+    url,
+    key,
     {
       cookies: {
         get(name: string) {

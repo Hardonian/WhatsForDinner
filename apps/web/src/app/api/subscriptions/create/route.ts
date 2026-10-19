@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server';
 import { StripeService, STRIPE_CONFIG } from '@/lib/stripe';
+import { requireAuth } from '@/lib/auth-middleware';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,6 +55,9 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = await requireAuth(req);
+    if (!auth.success) return auth.response;
+
     let body: any;
     try {
       body = await req.json();
@@ -70,13 +74,19 @@ export async function POST(req: NextRequest) {
       cancelUrl,
     } = body || {};
 
-    const rawPlan = (plan || planId || 'pro').toLowerCase();
-    const normalizedPlan = rawPlan.includes('family') ? 'family' : rawPlan.includes('free') ? 'free' : 'pro';
+    const rawPlan = String(plan || planId || '').toLowerCase();
+    if (!['free', 'pro', 'family'].includes(rawPlan)) {
+      return NextResponse.json({ error: 'Invalid subscription plan' }, { status: 400 });
+    }
+    const normalizedPlan = rawPlan as 'free' | 'pro' | 'family';
     const cycle = billingCycle || interval || 'monthly';
-    const selectedPlan = AVAILABLE_PLANS.find(p => p.id === normalizedPlan) || AVAILABLE_PLANS[1];
-
-    const userId = req.headers.get('x-user-id') || req.headers.get('authorization') || body?.userId || '';
-    const tenantId = req.headers.get('x-tenant-id') || body?.tenantId || '';
+    if (!['monthly', 'annual', 'month', 'year'].includes(cycle)) {
+      return NextResponse.json({ error: 'Invalid billing cycle' }, { status: 400 });
+    }
+    const selectedPlan = AVAILABLE_PLANS.find(p => p.id === normalizedPlan)!;
+    const { user } = auth.context;
+    const userId = user.id;
+    const tenantId = user.tenantId || '';
 
     // If free plan selected, return redirect to signup
     if (normalizedPlan === 'free') {
@@ -87,53 +97,47 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const origin = req.nextUrl.origin || 'http://localhost:3000';
-    const effectiveSuccessUrl = successUrl || `${origin}/dashboard?subscription=success&session_id={CHECKOUT_SESSION_ID}`;
-    const effectiveCancelUrl = cancelUrl || `${origin}/pricing?canceled=true`;
-
-    let sessionId: string;
-    let checkoutUrl: string;
-
-    // Use live Stripe if API key configured and not a placeholder
-    const stripeKey = process.env.STRIPE_SECRET_KEY;
-    if (stripeKey && !stripeKey.includes('placeholder') && !stripeKey.includes('sk_test_placeholder')) {
+    const origin = req.nextUrl.origin;
+    const safeReturnUrl = (value: unknown, fallback: string) => {
+      if (typeof value !== 'string') return fallback;
       try {
-        const session = await StripeService.createCheckoutSession({
-          tenantId,
-          userId,
-          plan: normalizedPlan as any,
-          price: cycle === 'annual' ? selectedPlan.priceAnnual : selectedPlan.priceMonthly,
-          billingPeriod: cycle === 'annual' ? 'year' : 'month',
-          successUrl: effectiveSuccessUrl,
-          cancelUrl: effectiveCancelUrl,
-          metadata: {
-            userId,
-            tenantId,
-            plan: normalizedPlan,
-            billingCycle: cycle,
-          },
-        });
-
-        sessionId = session.id;
-        checkoutUrl = session.url || effectiveSuccessUrl;
-      } catch (stripeErr: any) {
-        console.warn('Stripe checkout session creation fallback:', stripeErr.message);
-        sessionId = `cs_test_${Date.now().toString(36)}`;
-        checkoutUrl = effectiveSuccessUrl;
+        const candidate = new URL(value, origin);
+        return candidate.origin === origin ? candidate.toString() : fallback;
+      } catch {
+        return fallback;
       }
-    } else {
-      sessionId = `cs_${process.env.NODE_ENV === 'production' ? 'live' : 'test'}_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
-      checkoutUrl = successUrl || `https://checkout.stripe.com/pay/${sessionId}`;
+    };
+    const effectiveSuccessUrl = safeReturnUrl(successUrl, `${origin}/dashboard?subscription=success&session_id={CHECKOUT_SESSION_ID}`);
+    const effectiveCancelUrl = safeReturnUrl(cancelUrl, `${origin}/pricing?canceled=true`);
+
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeKey || stripeKey.includes('placeholder')) {
+      return NextResponse.json({ error: 'Billing is not configured' }, { status: 503 });
+    }
+
+    const annual = cycle === 'annual' || cycle === 'year';
+    const session = await StripeService.createCheckoutSession({
+      tenantId,
+      userId,
+      plan: normalizedPlan,
+      price: annual ? selectedPlan.priceAnnual : selectedPlan.priceMonthly,
+      billingPeriod: annual ? 'year' : 'month',
+      successUrl: effectiveSuccessUrl,
+      cancelUrl: effectiveCancelUrl,
+      metadata: { plan: normalizedPlan, billingCycle: annual ? 'annual' : 'monthly' },
+    });
+
+    if (!session.url) {
+      return NextResponse.json({ error: 'Stripe did not return a checkout URL' }, { status: 502 });
     }
 
     return NextResponse.json({
       success: true,
-      sessionId,
-      checkoutUrl,
+      sessionId: session.id,
+      checkoutUrl: session.url,
       plan: selectedPlan,
       billingCycle: cycle,
-      trialEndsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-      message: `Checkout session created for ${selectedPlan.name} (${cycle})`,
+      message: `Checkout session created for ${selectedPlan.name}`,
     });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Failed to create subscription session' }, { status: 500 });

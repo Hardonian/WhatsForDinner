@@ -50,7 +50,8 @@ let exitCode = 0;
 
 function log(message: string, type: "info" | "success" | "warning" | "error" = "info") {
   const icons = { info: "ℹ️", success: "✅", warning: "⚠️", error: "❌" };
-  }
+  logger.info(`${icons[type]} ${message}`);
+}
 
 function recordCheck(
   lens: string,
@@ -592,7 +593,7 @@ function checkResilience() {
 // AI Systems Auditor Checks
 // ============================================================================
 
-function checkAISystems() {
+async function checkAISystems() {
   log("\n🤖 AI Systems Auditor Checks", "info");
   
   // Check for AI audit scripts
@@ -845,14 +846,16 @@ function generateReport(): SecurityReport {
 
 function printReport(report: SecurityReport) {
   logger.info('\n=== Security Self-Check Report ===');
-  logger.info('Overall Status: ${report.overallStatus}');
+  logger.info(
+    `Checks: ${report.passed} passed, ${report.failed} failed, ${report.warnings} warnings`
+  );
               
   if (report.criticalFailures.length > 0) {
     logger.info('\nCritical Failures:');
     report.criticalFailures.forEach((r) => {
-      logger.info('  ❌ ${r.name}: ${r.message}');
+      logger.info(`  ❌ ${r.check}: ${r.message}`);
       if (r.remediation) {
-        logger.info('     Fix: ${r.remediation}');
+        logger.info(`     Fix: ${r.remediation}`);
       }
     });
   }
@@ -864,29 +867,24 @@ function printReport(report: SecurityReport) {
     byLens[r.lens].push(r);
   });
   
-    Object.entries(byLens).forEach(([lens, lensResults]) => {
-        const byCategory: Record<string, CheckResult[]> = {};
+  Object.entries(byLens).forEach(([lens, lensResults]) => {
+    logger.info(`\n${lens}`);
+    const byCategory: Record<string, CheckResult[]> = {};
     lensResults.forEach((r) => {
       if (!byCategory[r.category]) byCategory[r.category] = [];
       byCategory[r.category].push(r);
     });
     
     Object.entries(byCategory).forEach(([category, categoryResults]) => {
-            categoryResults.forEach((r) => {
+      logger.info(`  ${category}`);
+      categoryResults.forEach((r) => {
         const icon = r.passed ? "✅" : r.severity === "critical" ? "❌" : "⚠️";
-              });
+        logger.info(`    ${icon} ${r.check}: ${r.message}`);
+      });
     });
   });
-  
-  printReport(report);
-  
-  if (report.criticalFailures.length > 0) {
-    return false;
-  } else if (report.failed > 0) {
-    return true;
-  } else {
-    return true;
-  }
+
+  return report.criticalFailures.length === 0;
 }
 
 async function main() {
@@ -898,7 +896,7 @@ async function main() {
   checkSecurityHeaders();
   checkCompliance();
   checkResilience();
-  checkAISystems();
+  await checkAISystems();
   checkGrowthSystems();
   checkInnovation();
   
@@ -907,7 +905,7 @@ async function main() {
   const success = printReport(report);
   
   // Save report to file
-  const reportPath = "security-self-check-report.json";
+  const reportPath = path.join("DOCS", "launch-readiness", "security-self-check-report.json");
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
     
   process.exit(success ? 0 : 1);

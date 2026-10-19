@@ -4,6 +4,35 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
+
+const PROTECTED_API_PREFIXES = [
+  '/api/admin',
+  '/api/ai',
+  '/api/billing',
+  '/api/chat',
+  '/api/collections',
+  '/api/credits',
+  '/api/dinner',
+  '/api/export',
+  '/api/family',
+  '/api/gdpr',
+  '/api/meal-plan',
+  '/api/mealplan',
+  '/api/pantry',
+  '/api/preferences',
+  '/api/premium',
+  '/api/privacy',
+  '/api/recipes/generate-image',
+  '/api/subscriptions',
+  '/api/user',
+];
+
+function isProtectedApi(pathname: string) {
+  return PROTECTED_API_PREFIXES.some(
+    prefix => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
 
 interface RateLimitRecord {
   count: number;
@@ -42,7 +71,7 @@ function checkRateLimit(ip: string, pathname: string): { allowed: boolean; limit
   return { allowed: true, limit, remaining: limit - record.count, reset: record.resetAt };
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const startTime = Date.now();
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || '127.0.0.1';
 
@@ -79,7 +108,7 @@ export function middleware(request: NextRequest) {
   }
 
   // API monetization / rate limiting check
-  if (process.env.API_MONETIZATION_ENABLED === 'true' && request.nextUrl.pathname.startsWith('/api/')) {
+  if (process.env.API_MONETIZATION_ENABLED === 'true' && request.nextUrl.pathname.startsWith('/api/v2/')) {
     const apiKey = request.headers.get('x-api-key');
     if (!apiKey || apiKey === 'test-key') {
       return new NextResponse('Unauthorized API Key', { status: 401 });
@@ -90,17 +119,68 @@ export function middleware(request: NextRequest) {
   const requestOrigin = request.nextUrl.origin;
   const configuredOrigins = (process.env.CORS_ORIGINS?.split(',') || []).map(o => o.trim()).filter(Boolean);
 
-  // Origin verification for state-changing methods
+  const protectedApi = isProtectedApi(request.nextUrl.pathname);
+
+  // Origin verification for state-changing methods. Cookie-authenticated API
+  // requests without an Origin are rejected; mobile/API clients must use a
+  // verified Bearer token.
   if (request.method !== 'GET' && request.method !== 'HEAD' && origin) {
     const isSameOrigin = origin === requestOrigin;
     const isAllowedOrigin = configuredOrigins.includes(origin);
-    // Block only if external origin not present in explicit configured allowlist
-    if (!isSameOrigin && !isAllowedOrigin && configuredOrigins.length > 0) {
+    if (!isSameOrigin && !isAllowedOrigin) {
       return new NextResponse('Invalid origin', { status: 403 });
     }
+  } else if (
+    protectedApi &&
+    !['GET', 'HEAD'].includes(request.method) &&
+    !request.headers.get('authorization')
+  ) {
+    return new NextResponse('Origin or bearer authentication required', { status: 403 });
+  }
+
+  if (request.method === 'OPTIONS') {
+    if (!origin || (!configuredOrigins.includes(origin) && origin !== requestOrigin)) {
+      return new NextResponse('Invalid origin', { status: 403 });
+    }
+    return new NextResponse(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+        'Access-Control-Max-Age': '600',
+        Vary: 'Origin',
+      },
+    });
   }
 
   const response = NextResponse.next();
+
+  if (protectedApi) {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key || url.includes('placeholder') || key.includes('placeholder')) {
+      return NextResponse.json({ error: 'Authentication service unavailable' }, { status: 503 });
+    }
+
+    const supabase = createServerClient(url, key, {
+      cookies: {
+        getAll: () => request.cookies.getAll(),
+        setAll: cookiesToSet => {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    });
+    const token = /^Bearer\s+(.+)$/i.exec(request.headers.get('authorization') || '')?.[1];
+    const { data: { user }, error } = token
+      ? await supabase.auth.getUser(token)
+      : await supabase.auth.getUser();
+    if (error || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+  }
 
   // Correlation and performance tracking headers
   const requestId = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
@@ -114,6 +194,11 @@ export function middleware(request: NextRequest) {
     response.headers.set('X-RateLimit-Limit', String(currentRateCheck.limit));
     response.headers.set('X-RateLimit-Remaining', String(currentRateCheck.remaining));
     response.headers.set('X-RateLimit-Reset', String(currentRateCheck.reset));
+  }
+
+  if (origin && configuredOrigins.includes(origin)) {
+    response.headers.set('Access-Control-Allow-Origin', origin);
+    response.headers.append('Vary', 'Origin');
   }
 
   // Enterprise Security Headers

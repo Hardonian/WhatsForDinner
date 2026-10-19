@@ -268,9 +268,7 @@ export function createHealthCheckHandler(options: HealthCheckOptions = {}) {
     try {
       const health = await runHealthCheck(options);
       
-      const statusCode = health.status === 'healthy' ? 200 :
-                        health.status === 'degraded' ? 200 :
-                        503;
+      const statusCode = health.status === 'healthy' ? 200 : 503;
       
       return new Response(JSON.stringify(health, null, 2), {
         status: statusCode,
@@ -328,7 +326,7 @@ export async function createReadinessHandler(): Promise<Response> {
   try {
     const health = await runHealthCheck({ checkTimeout: 2000 });
     
-    const isReady = health.status !== 'unhealthy';
+    const isReady = health.status === 'healthy';
     
     return new Response(
       JSON.stringify({

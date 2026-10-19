@@ -1,47 +1,54 @@
-// @ts-nocheck
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { NextRequest } from 'next/server';
-import { POST, GET } from '../route';
 
-describe('API Route: apps/web/src/app/api/stripe/webhook/route.ts', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+const mockVerify = jest.fn();
+const mockInsert = jest.fn();
+
+jest.mock('@/lib/stripe', () => ({
+  STRIPE_CONFIG: { webhookSecret: 'whsec_test' },
+  StripeService: {
+    verifyWebhookSignature: (...args: unknown[]) => mockVerify(...args),
+  },
+}));
+jest.mock('@/lib/supabase/admin', () => ({
+  getSupabaseAdmin: () => ({ from: () => ({ insert: mockInsert }) }),
+}));
+
+import { GET, POST } from '../route';
+
+describe('Stripe webhook route', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('exposes only liveness metadata on GET', async () => {
+    expect(await (await GET()).json()).toEqual({ status: 'ok', service: 'stripe-webhook' });
   });
 
-  it('should handle GET request', async () => {
-    const req = new NextRequest('http://localhostapps/web/src/app/api/stripe/webhook');
-    try {
-      const response = await GET(req);
-      expect(response).toBeDefined();
-    } catch (error) {
-      // API might require authentication or other setup
-      expect(error).toBeDefined();
-    }
-  });
-
-  it('should handle POST request', async () => {
-    const req = new NextRequest('http://localhostapps/web/src/app/api/stripe/webhook', {
+  it('rejects unsigned payloads', async () => {
+    const response = await POST(new NextRequest('https://example.com/api/stripe/webhook', {
       method: 'POST',
-      body: JSON.stringify({}),
-    });
-    try {
-      const response = await POST(req);
-      expect(response).toBeDefined();
-    } catch (error) {
-      expect(error).toBeDefined();
-    }
+      body: '{}',
+    }));
+    expect(response.status).toBe(400);
+    expect(mockVerify).not.toHaveBeenCalled();
   });
 
-  it('should validate request body', async () => {
-    const req = new NextRequest('http://localhostapps/web/src/app/api/stripe/webhook', {
+  it('rejects an invalid signature without parsing untrusted JSON', async () => {
+    mockVerify.mockImplementation(() => { throw new Error('bad signature'); });
+    const response = await POST(new NextRequest('https://example.com/api/stripe/webhook', {
       method: 'POST',
-      body: 'invalid json',
-    });
-    try {
-      const response = await POST(req);
-      expect(response.status).toBeGreaterThanOrEqual(400);
-    } catch (error) {
-      expect(error).toBeDefined();
-    }
+      headers: { 'stripe-signature': 'bad' },
+      body: '{"type":"forged"}',
+    }));
+    expect(response.status).toBe(400);
+  });
+
+  it('fails closed when the durable idempotency ledger is unavailable', async () => {
+    mockVerify.mockReturnValue({ id: 'evt_123', type: 'ignored.test', data: { object: {} } });
+    mockInsert.mockResolvedValue({ error: { code: '42P01', message: 'table missing' } });
+    const response = await POST(new NextRequest('https://example.com/api/stripe/webhook', {
+      method: 'POST',
+      headers: { 'stripe-signature': 'valid' },
+      body: '{}',
+    }));
+    expect(response.status).toBe(503);
   });
 });

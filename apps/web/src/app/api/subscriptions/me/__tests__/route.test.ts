@@ -1,62 +1,55 @@
-// @ts-nocheck
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+
+const mockRequireAuth = jest.fn();
+const mockMaybeSingle = jest.fn();
+const mockEq = jest.fn(() => ({
+  order: jest.fn(() => ({
+    limit: jest.fn(() => ({ maybeSingle: mockMaybeSingle })),
+  })),
+}));
+const mockGetSupabaseAdmin = jest.fn(() => ({
+  from: jest.fn(() => ({
+    select: jest.fn(() => ({
+      eq: mockEq,
+    })),
+  })),
+}));
+
+jest.mock('@/lib/auth-middleware', () => ({
+  requireAuth: (...args: unknown[]) => mockRequireAuth(...args),
+}));
+jest.mock('@/lib/supabase/admin', () => ({
+  getSupabaseAdmin: () => mockGetSupabaseAdmin(),
+}));
+
 import { GET } from '../route';
-import { createComponentLogger } from '@whats-for-dinner/utils';
 
-const _logger = createComponentLogger('test-subscriptions-me-api');
-
-describe('Subscriptions Me API Route', () => {
+describe('current subscription route', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
+    mockRequireAuth.mockResolvedValue({
+      success: false,
+      response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    });
   });
 
-  describe('GET /api/subscriptions/me', () => {
-    it('should return subscription for authenticated user with Stripe customer', async () => {
-      const request = new NextRequest('http://localhost:3000/api/subscriptions/me', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-user-id': 'test-user-id',
-        },
-      });
+  it('returns 401 before initializing privileged database access', async () => {
+    const response = await GET(new NextRequest('https://example.com/api/subscriptions/me', {
+      headers: { 'x-user-id': 'spoofed-user' },
+    }));
+    expect(response.status).toBe(401);
+    expect(mockGetSupabaseAdmin).not.toHaveBeenCalled();
+  });
 
-      const response = await GET(request);
-      expect(response).toBeDefined();
+  it('queries only the verified user subscription', async () => {
+    mockRequireAuth.mockResolvedValue({
+      success: true,
+      context: { user: { id: 'verified-user' } },
     });
-
-    it('should return 401 for unauthenticated user', async () => {
-      const request = new NextRequest('http://localhost:3000/api/subscriptions/me', {
-        method: 'GET',
-      });
-
-      const response = await GET(request);
-      expect(response.status).toBe(401);
-    });
-
-    it('should return null subscription for user without Stripe customer', async () => {
-      const request = new NextRequest('http://localhost:3000/api/subscriptions/me', {
-        method: 'GET',
-        headers: {
-          'x-user-id': 'test-user-id',
-        },
-      });
-
-      const response = await GET(request);
-      const data = await response.json();
-      expect(data.subscription).toBeNull();
-    });
-
-    it('should handle errors gracefully', async () => {
-      const request = new NextRequest('http://localhost:3000/api/subscriptions/me', {
-        method: 'GET',
-        headers: {
-          'x-user-id': 'test-user-id',
-        },
-      });
-
-      const response = await GET(request);
-      expect(response).toBeDefined();
-    });
+    mockMaybeSingle.mockResolvedValue({ data: null, error: null });
+    const response = await GET(new NextRequest('https://example.com/api/subscriptions/me'));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ subscription: null });
+    expect(mockEq).toHaveBeenCalledWith('user_id', 'verified-user');
   });
 });

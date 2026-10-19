@@ -1,132 +1,43 @@
-// @ts-nocheck
-/**
- * Tests for Customer Value Profile API
- */
+const mockGetUser = jest.fn();
+const mockSingle = jest.fn();
+const mockAnalyzeCustomerValue = jest.fn();
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { GET } from '../value-profile/route';
-import { NextRequest } from 'next/server';
-
-// Mock dependencies
-const mockSupabaseClient = {
-  auth: {
-    getUser: jest.fn(),
-  },
-  from: jest.fn(() => ({
-    select: jest.fn(() => ({
-      eq: jest.fn(() => ({
-        single: jest.fn(),
-      })),
-    })),
-  })),
-};
-
-jest.mock('@supabase/auth-helpers-nextjs', () => ({
-  createRouteHandlerClient: jest.fn(() => mockSupabaseClient),
+jest.mock('@/lib/supabase/auth-helpers-compat', () => ({
+  createRouteHandlerClient: () => ({
+    auth: { getUser: (...args: unknown[]) => mockGetUser(...args) },
+    from: () => ({ select: () => ({ eq: () => ({ single: (...args: unknown[]) => mockSingle(...args) }) }) }),
+  }),
 }));
-
-jest.mock('next/headers', () => ({
-  cookies: jest.fn(),
-}));
-
 jest.mock('@/lib/monetization/value-engine', () => ({
   valueEngine: {
-    analyzeCustomerValue: jest.fn(),
+    analyzeCustomerValue: (...args: unknown[]) => mockAnalyzeCustomerValue(...args),
   },
 }));
 
-describe('GET /api/monetization/value-profile', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
+import { GET } from '../value-profile/route';
+
+describe('value profile API', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('returns 401 when the user is unauthenticated', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: null }, error: null });
+    expect((await GET()).status).toBe(401);
   });
 
-  it('should return 401 if user is not authenticated', async () => {
-    const { createRouteHandlerClient } = await import('@supabase/auth-helpers-nextjs');
-    const mockSupabase = createRouteHandlerClient({ cookies: vi.fn() });
-    vi.mocked(mockSupabase.auth.getUser).mockResolvedValue({
-      data: { user: null },
-      error: null,
-    });
-
-    const request = new NextRequest('http://localhost/api/monetization/value-profile');
-    const response = await GET(request);
-
-    expect(response.status).toBe(401);
+  it('returns 404 when the tenant is missing', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-123' } }, error: null });
+    mockSingle.mockResolvedValue({ data: null, error: null });
+    expect((await GET()).status).toBe(404);
   });
 
-  it('should return 404 if tenant not found', async () => {
-    const { createRouteHandlerClient } = await import('@supabase/auth-helpers-nextjs');
-    const mockSupabase = createRouteHandlerClient({ cookies: vi.fn() });
-    vi.mocked(mockSupabase.auth.getUser).mockResolvedValue({
-      data: { user: { id: 'user-123' } },
-      error: null,
-    });
-
-    const mockFrom = vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn().mockResolvedValue({ data: null, error: null }),
-        })),
-      })),
-    }));
-    vi.mocked(mockSupabase.from).mockImplementation(mockFrom);
-
-    const request = new NextRequest('http://localhost/api/monetization/value-profile');
-    const response = await GET(request);
-
-    expect(response.status).toBe(404);
-  });
-
-  it('should return value profile for authenticated user', async () => {
-    const { valueEngine } = await import('@/lib/monetization/value-engine');
-    const mockProfile = {
-      userId: 'user-123',
-      tenantId: 'tenant-456',
-      currentPlan: 'free',
-      currentMRR: 0,
-      lifetimeValue: 0,
-      engagementScore: 65,
-      usagePatterns: {
-        recipesGenerated: 5,
-        featuresUsed: ['meal_generation'],
-        sessionFrequency: 3,
-        averageSessionDuration: 1200,
-        retentionDays: 7,
-      },
-      monetizationPotential: {
-        upsellProbability: 0.35,
-        crossSellOpportunities: [],
-        churnRisk: 0.35,
-        expansionPotential: 0.65,
-      },
-    };
-
-    vi.mocked(valueEngine.analyzeCustomerValue).mockResolvedValue(mockProfile);
-
-    const { createRouteHandlerClient } = await import('@supabase/auth-helpers-nextjs');
-    const mockSupabase = createRouteHandlerClient({ cookies: vi.fn() });
-    vi.mocked(mockSupabase.auth.getUser).mockResolvedValue({
-      data: { user: { id: 'user-123' } },
-      error: null,
-    });
-
-    const mockFrom = vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn().mockResolvedValue({
-            data: { tenant_id: 'tenant-456' },
-            error: null,
-          }),
-        })),
-      })),
-    }));
-    vi.mocked(mockSupabase.from).mockImplementation(mockFrom);
-
-    const request = new NextRequest('http://localhost/api/monetization/value-profile');
-    const response = await GET(request);
-    const data = await response.json();
-
+  it('returns the authenticated user value profile', async () => {
+    const profile = { userId: 'user-123', tenantId: 'tenant-456', currentPlan: 'free' };
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-123' } }, error: null });
+    mockSingle.mockResolvedValue({ data: { tenant_id: 'tenant-456' }, error: null });
+    mockAnalyzeCustomerValue.mockResolvedValue(profile);
+    const response = await GET();
     expect(response.status).toBe(200);
-    expect(data).toEqual(mockProfile);
+    expect(await response.json()).toEqual(profile);
+    expect(mockAnalyzeCustomerValue).toHaveBeenCalledWith('tenant-456', 'user-123');
   });
 });

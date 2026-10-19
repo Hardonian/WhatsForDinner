@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabaseClient';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createComponentLogger } from '@whats-for-dinner/utils';
+import { requireAuth } from '@/lib/auth-middleware';
 
 const logger = createComponentLogger('subscription-me-api');
 
@@ -8,10 +9,10 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {
-    const userId = req.headers.get('x-user-id') || req.headers.get('authorization');
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const auth = await requireAuth(req);
+    if ('response' in auth) return auth.response;
+    const supabaseAdmin = getSupabaseAdmin();
+    const userId = auth.context.user.id;
 
     try {
       const { data: dbSub, error: dbError } = await supabaseAdmin
@@ -50,6 +51,6 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST() {
-  return NextResponse.json({ status: 'ok', stub: true });
+  return new NextResponse('Method Not Allowed', { status: 405, headers: { Allow: 'GET' } });
 }
 

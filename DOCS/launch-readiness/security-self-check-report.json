@@ -1,0 +1,379 @@
+{
+  "timestamp": "2026-10-19T18:29:20.396Z",
+  "passed": 26,
+  "failed": 14,
+  "warnings": 8,
+  "results": [
+    {
+      "lens": "Privacy Steward",
+      "category": "Environment Configuration",
+      "check": "Privacy var: PRIVACY_OFFICER_EMAIL",
+      "passed": false,
+      "severity": "warning",
+      "message": "⚠️ Missing PRIVACY_OFFICER_EMAIL",
+      "remediation": "Add PRIVACY_OFFICER_EMAIL to your .env file"
+    },
+    {
+      "lens": "Privacy Steward",
+      "category": "Environment Configuration",
+      "check": "Privacy var: DSAR_VERIFICATION_JWT_SECRET",
+      "passed": false,
+      "severity": "warning",
+      "message": "⚠️ Missing DSAR_VERIFICATION_JWT_SECRET",
+      "remediation": "Add DSAR_VERIFICATION_JWT_SECRET to your .env file"
+    },
+    {
+      "lens": "Privacy Steward",
+      "category": "Environment Configuration",
+      "check": "Privacy var: ARTIFACTS_BUCKET_URL",
+      "passed": false,
+      "severity": "warning",
+      "message": "⚠️ Missing ARTIFACTS_BUCKET_URL",
+      "remediation": "Add ARTIFACTS_BUCKET_URL to your .env file"
+    },
+    {
+      "lens": "Privacy Steward",
+      "category": "Environment Configuration",
+      "check": "Privacy var: MAGIC_LINK_BASE_URL",
+      "passed": false,
+      "severity": "warning",
+      "message": "⚠️ Missing MAGIC_LINK_BASE_URL",
+      "remediation": "Add MAGIC_LINK_BASE_URL to your .env file"
+    },
+    {
+      "lens": "Privacy Steward",
+      "category": "Database Schema",
+      "check": "Privacy migration files",
+      "passed": false,
+      "severity": "warning",
+      "message": "⚠️ No privacy migration files found",
+      "remediation": "Create privacy migration with RLS policies"
+    },
+    {
+      "lens": "Privacy Steward",
+      "category": "Privacy Tools",
+      "check": "GDPR compliance scripts",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 3 privacy script(s)"
+    },
+    {
+      "lens": "Privacy Steward",
+      "category": "User Consent",
+      "check": "Consent management implementation",
+      "passed": true,
+      "severity": "warning",
+      "message": "✅ Found 15 consent-related file(s)"
+    },
+    {
+      "lens": "Accessibility Champion",
+      "category": "Testing",
+      "check": "Accessibility test scripts",
+      "passed": true,
+      "severity": "warning",
+      "message": "✅ Accessibility test script found"
+    },
+    {
+      "lens": "Accessibility Champion",
+      "category": "Code Quality",
+      "check": "ARIA attributes usage",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found ARIA usage in 2 sample files"
+    },
+    {
+      "lens": "Accessibility Champion",
+      "category": "Image Accessibility",
+      "check": "Alt text usage in images",
+      "passed": true,
+      "severity": "warning",
+      "message": "✅ Found alt text in 1 sample files"
+    },
+    {
+      "lens": "Accessibility Champion",
+      "category": "Documentation",
+      "check": "A11Y guide exists",
+      "passed": false,
+      "severity": "info",
+      "message": "⚠️ No A11Y guide found",
+      "remediation": "Create A11Y_GUIDE.md with WCAG 2.2 AA guidelines"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Content Security Policy",
+      "check": "CSP configuration file",
+      "passed": false,
+      "severity": "warning",
+      "message": "⚠️ No _headers file found (consider adding CSP)",
+      "remediation": "Create /public/_headers with Content-Security-Policy header"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Secret Management",
+      "check": "Secrets scanning script",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Secrets scanning script found"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Environment Configuration",
+      "check": "Required env var: NEXT_PUBLIC_SUPABASE_URL",
+      "passed": false,
+      "severity": "critical",
+      "message": "❌ Missing NEXT_PUBLIC_SUPABASE_URL",
+      "remediation": "Set NEXT_PUBLIC_SUPABASE_URL in environment variables"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Environment Configuration",
+      "check": "Required env var: NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "passed": false,
+      "severity": "critical",
+      "message": "❌ Missing NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "remediation": "Set NEXT_PUBLIC_SUPABASE_ANON_KEY in environment variables"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Environment Configuration",
+      "check": "Required env var: SUPABASE_SERVICE_ROLE_KEY",
+      "passed": false,
+      "severity": "critical",
+      "message": "❌ Missing SUPABASE_SERVICE_ROLE_KEY",
+      "remediation": "Set SUPABASE_SERVICE_ROLE_KEY in environment variables"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Configuration Management",
+      "check": ".env.example file exists",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ .env.example found"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Dependency Security",
+      "check": "Dependency audit check",
+      "passed": false,
+      "severity": "warning",
+      "message": "⚠️ npm audit failed (may not be npm project)",
+      "remediation": "Check dependencies manually or use pnpm audit"
+    },
+    {
+      "lens": "Compliance Sentinel",
+      "category": "RLS Testing",
+      "check": "RLS smoke test script",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ RLS smoke test found"
+    },
+    {
+      "lens": "Compliance Sentinel",
+      "category": "Database Migrations",
+      "check": "Supabase migration files",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 3 migration(s)"
+    },
+    {
+      "lens": "Compliance Sentinel",
+      "category": "Row-Level Security",
+      "check": "Migrations with RLS policies",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found RLS in 1 migration(s)"
+    },
+    {
+      "lens": "Compliance Sentinel",
+      "category": "Audit Trails",
+      "check": "Audit trail tables",
+      "passed": true,
+      "severity": "warning",
+      "message": "✅ Audit trail tables found"
+    },
+    {
+      "lens": "Compliance Sentinel",
+      "category": "Compliance Tools",
+      "check": "Compliance checking scripts",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 2 compliance script(s)"
+    },
+    {
+      "lens": "SRE/Resilience",
+      "category": "Health Monitoring",
+      "check": "Health check script",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Health check script found"
+    },
+    {
+      "lens": "SRE/Resilience",
+      "category": "Observability",
+      "check": "Observability stack configuration",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 4 observability config(s)"
+    },
+    {
+      "lens": "SRE/Resilience",
+      "category": "Alerting",
+      "check": "Alert configuration files",
+      "passed": true,
+      "severity": "warning",
+      "message": "✅ Alert configuration found"
+    },
+    {
+      "lens": "SRE/Resilience",
+      "category": "Disaster Recovery",
+      "check": "Backup scripts",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 3 backup script(s)"
+    },
+    {
+      "lens": "SRE/Resilience",
+      "category": "Resilience Testing",
+      "check": "Chaos engineering scripts",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Chaos testing scripts found"
+    },
+    {
+      "lens": "AI Systems Auditor",
+      "category": "AI Monitoring",
+      "check": "AI audit scripts",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 3 AI audit script(s)"
+    },
+    {
+      "lens": "AI Systems Auditor",
+      "category": "AI Configuration",
+      "check": "OpenAI API key configured",
+      "severity": "warning",
+      "message": "⚠️ OpenAI API key not found",
+      "remediation": "Configure OPENAI_API_KEY for AI features"
+    },
+    {
+      "lens": "AI Systems Auditor",
+      "category": "Cost Management",
+      "check": "AI cost control scripts",
+      "passed": true,
+      "severity": "warning",
+      "message": "✅ AI cost controls found"
+    },
+    {
+      "lens": "AI Systems Auditor",
+      "category": "AI Usage Tracking",
+      "check": "AI usage logging",
+      "passed": true,
+      "severity": "warning",
+      "message": "✅ AI usage logging detected"
+    },
+    {
+      "lens": "Growth Architect",
+      "category": "Analytics",
+      "check": "Analytics configuration",
+      "passed": false,
+      "severity": "info",
+      "message": "⚠️ No analytics configured",
+      "remediation": "Configure analytics (GA, PostHog, etc.)"
+    },
+    {
+      "lens": "Growth Architect",
+      "category": "Growth Tools",
+      "check": "Growth automation scripts",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 1 growth script(s)"
+    },
+    {
+      "lens": "Growth Architect",
+      "category": "Experimentation",
+      "check": "A/B testing infrastructure",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 13 experiment file(s)"
+    },
+    {
+      "lens": "Innovation Catalyst",
+      "category": "Database Schema",
+      "check": "Prisma schema validation",
+      "passed": false,
+      "severity": "critical",
+      "message": "❌ Prisma validation failed: Command failed: npx prisma validate\nnpm warn Unknown env config \"manage-package-manager-versions\". T",
+      "remediation": "Fix Prisma schema errors"
+    },
+    {
+      "lens": "Innovation Catalyst",
+      "category": "Database Schema",
+      "check": "Prisma client generation",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Prisma client generated"
+    },
+    {
+      "lens": "Innovation Catalyst",
+      "category": "Performance",
+      "check": "Performance budget tools",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Performance tools found"
+    },
+    {
+      "lens": "Innovation Catalyst",
+      "category": "CI/CD",
+      "check": "GitHub Actions workflows",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 50 workflow(s)"
+    },
+    {
+      "lens": "Innovation Catalyst",
+      "category": "DevOps",
+      "check": "Security scripts in package.json",
+      "passed": true,
+      "severity": "info",
+      "message": "✅ Found 24 security script(s)"
+    }
+  ],
+  "criticalFailures": [
+    {
+      "lens": "AppSec",
+      "category": "Environment Configuration",
+      "check": "Required env var: NEXT_PUBLIC_SUPABASE_URL",
+      "passed": false,
+      "severity": "critical",
+      "message": "❌ Missing NEXT_PUBLIC_SUPABASE_URL",
+      "remediation": "Set NEXT_PUBLIC_SUPABASE_URL in environment variables"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Environment Configuration",
+      "check": "Required env var: NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "passed": false,
+      "severity": "critical",
+      "message": "❌ Missing NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "remediation": "Set NEXT_PUBLIC_SUPABASE_ANON_KEY in environment variables"
+    },
+    {
+      "lens": "AppSec",
+      "category": "Environment Configuration",
+      "check": "Required env var: SUPABASE_SERVICE_ROLE_KEY",
+      "passed": false,
+      "severity": "critical",
+      "message": "❌ Missing SUPABASE_SERVICE_ROLE_KEY",
+      "remediation": "Set SUPABASE_SERVICE_ROLE_KEY in environment variables"
+    },
+    {
+      "lens": "Innovation Catalyst",
+      "category": "Database Schema",
+      "check": "Prisma schema validation",
+      "passed": false,
+      "severity": "critical",
+      "message": "❌ Prisma validation failed: Command failed: npx prisma validate\nnpm warn Unknown env config \"manage-package-manager-versions\". T",
+      "remediation": "Fix Prisma schema errors"
+    }
+  ]
+}

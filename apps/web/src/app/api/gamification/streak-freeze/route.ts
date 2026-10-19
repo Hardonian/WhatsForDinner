@@ -1,29 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { StripeService } from '@/lib/stripe';
-import { supabaseAdmin } from '@/lib/supabaseClient';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createComponentLogger } from '@whats-for-dinner/utils';
+import { requireAuth } from '@/lib/auth-middleware';
 
 const logger = createComponentLogger('streak-freeze-api');
 
 export const dynamic = 'force-dynamic';
 
-function checkAuth(req?: NextRequest) {
-  if (
-    !req?.headers?.get('authorization') &&
-    !req?.headers?.get('content-type') &&
-    !req?.headers?.get('x-api-key') &&
-    !req?.headers?.get('x-user-id')
-  ) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  return null;
-}
-
 export async function GET(req: NextRequest) {
-  const authError = checkAuth(req);
-  if (authError) return authError;
-
-  const userId = req.headers.get('x-user-id') || req.headers.get('authorization');
+  const auth = await requireAuth(req);
+  if ('response' in auth) return auth.response;
+  const supabaseAdmin = getSupabaseAdmin();
+  const userId = auth.context.user.id;
   let isFreezeActive = false;
 
   if (userId) {
@@ -54,16 +43,14 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const authError = checkAuth(req);
-  if (authError) return authError;
-
   try {
-    const body = await req.json().catch(() => ({}));
-    const userId = body.userId || req.headers.get('x-user-id') || req.headers.get('authorization') || '';
+    const auth = await requireAuth(req);
+    if ('response' in auth) return auth.response;
+    const userId = auth.context.user.id;
     const origin = req.nextUrl?.origin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-    const successUrl = body.successUrl || `${origin}/dashboard?streak_frozen=true`;
-    const cancelUrl = body.cancelUrl || `${origin}/dashboard`;
+    const successUrl = `${origin}/dashboard?streak_frozen=true`;
+    const cancelUrl = `${origin}/dashboard`;
 
     logger.info('Initiating streak freeze purchase session', { userId });
 

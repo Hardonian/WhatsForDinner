@@ -1,50 +1,72 @@
-// @ts-nocheck
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { NextRequest } from 'next/server';
-import { POST, GET } from '../route';
+import { NextRequest, NextResponse } from 'next/server';
 
-describe('API Route: apps/web/src/app/api/gamification/streak-freeze/route.ts', () => {
+const mockRequireAuth = jest.fn();
+const mockCreateCheckoutSession = jest.fn();
+const mockMaybeSingle = jest.fn();
+const mockEq = jest.fn(() => ({ maybeSingle: (...args: unknown[]) => mockMaybeSingle(...args) }));
+
+jest.mock('@/lib/auth-middleware', () => ({
+  requireAuth: (...args: unknown[]) => mockRequireAuth(...args),
+}));
+jest.mock('@/lib/supabase/admin', () => ({
+  getSupabaseAdmin: () => ({
+    from: () => ({ select: () => ({ eq: (...args: unknown[]) => mockEq(...args) }) }),
+  }),
+}));
+jest.mock('@/lib/stripe', () => ({
+  StripeService: { createCheckoutSession: (...args: unknown[]) => mockCreateCheckoutSession(...args) },
+}));
+
+import { GET, POST } from '../route';
+
+describe('streak freeze route', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockRequireAuth.mockResolvedValue({
+      success: false,
+      response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    });
+    mockMaybeSingle.mockResolvedValue({ data: null });
   });
 
-  it('should return 401 when unauthenticated', async () => {
-    const req = new NextRequest('http://localhost/api/gamification/streak-freeze', {
-      method: 'POST',
+  it('rejects a spoofed user header', async () => {
+    const request = new NextRequest('https://example.com/api/gamification/streak-freeze', {
+      headers: { 'x-user-id': 'victim' },
     });
-    const response = await POST(req);
-    expect(response.status).toBe(401);
+    expect((await GET(request)).status).toBe(401);
   });
 
-  it('should return pricing and status on GET', async () => {
-    const req = new NextRequest('http://localhost/api/gamification/streak-freeze', {
-      method: 'GET',
-      headers: {
-        'x-user-id': 'user_123',
-      },
+  it('returns status for the verified user', async () => {
+    mockRequireAuth.mockResolvedValue({
+      success: true,
+      context: { user: { id: 'verified-user', tenantId: 'verified-household' } },
     });
-    const response = await GET(req);
+    mockMaybeSingle.mockResolvedValue({ data: { streak_freeze_active: true } });
+    const response = await GET(new NextRequest('https://example.com/api/gamification/streak-freeze'));
+    const body = await response.json();
     expect(response.status).toBe(200);
-    const data = await response.json();
-    expect(data.status).toBe('ok');
-    expect(data.price).toBe(1.99);
-    expect(Array.isArray(data.benefits)).toBe(true);
+    expect(body.price).toBe(1.99);
+    expect(body.isFreezeActive).toBe(true);
+    expect(mockEq).toHaveBeenCalledWith('user_id', 'verified-user');
   });
 
-  it('should create a $1.99 checkout session on POST', async () => {
-    const req = new NextRequest('http://localhost/api/gamification/streak-freeze', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-user-id': 'user_123',
-      },
-      body: JSON.stringify({}),
+  it('uses verified identity and server-controlled return URLs for checkout', async () => {
+    mockRequireAuth.mockResolvedValue({
+      success: true,
+      context: { user: { id: 'verified-user', tenantId: 'verified-household' } },
     });
-    const response = await POST(req);
-    expect(response.status).toBe(200);
-    const data = await response.json();
-    expect(data.status).toBe('ok');
-    expect(data.success).toBe(true);
-    expect(data.price).toBe(1.99);
+    mockCreateCheckoutSession.mockResolvedValue({ id: 'cs_test', url: 'https://checkout.stripe.com/test' });
+    const request = new NextRequest('https://example.com/api/gamification/streak-freeze', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-user-id': 'victim' },
+      body: JSON.stringify({ userId: 'victim' }),
+    });
+    expect((await POST(request)).status).toBe(200);
+    expect(mockCreateCheckoutSession).toHaveBeenCalledWith(expect.objectContaining({
+      userId: 'verified-user',
+      successUrl: 'https://example.com/dashboard?streak_frozen=true',
+      cancelUrl: 'https://example.com/dashboard',
+      metadata: expect.objectContaining({ userId: 'verified-user' }),
+    }));
   });
 });

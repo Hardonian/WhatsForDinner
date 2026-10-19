@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { StripeService } from '@/lib/stripe';
-import { supabaseAdmin } from '@/lib/supabaseClient';
+import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createComponentLogger } from '@whats-for-dinner/utils';
+import { requireAuth } from '@/lib/auth-middleware';
 
 const logger = createComponentLogger('credits-purchase-api');
 
@@ -9,23 +10,11 @@ import { CREDIT_PACKS, CreditPackId } from '@/lib/monetization/pricing-packs';
 
 export const dynamic = 'force-dynamic';
 
-function checkAuth(req?: NextRequest) {
-  if (
-    !req?.headers?.get('authorization') &&
-    !req?.headers?.get('content-type') &&
-    !req?.headers?.get('x-api-key') &&
-    !req?.headers?.get('x-user-id')
-  ) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  return null;
-}
-
 export async function GET(req: NextRequest) {
-  const authError = checkAuth(req);
-  if (authError) return authError;
-
-  const userId = req.headers.get('x-user-id') || req.headers.get('authorization');
+  const auth = await requireAuth(req);
+  if ('response' in auth) return auth.response;
+  const supabaseAdmin = getSupabaseAdmin();
+  const userId = auth.context.user.id;
   let currentBalance = 0;
 
   if (userId) {
@@ -49,20 +38,19 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const authError = checkAuth(req);
-  if (authError) return authError;
-
   try {
+    const auth = await requireAuth(req);
+    if ('response' in auth) return auth.response;
     const body = await req.json().catch(() => ({}));
     const packId = (body.packId || 'popular') as CreditPackId;
     const pack = CREDIT_PACKS[packId] || CREDIT_PACKS.popular;
 
-    const userId = body.userId || req.headers.get('x-user-id') || req.headers.get('authorization') || '';
-    const tenantId = body.tenantId || req.headers.get('x-tenant-id') || '';
+    const userId = auth.context.user.id;
+    const tenantId = auth.context.user.tenantId || '';
 
     const origin = req.nextUrl?.origin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-    const successUrl = body.successUrl || `${origin}/dashboard?credits_purchased=${pack.credits}`;
-    const cancelUrl = body.cancelUrl || `${origin}/pricing`;
+    const successUrl = `${origin}/dashboard?credits_purchased=${pack.credits}`;
+    const cancelUrl = `${origin}/pricing`;
 
     logger.info('Creating credit pack checkout session', { packId, credits: pack.credits, userId });
 
@@ -97,10 +85,10 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PUT(req?: NextRequest) {
-  return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true });
+export async function PUT() {
+  return new NextResponse('Method Not Allowed', { status: 405, headers: { Allow: 'GET, POST' } });
 }
 
-export async function DELETE(req?: NextRequest) {
-  return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true });
+export async function DELETE() {
+  return new NextResponse('Method Not Allowed', { status: 405, headers: { Allow: 'GET, POST' } });
 }

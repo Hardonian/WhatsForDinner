@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createClient } from '@supabase/supabase-js';
 import { createBrowserClient } from '@supabase/ssr';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -7,7 +6,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env
 
 function requireSupabaseConfiguration() {
   if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder') || supabaseAnonKey.includes('placeholder')) {
-    return { supabaseUrl: supabaseUrl || 'https://placeholder.supabase.co', supabaseAnonKey: supabaseAnonKey || 'placeholder-anon-key' };
+    throw new Error('Supabase public URL and key are not configured');
   }
   return { supabaseUrl, supabaseAnonKey };
 }
@@ -20,15 +19,6 @@ export const supabase = createBrowserClient(
   publicConfig.supabaseUrl,
   publicConfig.supabaseAnonKey
 );
-
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-key';
-
-export const supabaseAdmin = createClient(publicConfig.supabaseUrl, supabaseServiceKey, {
-  auth: {
-    persistSession: false,
-    autoRefreshToken: false,
-  },
-});
 
 export type Database = {
   public: {

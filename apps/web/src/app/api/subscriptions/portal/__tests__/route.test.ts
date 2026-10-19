@@ -1,44 +1,60 @@
-// @ts-nocheck
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { NextRequest } from 'next/server';
-import { POST, GET } from '../route';
+import { NextRequest, NextResponse } from 'next/server';
 
-describe('API Route: apps/web/src/app/api/subscriptions/portal/route.ts', () => {
+const mockRequireAuth = jest.fn();
+const mockCreatePortal = jest.fn();
+
+jest.mock('@/lib/auth-middleware', () => ({
+  requireAuth: (...args: unknown[]) => mockRequireAuth(...args),
+}));
+
+jest.mock('@/lib/stripe', () => ({
+  StripeService: {
+    createCustomerPortalSession: (...args: unknown[]) => mockCreatePortal(...args),
+  },
+}));
+
+import { GET, POST } from '../route';
+
+describe('subscription portal route', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockRequireAuth.mockResolvedValue({
+      success: false,
+      response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+    });
   });
 
-  it('should return 401 when unauthenticated', async () => {
-    const req = new NextRequest('http://localhost/api/subscriptions/portal', {
+  it('rejects unauthenticated callers even when they spoof an identity', async () => {
+    const request = new NextRequest('https://example.com/api/subscriptions/portal', {
       method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-user-id': 'victim' },
+      body: JSON.stringify({ userId: 'victim' }),
     });
-    const response = await POST(req);
-    expect(response.status).toBe(401);
+    expect((await POST(request)).status).toBe(401);
+    expect(mockCreatePortal).not.toHaveBeenCalled();
   });
 
-  it('should handle POST request when userId is provided', async () => {
-    const req = new NextRequest('http://localhost/api/subscriptions/portal', {
+  it('uses the verified account and rejects an external return URL', async () => {
+    mockRequireAuth.mockResolvedValue({
+      success: true,
+      context: { user: { id: 'verified-user', tenantId: 'verified-household' } },
+    });
+    mockCreatePortal.mockResolvedValue({ url: 'https://billing.stripe.com/session' });
+    const request = new NextRequest('https://example.com/api/subscriptions/portal', {
       method: 'POST',
-      headers: {
-        'x-user-id': 'user_123',
-      },
-      body: JSON.stringify({
-        returnUrl: 'http://localhost:3000/settings',
-      }),
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ userId: 'victim', returnUrl: 'https://evil.example/phish' }),
     });
-    const response = await POST(req);
-    expect(response).toBeDefined();
-    expect(response.status).toBeLessThan(500);
+    const response = await POST(request);
+    expect(response.status).toBe(200);
+    expect(mockCreatePortal).toHaveBeenCalledWith({
+      userId: 'verified-user',
+      tenantId: 'verified-household',
+      returnUrl: 'https://example.com/settings/billing',
+    });
   });
 
-  it('should support GET request matching POST', async () => {
-    const req = new NextRequest('http://localhost/api/subscriptions/portal', {
-      method: 'GET',
-      headers: {
-        'x-user-id': 'user_123',
-      },
-    });
-    const response = await GET(req);
-    expect(response).toBeDefined();
+  it('does not expose a GET side effect', async () => {
+    expect((await GET(new NextRequest('https://example.com/api/subscriptions/portal'))).status).toBe(405);
   });
 });

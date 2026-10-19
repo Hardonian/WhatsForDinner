@@ -51,7 +51,7 @@ describe('Health Check API Route', () => {
       const request = new NextRequest('http://localhost:3000/api/health');
       const response = await GET(request);
       
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(503);
       const data = await response.json();
       expect(data.status).toBe('degraded');
     });
