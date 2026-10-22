@@ -43,7 +43,7 @@ jobs:
         run: npx tsx scripts/generate-openapi-docs.ts
 
       - name: Upload OpenAPI spec
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: openapi-spec
           path: docs/openapi.json

@@ -78,7 +78,7 @@ jobs:
           echo "- Image domains configured via NEXT_PUBLIC_IMAGE_DOMAINS" >> reports/headers.txt
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: vercel-guard-reports

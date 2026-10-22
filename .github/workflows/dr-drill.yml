@@ -132,7 +132,7 @@ jobs:
           echo "- Review and update DR procedures as needed" >> dr-drill-report.md
 
       - name: Upload DR Drill Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dr-drill-report
           path: dr-drill-report.md
