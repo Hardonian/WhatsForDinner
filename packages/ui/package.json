@@ -17,7 +17,7 @@
     "react": "^19.2.0",
     "react-native": "*",
     "react-native-safe-area-context": "^4.14.1",
-    "react-native-svg": "^15.15.5"
+    "react-native-svg": "^15.16.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
