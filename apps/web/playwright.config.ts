@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests/e2e',
-  /* Run tests in files in parallel */
+  /* Public journeys are independent and can run concurrently. */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -76,17 +76,14 @@ export default defineConfig({
     // },
   ],
 
-  /* Run your local dev server before starting the tests */
+  /* Run the web app from this workspace before starting the tests. */
   webServer: {
-    command: 'npm run dev',
+    command: 'pnpm exec next dev -p 3000',
+    cwd: __dirname,
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
-
-  /* Global setup and teardown */
-  globalSetup: require.resolve('./tests/global-setup.ts'),
-  globalTeardown: require.resolve('./tests/global-teardown.ts'),
 
   /* Test timeout */
   timeout: 30 * 1000,

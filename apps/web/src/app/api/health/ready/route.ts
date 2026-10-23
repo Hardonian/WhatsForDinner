@@ -1,15 +1,37 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-function checkAuth(req?: NextRequest) {
-  if (!req?.headers?.get('authorization') && !req?.headers?.get('content-type') && !req?.headers?.get('x-api-key') && !req?.headers?.get('x-user-id')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  return null;
+function isConfigured(value: string | undefined, placeholder: string): boolean {
+  return Boolean(value) && !value.includes(placeholder);
 }
 
-export async function GET(req?: NextRequest) { return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true }); }
-export async function POST(req?: NextRequest) { return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true }); }
-export async function PUT(req?: NextRequest) { return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true }); }
-export async function DELETE(req?: NextRequest) { return checkAuth(req) || NextResponse.json({ status: 'ok', stub: true }); }
+/**
+ * Readiness is intentionally public so deployment platforms can use it. It
+ * validates boot-time configuration without making an expensive or privileged
+ * database request on every probe. Deep dependency status is provided by the
+ * authenticated comprehensive endpoint.
+ */
+export async function GET() {
+  const configuredDependencies = {
+    supabase: isConfigured(process.env.NEXT_PUBLIC_SUPABASE_URL, 'placeholder.supabase.co'),
+    openai: Boolean(process.env.OPENAI_API_KEY),
+  };
+
+  return NextResponse.json(
+    {
+      status: 'ready',
+      service: 'web',
+      timestamp: new Date().toISOString(),
+      checks: {
+        application: 'ok',
+        configuration: configuredDependencies,
+      },
+    },
+    {
+      headers: {
+        'Cache-Control': 'no-store, max-age=0',
+      },
+    }
+  );
+}

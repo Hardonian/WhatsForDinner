@@ -51,7 +51,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: |
-          pnpm exec playwright test tests/reality/smoke.test.ts --project=chromium
+          pnpm run test:e2e
         continue-on-error: false
 
       - name: Upload test results

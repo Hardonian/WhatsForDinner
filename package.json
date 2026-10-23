@@ -67,6 +67,7 @@
     "phases:complete": "node scripts/complete-all-phases.js",
     "test:coverage": "turbo run test:coverage",
     "test:ci": "turbo run test:ci",
+    "test:e2e": "pnpm exec playwright test --config=apps/web/playwright.config.ts --project=chromium",
     "release": "turbo run release",
     "doctor": "tsx scripts/reality-check.ts",
     "a11y": "pa11y-ci",
