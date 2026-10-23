@@ -7,14 +7,17 @@ describe('public deployment probes', () => {
     ['liveness', live, 'ok'],
     ['readiness', ready, 'ready'],
     ['legacy healthz', healthz, 'ok'],
-  ])('returns a non-cacheable %s response', async (_name, handler, expectedStatus) => {
-    const response = await handler();
+  ])(
+    'returns a non-cacheable %s response',
+    async (_name, handler, expectedStatus) => {
+      const response = await handler();
 
-    expect(response.status).toBe(200);
-    expect(response.headers.get('Cache-Control')).toContain('no-store');
-    await expect(response.json()).resolves.toMatchObject({
-      status: expectedStatus,
-      service: 'web',
-    });
-  });
+      expect(response.status).toBe(200);
+      expect(response.headers.get('Cache-Control')).toContain('no-store');
+      await expect(response.json()).resolves.toMatchObject({
+        status: expectedStatus,
+        service: 'web',
+      });
+    }
+  );
 });

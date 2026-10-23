@@ -1,0 +1,14 @@
+<testsuites id="" name="" tests="5" failures="0" skipped="0" errors="0" time="22.04652">
+<testsuite name="security.spec.ts" timestamp="2026-10-23T01:10:30.846Z" hostname="chromium" tests="5" failures="0" skipped="0" time="35.96" errors="0">
+<testcase name="public launch journey and browser security › serves the marketing page with production security headers" classname="security.spec.ts" time="5.195">
+</testcase>
+<testcase name="public launch journey and browser security › takes a visitor from the landing page into the instant-dinner flow" classname="security.spec.ts" time="8.16">
+</testcase>
+<testcase name="public launch journey and browser security › completes pantry-to-recipe onboarding when the recipe service is unavailable" classname="security.spec.ts" time="7.216">
+</testcase>
+<testcase name="public launch journey and browser security › keeps public legal and availability information reachable" classname="security.spec.ts" time="10.592">
+</testcase>
+<testcase name="public launch journey and browser security › exposes public deployment probes with non-cacheable responses" classname="security.spec.ts" time="4.797">
+</testcase>
+</testsuite>
+</testsuites>

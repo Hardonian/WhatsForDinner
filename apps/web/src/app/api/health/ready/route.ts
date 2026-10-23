@@ -14,7 +14,10 @@ function isConfigured(value: string | undefined, placeholder: string): boolean {
  */
 export async function GET() {
   const configuredDependencies = {
-    supabase: isConfigured(process.env.NEXT_PUBLIC_SUPABASE_URL, 'placeholder.supabase.co'),
+    supabase: isConfigured(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      'placeholder.supabase.co'
+    ),
     openai: Boolean(process.env.OPENAI_API_KEY),
   };
 

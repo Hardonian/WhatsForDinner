@@ -2,11 +2,7 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -43,15 +39,9 @@
       "@supabase/auth-helpers-react": [
         "./src/lib/supabase/auth-helpers-react-compat.ts"
       ],
-      "@/*": [
-        "./src/*"
-      ],
-      "@whats-for-dinner/server": [
-        "../../packages/server/src/index.ts"
-      ],
-      "@whats-for-dinner/server/*": [
-        "../../packages/server/src/*"
-      ],
+      "@/*": ["./src/*"],
+      "@whats-for-dinner/server": ["../../packages/server/src/index.ts"],
+      "@whats-for-dinner/server/*": ["../../packages/server/src/*"],
       "@whats-for-dinner/analytics-consent": [
         "../../packages/analytics/consent/consentModel.ts"
       ],
@@ -64,27 +54,20 @@
       "@whats-for-dinner/analytics-consent/*": [
         "../../packages/analytics/consent/*"
       ],
-      "@whats-for-dinner/ui": [
-        "../../packages/ui/src/index.ts"
-      ],
-      "@whats-for-dinner/ui/*": [
-        "../../packages/ui/src/*"
-      ],
-      "@whats-for-dinner/utils": [
-        "../../packages/utils/src/index.ts"
-      ],
-      "@whats-for-dinner/utils/*": [
-        "../../packages/utils/src/*"
-      ]
+      "@whats-for-dinner/ui": ["../../packages/ui/src/index.ts"],
+      "@whats-for-dinner/ui/*": ["../../packages/ui/src/*"],
+      "@whats-for-dinner/utils": ["../../packages/utils/src/index.ts"],
+      "@whats-for-dinner/utils/*": ["../../packages/utils/src/*"]
     }
   },
   "include": [
-    "next-env.d.ts",
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "dist/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

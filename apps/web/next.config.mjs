@@ -1,45 +1,74 @@
-process.env.NEXT_PUBLIC_SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
-process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTkwMDAwMDAwMH0.placeholder';
-process.env.SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+process.env.NEXT_PUBLIC_SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MDAwMDAwMDAsImV4cCI6MTkwMDAwMDAwMH0.placeholder';
+process.env.SUPABASE_SERVICE_ROLE_KEY =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 const nextConfig = {
   env: {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   },
-  transpilePackages: ["@whats-for-dinner/ui", "@whats-for-dinner/theme", "@whats-for-dinner/config"],
-  
-  serverExternalPackages: ['@supabase/supabase-js', 'archiver', '@sendgrid/mail', '@whats-for-dinner/utils'],
+  transpilePackages: [
+    '@whats-for-dinner/ui',
+    '@whats-for-dinner/theme',
+    '@whats-for-dinner/config',
+  ],
+
+  serverExternalPackages: [
+    '@supabase/supabase-js',
+    'archiver',
+    '@sendgrid/mail',
+    '@whats-for-dinner/utils',
+  ],
   experimental: {
-    optimizePackageImports: ["@whats-for-dinner/ui", "lucide-react", "@radix-ui/react-slot", "@radix-ui/react-label", "@radix-ui/react-separator", "@radix-ui/react-switch", "@radix-ui/react-tabs"],
+    optimizePackageImports: [
+      '@whats-for-dinner/ui',
+      'lucide-react',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-label',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-tabs',
+    ],
   },
-  
+
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "cdn.shopify.com" },
-      { protocol: "https", hostname: "**" },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'cdn.shopify.com' },
+      { protocol: 'https', hostname: '**' },
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 31536000,
   },
-  
+
   trailingSlash: true,
   distDir: 'dist',
-  
+
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
   generateEtags: true,
-  
+
   webpack: (config, { isServer, dev }) => {
     // Externalize optional deps that aren't installed
     config.externals = config.externals || [];
     if (isServer) {
       config.externals.push(({ request }, callback) => {
-        const optional = ['mixpanel-browser', '@amplitude/analytics-browser', 'redis', '@sentry/nextjs', '@opentelemetry/winston-transport', 'dtrace-provider'];
+        const optional = [
+          'mixpanel-browser',
+          '@amplitude/analytics-browser',
+          'redis',
+          '@sentry/nextjs',
+          '@opentelemetry/winston-transport',
+          'dtrace-provider',
+        ];
         if (optional.includes(request)) {
           return callback(null, 'commonjs ' + request);
         }
@@ -85,7 +114,9 @@ const nextConfig = {
             lib: {
               test: /[\\/]node_modules[\\/]/,
               name(module) {
-                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)?.[1];
+                const packageName = module.context.match(
+                  /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                )?.[1];
                 return `lib-${packageName?.replace('@', '')}`;
               },
               priority: 30,
@@ -118,24 +149,38 @@ const nextConfig = {
     // Alias auth helpers to safe stubs during build
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@supabase/auth-helpers-react': new URL('./stubs/auth-helpers-react.mjs', import.meta.url).pathname,
+      '@supabase/auth-helpers-react': new URL(
+        './stubs/auth-helpers-react.mjs',
+        import.meta.url
+      ).pathname,
     };
     return config;
   },
-  
+
   async headers() {
     return [
       {
         source: '/static/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
       },
       {
         source: '/_next/static/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
       },
       {
-        source: '/api/:path*',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=300, s-maxage=600, stale-while-revalidate=1800' }],
+        // Health probes must always describe the current process state.
+        source: '/api/health/:path*',
+        headers: [{ key: 'Cache-Control', value: 'no-store, max-age=0' }],
       },
       {
         source: '/:path*',
@@ -146,7 +191,8 @@ const nextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss:",
+            value:
+              "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; connect-src 'self' https: wss:",
           },
         ],
       },

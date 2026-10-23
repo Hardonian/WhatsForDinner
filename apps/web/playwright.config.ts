@@ -22,7 +22,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3100',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -78,10 +78,13 @@ export default defineConfig({
 
   /* Run the web app from this workspace before starting the tests. */
   webServer: {
-    command: 'pnpm exec next dev -p 3000',
+    command: 'pnpm exec next dev -p 3100',
     cwd: __dirname,
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
+    url: 'http://localhost:3100',
+    // Reusing a local port can silently test an unrelated application. Opt in
+    // only when a caller has intentionally started this web workspace.
+    reuseExistingServer:
+      process.env.PLAYWRIGHT_REUSE_EXISTING_SERVER === 'true',
     timeout: 120 * 1000,
   },
 
