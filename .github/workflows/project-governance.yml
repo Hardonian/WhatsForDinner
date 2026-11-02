@@ -67,7 +67,7 @@ jobs:
           retention-days: 14
       - name: Comment PR summary
         if: github.event_name == 'pull_request'
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           filePath: docs/audit/CI_SUMMARY.md
           comment_tag: governance_orchestrator_summary
