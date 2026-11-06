@@ -83,7 +83,7 @@ jobs:
 
       - name: Comment PR summary (if PR)
         if: github.event_name == 'pull_request'
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           filePath: docs/audit_investor_suite/EXEC_SUMMARY_FIXED.md
           comment_tag: remediation_orchestrator_summary
