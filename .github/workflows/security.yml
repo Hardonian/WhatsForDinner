@@ -217,7 +217,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Run OPA policy checks
-        uses: open-policy-agent/conftest@v0.45.0
+        uses: open-policy-agent/conftest@v0.71.1
         with:
           policy: './policies'
           files: |
