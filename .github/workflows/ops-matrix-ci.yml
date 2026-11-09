@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build --filter=@whats-for-dinner/${{ matrix.workspace }}
@@ -57,7 +57,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops doctor
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops test:e2e
@@ -92,7 +92,7 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
@@ -108,7 +108,7 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops sb-guard
@@ -126,7 +126,7 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops snapshot
@@ -142,7 +142,7 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops docs
