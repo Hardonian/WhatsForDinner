@@ -7116,8 +7116,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  basic-ftp@6.2.2:
-    resolution: {integrity: sha512-LIkJcf/F6bTTfvE3k2YcTxrJsLKKVXiEpHZYkQP6JoqTb7khng7c13ckRTDQbqRh5IkehVH3F00sSlAa2F6DwA==}
+  basic-ftp@6.2.6:
+    resolution: {integrity: sha512-0EjZCaodOz6yiokv2JA1VyKGNdGxULZ+GGlPgG9tm4d+T/bHtX1hUch8CumDneBfpIbiSdn7TaCGwpM+gwsOlw==}
     engines: {node: '>=10.0.0'}
 
   before-after-hook@2.2.3:
@@ -21733,7 +21733,7 @@ snapshots:
 
   baseline-browser-mapping@2.11.27: {}
 
-  basic-ftp@6.2.2: {}
+  basic-ftp@6.2.6: {}
 
   before-after-hook@2.2.3: {}
 
@@ -24770,7 +24770,7 @@ snapshots:
 
   get-uri@6.0.5(supports-color@8.1.1):
     dependencies:
-      basic-ftp: 6.2.2
+      basic-ftp: 6.2.6
       data-uri-to-buffer: 6.0.2
       debug: 4.3.4(supports-color@8.1.1)
     transitivePeerDependencies:
