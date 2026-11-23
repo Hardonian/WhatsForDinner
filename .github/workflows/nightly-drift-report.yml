@@ -124,7 +124,7 @@ jobs:
       # Step 6: Post report (if configured)
       - name: Post Report to Slack
         if: always()
-        uses: slackapi/slack-github-action@v1
+        uses: slackapi/slack-github-action@v3
         with:
           payload: |
             {
