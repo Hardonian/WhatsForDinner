@@ -16,7 +16,7 @@ concurrency:
   group: governance-${{ github.ref }}
   cancel-in-progress: false
 env:
-  NODE_VERSION: "20"
+  NODE_VERSION: "22"
   PY_VERSION: "3.11"
   AUDIT_DIR: docs/audit
   GOV_DIR: docs/governance

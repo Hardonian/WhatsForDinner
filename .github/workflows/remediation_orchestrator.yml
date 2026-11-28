@@ -31,7 +31,7 @@ jobs:
 
       - name: Setup Node & Python
         uses: actions/setup-node@v7
-        with: { node-version: '20' }
+        with: { node-version: '22' }
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
 

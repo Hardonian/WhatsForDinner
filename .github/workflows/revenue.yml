@@ -34,7 +34,7 @@ jobs:
         with:
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
       - run: pnpm install
       - run: cd packages/server && pnpm type-check
@@ -48,7 +48,7 @@ jobs:
         with:
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
       - run: pnpm install
       - run: cd packages/server && drizzle-kit check
@@ -62,7 +62,7 @@ jobs:
         with:
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
       - run: pnpm install
       - run: cd packages/server && pnpm test -- pricing.spec.ts
@@ -76,7 +76,7 @@ jobs:
         with:
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
       - run: pnpm install
       - name: Validate forecast calculations
@@ -109,7 +109,7 @@ jobs:
         with:
       - uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
       - run: pnpm install
       - name: Run revenue aggregator
