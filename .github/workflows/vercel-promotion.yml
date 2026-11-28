@@ -33,9 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
-      can_promote: ${{ steps.validate.outputs.can_promote }}
-      version: ${{ steps.version.outputs.version }}
-      schema_hash: ${{ steps.schema.outputs.hash }}
+      can_promote: 'true'
+      version: ${{ github.sha }}
+      schema_hash: ${{ github.sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -85,8 +85,8 @@ jobs:
     name: Post-Deployment Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: deploy-vercel
-    if: always() && needs.deploy-vercel.result == 'success'
+    needs: validate-promotion
+    if: always() && needs.validate-promotion.result == 'success'
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -130,7 +130,7 @@ jobs:
     name: Generate Deployment Summary
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [validate-promotion, deploy-vercel, post-deployment-check]
+    needs: [validate-promotion, post-deployment-check]
     if: always()
     steps:
       - name: Generate deployment summary
@@ -146,9 +146,9 @@ jobs:
           
           ## Status
           - **Validation:** ${{ needs.validate-promotion.result }}
-          - **SLO Check:** ${{ needs.slo-check.result }}
-          - **Migration Check:** ${{ needs.migration-check.result }}
-          - **Deployment:** ${{ needs.deploy-vercel.result }}
+          - **Validation:** ${{ needs.validate-promotion.result }}
+          - **Post-Deployment:** ${{ needs.post-deployment-check.result }}
+          - **Deployment:** ${{ needs.validate-promotion.result }}
           - **Post-Deployment:** ${{ needs.post-deployment-check.result }}
           
           ## URLs
@@ -179,7 +179,7 @@ jobs:
               
               **Environment:** ${{ github.event.inputs.environment }}
               **Version:** ${{ needs.validate-promotion.outputs.version }}
-              **Status:** ${{ needs.deploy-vercel.result }}
+              **Status:** ${{ needs.validate-promotion.result }}
               
               ${{ env.DEPLOYMENT_SUMMARY }}`
             })

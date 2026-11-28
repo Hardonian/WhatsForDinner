@@ -115,7 +115,7 @@ jobs:
             await dailyRevenueAggregation();
           "
       - name: Run elasticity model (weekly)
-        if: github.run_number % 7 == 0
+        if: github.event_name == 'schedule'
         run: |
           cd packages/server
           npx tsx -e "
@@ -123,7 +123,7 @@ jobs:
             await computeElasticityModels();
           "
       - name: Run Van Westendorp model (weekly)
-        if: github.run_number % 7 == 0
+        if: github.event_name == 'schedule'
         run: |
           cd packages/server
           npx tsx -e "
@@ -131,7 +131,7 @@ jobs:
             await updateVanWestendorpPricing();
           "
       - name: Run price optimizer (weekly)
-        if: github.run_number % 7 == 0
+        if: github.event_name == 'schedule'
         run: |
           cd packages/server
           npx tsx -e "

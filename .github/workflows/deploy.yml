@@ -15,11 +15,8 @@
 
 name: Deploy (DEPRECATED - REMOVE BY 2025-02-28)
 
-# Disabled triggers - workflow will not run
-# on:
-#   push:
-#     branches: [main]
-#   workflow_dispatch:
+on:
+  workflow_dispatch:
 
 env:
   NODE_VERSION: '22'

@@ -20,6 +20,11 @@ on:
           - all
           - ios
           - android
+      capture_screenshots:
+        description: 'Capture store screenshots'
+        required: false
+        default: 'false'
+        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -146,7 +146,7 @@ jobs:
             
             let allPassed = true;
             for (const step of steps) {
-              const status = '${{ steps.' + step.id + '.outcome }}';
+              const status = 'n/a'; // dynamic step outcomes are not available in expressions
               const emoji = status === 'success' ? '✅' : '❌';
               comment += `${emoji} **${step.name}**: ${status}\n`;
               if (status !== 'success') allPassed = false;
