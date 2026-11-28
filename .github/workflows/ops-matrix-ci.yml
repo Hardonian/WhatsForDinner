@@ -42,7 +42,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
       - uses: pnpm/action-setup@v6
-        with:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build --filter=@whats-for-dinner/${{ matrix.workspace }}
       - run: pnpm test --filter=@whats-for-dinner/${{ matrix.workspace }}
@@ -58,7 +57,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
       - uses: pnpm/action-setup@v6
-        with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops doctor
       - run: npm run ops check
@@ -74,7 +72,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - uses: pnpm/action-setup@v6
-        with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops test:e2e
       - uses: actions/upload-artifact@v7
@@ -93,7 +90,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - uses: pnpm/action-setup@v6
-        with:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: npm run ops benchmark
@@ -109,7 +105,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - uses: pnpm/action-setup@v6
-        with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops sb-guard
         env:
@@ -127,7 +122,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - uses: pnpm/action-setup@v6
-        with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops snapshot
       - run: npm run ops restore --dry-run
@@ -143,7 +137,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - uses: pnpm/action-setup@v6
-        with:
       - run: pnpm install --frozen-lockfile
       - run: npm run ops docs
       - uses: peaceiris/actions-gh-pages@v3
